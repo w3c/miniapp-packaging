@@ -1,4 +1,4 @@
-# MiniApp Package explainer
+# MiniApp Packaging explainer
 
 > Note: This document serves as a supplementary explanation of the [MiniApp Packaging](https://w3c.github.io/miniapp/specs/packaging/) spec. If there is any inconsistency with the spec, you should consider the spec to be authoritative.
 
