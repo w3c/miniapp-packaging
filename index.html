@@ -270,6 +270,68 @@
             </section>
         </section> 
     </section>
+  <section id="sec-miniapp-zip-container">
+      <h2>MiniApp ZIP Container</h2>
+        <section id="sec-miniapp-zip-container-intro" class="informative">
+            <h3>Introduction</h3>
+            <p>A [=MiniApp ZIP Container=] is a physical single-file representation of a MiniApp that can be used to distribute it in different scenarios, including:</p>
+            <ul>
+                <li>An organization that stores and lists catalogs of MiniApps (i.e., marketplace);</li>
+                <li>A developer that builds a MiniApp and delivers it to a marketplace;</li>
+                <li>A developer that shares a MiniApp with the <abbr title="Quality Assurance">QA</abbr> department for testing.</li>
+            </ul>
+        </section>
+        <section id="sec-miniapp-zip-file-requirements">
+            <h3>ZIP File Requirements</h3>
+            <p>A [=MiniApp ZIP Container=] uses the ZIP format [[ZIP]], including some particularities:</p>
+        	<ul class="conformance-list">
+                <li>The contents of the [=MiniApp ZIP Container=] MUST be a conforming [=MiniApp Package=].</li>
+                <li>MiniApp ZIP Containers MUST NOT use the ZIP encryption mechanisms.</li>                
+                <li>MiniApp ZIP Containers MUST NOT use the features in the ZIP application note [[ZIP]] that allow ZIP files to be spanned across multiple storage media, or split into multiple files.</li>
+                <li>MiniApp ZIP Containers MUST include ZIP uncompressed and Deflate-compressed (lossless data compression) contents within the ZIP archive.</li>
+                <li>MiniApp ZIP Containers MUST use UTF-8 [[Unicode]] for encoding filenames.</li>
+                <li>MiniApp ZIP Containers MUST NOT use patented features.</li>
+                <li>MiniApp ZIP Containers MAY include a special block, the [=MiniApp Signing Block=], to allow digital signatures affecting the whole package.</li>
+            </ul>
+            <p>The structure of a MiniApp ZIP Container is as follows:</p>
+            <pre>
+    [ZIP File Entries]
+    [MiniApp Signing Block]    
+    [ZIP Central Directory]
+    [End of ZIP Central Directory]</pre>
+
+            <figure id="figure-zip-summary">
+                <img src="images/signature_zip_summary.svg" alt="Structure of standard ZIP package and the MiniApp package with a signing block in the middle" />
+                <figcaption>ZIP package and MiniApp package with an optional signing block</figcaption>
+            </figure>
+
+            <p>The [=MiniApp ZIP Container=] is parsed by first finding the start of the ZIP Central Directory (locating the ZIP End of Central Directory record at the end of the file, then reading the start offset of the Central Directory from the record). Every MiniApp Signing Block MAY include a [=Signing Block Magic Numbers=] block, as specified in <a href="#sec-miniapp-digital-signature-requirements">Digital Signature Requirements</a>, to identify the presence of digital signatures. Once the "magic numbers" block is recognized, the [=MiniApp Processor=] would be able to process the digital signatures stored in the Signing Block, in the immediately preceding section of the Central Directory, as shown in <a href="#figure-package-references"></a>.</p>
+
+
+            <figure id="figure-package-references">
+                <img src="images/signature_zip_complete.svg" alt="Structure of standard ZIP package and the MiniApp package with a signing block in the middle and references to the different blocks of the package" />
+                <figcaption>ZIP and MiniApp packages with references to the different blocks using relative offset addessing</figcaption>
+            </figure>
+
+            <p>MiniApps vendors MAY adopt the digital signature schemes depending on their needs.</p>  
+            <p class="ednote" title="To add extension">
+                MiniApp files MAY be identified by the .ma file extension although the use of a file extension is not required.
+            </p>    
+        </section>
+        <section id="sec-miniapp-digital-signature-requirements">
+            <h3>Digital Signature Requirements</h3>  
+            <p>A [=MiniApp ZIP Container=] MAY include none, one, or more [=signatures=] to help to detect any changes to the protected parts of the software, guaranteeing the integrity of the MiniApp.</p>
+            <p>A <dfn id="dfn-signing_block" data-lt="Signing Block|MiniApp Signing Block|MiniApp Signing Blocks" data-dfn-type="dfn">MiniApp Signing Block</dfn> is a collection of bytes that contains specific information and metadata about the digital signature that affects a MiniApp, partially or as a whole. The [=Signing Block=] of a [=MiniApp ZIP Container=] MUST be located immediately before the central directory of the ZIP container, in a way that makes it easier to locate the block if exists.</p>
+            <p>Although this document does not recommend any specific digital signature mechanism (i.e., hash algorithms, encryption methods, etc.), the [=Signing Block=], if present, MUST meet the following criteria:</p>
+        	<dl class="conformance-list">
+                <dt>Signing Block Magic numbers</dt>
+                <dd>A 16-byte block that provides a quick way to identify the Signing Block as the preceding block of the Central Directory. This "magic numbers" byte sequence univocally identifies the type of digital signature included in the Signing Block.</li>
+            </dl>
+        </section>
+        <div class="ednote">
+            To open a discussion to confirm this approach. 
+        </div>             
+    </section>    
         
     <section>
         <h2>Security & Privacy Considerations</h2>
