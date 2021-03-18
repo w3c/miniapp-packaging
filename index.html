@@ -137,79 +137,140 @@
         <section id="conformance">
         </section>
     </section>
-    
-    <section>
-        <h2>Packaging</h2>
-        <p>Each MiniApp package is wrapped as a [[ZIP]] file. It contains, at the root level, a global configuration file (<code>manifest.json</code>) to describe and configure the whole MiniApp, an application logic file (<code>app.js</code>), and a default style file (<code>app.css</code>).
+
+    <section id="sec-conformance">
+        <h2>Package Conformance</h2>
+        <p>A conformant [=MiniApp Package=] MUST meet the following criteria:</p>
+            <ul class="conformance-list">
+                <li>The file system of a package MUST have a file structure based on a common [=Root Directory=], and three specific subdirectories: <code>common</code>, <code>i18n</code>, and <code>pages</code>.</li>
+                <li>It MUST contain one configuration file in the [=Root Directory=], named <code>manifest.json</code>, to describe and configure the runtime environment as defined in [=MiniApp Manifest=].</li>
+                <li>It MUST contain one script document, in the [=Root Directory=], named <code>app.js</code>, with the basic control logic of the MiniApp. </li>
+                <li>It MUST contain one CSS document, in the [=Root Directory=], named <code>app.css</code>, following the CSS Syntax Module Level 3 [[CSS-SYNTAX-3]].</li>
+                <li>The whole [=MiniApp Package=] MUST be wrapped as a [[ZIP]] file, according to the requirements of [=MiniApp ZIP Containers=].</li>
+            </ul>
+        <p class="ednote" title="To check the support of CSS">
+            To clarify if all CSS is supported or just a specific profile.
         </p>
+        <p class="ednote" title="To clarify the JS file format/syntax/APIs">
+            To clarify the kind of JS file should be included.
+        </p>
+        <section id="sec-filestructure">
+            <h3>Directory and File System Structure</h3>
+                <p>The MiniApp Package has a file structure with some restrictions and reserved files and subdirectories.</p> 
+                <p>The following example shows a typical file system structure:</p>
+                <pre class="example">
+                    |___manifest.json
+                    |___app.js
+                    |___app.css
+                    |___pages
+                    |       |___page1.js
+                    |       |___page1.xml
+                    |       |___page1.json
+                    |       |___page1.css
+                    |___common
+                    |       |___componentA.js
+                    |       |___componentA.xml
+                    |       |___componentA.css
+                    |       |___componentA.json
+                    |       |___example.png
+                    |___i18n
+                    |       |___zh-Hans.json
+                    |       |___en-US.json
+                </pre>
+                <section>
+                    <h3>Root Directory</h3>
+                    <p>The [=Root Directory=] of a [=MiniApp Package=] holds several reserved files that include global data and information about the lifecycle management of the MiniApp, including:</p>
+                    <dl>
+                        <dt><code>manifest.json</code></dt>
+                        <dd>The [=MiniApp Manifest=] is a JSON document responsible for the global configuration of the MiniApp. A manifest file contains a collection of mandatory and optional attributes that indicate the setup of the MiniApp, including routes and paths of the pages and the window configuration of the MiniApp (e.g., styles of the navigation bar, background image and color, page title, among other), according to the MiniApp Manifest [[MINIAPP_MANIFEST]] specification.</dd>
+                        <dt><code>app.css</code></dt>
+                        <dd>This file is the default CSS stylesheet, responsible for the global appearance of the [=MiniApp pages=].</dd>
+                        <dt><code>app.js</code></dt>
+                        <dd>This script document has the basic service logic of the MiniApp and includes the basic control of the MiniApp lifecycle, including the management of events for launch, showing and hiding the  MiniApp.</dd>
+                    </dl>
+                    <div class="issue" data-number="5"></div>
+                </section>
+                <section>
+                    <h3><code>pages</code> Directory</h3>
+                    <p>The <code>pages</code> directory contains a set of files for the display and user interaction of the [=MiniApp Pages=]. Each set of files that shares the same base file name (e.g. 'page1') with different extension names describe a particular page on different aspects, such as the service logic (e.g. page1.js), the configuration (e.g. page1.json), the structure (e.g. page1.xml) and the style (e.g page1.css). Developers can choose to put all page files directly under the <code>pages</code> directory in a flat manner or organize them in different sub-directories for different pages.
+                    </p>
+                    <ul>
+                        <li>A <code>.json</code> file is responsible for the configuration of a MiniApp page. The syntax and structure of these type of files are defined in the <a href="#sec-miniapp-resources-json">JSON Resources</a> section.</li>
+                        <li>A <code>.xml</code> file is responsible for the structure of a MiniApp page, similar to HTML. The syntax and structure of these type of files are defined in the <a href="#sec-miniapp-resources-xml">XML Resources</a> section.</li>
+                        <li>A <code>.css</code> file is responsible for the CSS style of a MiniApp page. The syntax and structure of these type of files are defined in the <a href="#sec-miniapp-resources-css">CSS Resources</a> section.</li>
+                        <li>A <code>.js</code> file is responsible for the service logic and lifecycle management (defined in MiniApp Lifecycle [[MINIAPP_LIFECYCLE]]) of a MiniApp page. The syntax and structure of these type of files are defined in the <a href="#sec-miniapp-resources-js">JS Resources</a> section.</li>
+                    </ul>
+                    <div class="issue" data-number="3"></div> 
+                </section>
+                <section>
+                    <h3><code>common</code> Directory</h3>
+                    <p>The <code>common</code> directory contains resources such as components, multimedia resources, and libraries that are accessible from all [=MiniApp Pages=] in a MiniApp. The internal structure of this directory is flexible, so these common resources MAY be organized in customized subdirectories, and using different name conventions, as needed.</p>
+                </section>
+                <section>
+                    <h3><code>i18n</code> Directory</h3>
+                    <p>The <code>i18n</code> directory contains multi-language configuration files to support the internationalization of the MiniApp. The file name of each <code>.json</code> document in this directory follows the <code>Language-Tag</code> notation as defined in [[BCP47]], and represents the specific configuration for that particular language.</p>
+                    <p class="ednote" title="Still to define the format">
+                            The detailed format of the <code>.json </code> file is to be further developed.
+                    </p>
+                    <p class="ednote" title="Still to define the locale file selection">
+                            To define the detailed process of file selection according to the system locale.
+                    </p>
+                </section>
+                <section>
+                    <h3>File Names</h3>
+                    <p>Any [=File Name=] within a [=MiniApp Package=] MUST comply with the following restrictions to accomodate the potential limitations of the operating systems and facilitate the compatibility with the majority of the platforms:</p>
 
-        <p>The MiniApp package also contains multiple page related files in the <code>pages</code> directory, and other common resource files in the <code>common</code> directory </p>
-
-        <p>One typical illustrative example of a MiniApp package is the following:</p>
-
-        <pre class="example">
-            |___manifest.json
-            |___app.js
-            |___app.css
-            |___pages
-            |       |___page1.js
-            |       |___page1.xml
-            |       |___page1.json
-            |       |___page1.css
-            |___common
-            |       |___componentA.js
-            |       |___componentA.xml
-            |       |___componentA.css
-            |       |___componentA.json
-            |       |___example.png
-            |___i18n
-            |       |___zh-Hans.json
-            |       |___en-US.json
-        </pre>
-
-        <section>
-            <h2>root files</h2>
-            <p>
-                The MiniApp package contains at the root level the global data and lifecycle management of the MiniApp in the form of the following files:
-            </p>
-
-            <ul>
-                <li><code>manifest.json</code> is responsible for the global configuration of the MiniApp, such as the file paths of MiniApp pages and the window configuration (e.g. navigator bar, background image and color, page title, etc.). Details are specified in the <a href="../manifest/index.html">Manifest specification</a>.</li>
-                <li><code>app.css</code> is responsible for the global CSS style for all MiniApp pages.</li>
-                <li><code>app.js</code> is responsible for the service logic of the MiniApp as well as the lifecycle management of it, such as launching, showing and hiding the MiniApp.</li>
-            </ul>
+                    <ul class="conformance-list">
+                        <li>File Names are case sensitive</li>
+                        <li>File Names MUST be UTF-8 [[Unicode]] encoded.</File>
+                        <li>File Names MUST NOT exceed 255 bytes.</li>
+                        <li>File Names MUST NOT use the following [[Unicode]] characters:
+                            <ul>
+                                <li>LESS-THAN SIGN: <code><</code> (<code>U+003C</code>)</li>
+                                <li>GREATER-THAN SIGN: <code>></code> (<code>U+003E</code>)</li>
+                                <li>COLON: <code>:</code> (<code>U+003A</code>)</li>
+                                <li>QUESTION MARK: <code>?</code> (<code>U+003F</code>)</li>
+                                <li>SOLIDUS: <code>/</code> (<code>U+002F</code>)</li>
+                                <li>REVERSE SOLIDUS: <code>\</code> (<code>U+005C</code>)</li>
+                                <li>VERTICAL LINE: <code>|</code> (<code>U+007C</code>)</li>
+                                <li>ASTERISK: <code>*</code> (<code>U+002A</code>)</li>
+                                <li>QUOTATION MARK: <code>"</code> (<code>U+0022</code>)</li>
+                                <li>FULL STOP at the end: <code>.</code> (<code>U+002E</code>)</li>
+                                <li>DEL (<code>U+007F</code>)</li>
+                                <li>C0 range (<code>U+0000</code> … <code>U+001F</code>)</li>
+                                <li>C1 range (<code>U+0080</code> … <code>U+009F</code>)</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="ednote">
+                        To complete the list of restricted characters.
+                    </div>                
+                </section>
         </section>
-        <section>
-            <h2>pages</h2>
-            <p>
-                The <code>pages</code> directory contains sets of files for the display and user interaction of all MiniApp pages. Each set of files that shares the same base file name (e.g. 'page1') with different extension names describe a particular page on different aspects, such as the service logic (e.g. page1.js), the configuration (e.g. page1.json), the structure (e.g. page1.xml) and the style (e.g page1.css). Developers can choose to put all page files directly under the <code>pages</code> directory in a flat manner, or organize them in different sub-directories for different pages.
-            </p>
-
-            <ul>
-                <li>A <code>.json</code> file is responsible for the configuration of a MiniApp page.</li>
-                <li>A <code>.xml</code> file is responsible for the structure of a MiniApp page, similar to HTML.</li>
-                <li>A <code>.css</code> file is responsible for the CSS style of a MiniApp page.</li>
-                <li>A <code>.js</code> file is responsible for the service logic and lifecycle management (defined in <a href="https://w3c.github.io/miniapp/specs/lifecycle/">MiniApp Lifecycle</a>) of a MiniApp page.</li>
-            </ul>
-        </section>
-
-        <section>
-            <h2>common</h2>
-            <p>The <code>common</code> directory contains common resources such as components, multimedia resources, and utils (js files). Developers can choose to put all resource files directly under the <code>common</code> directory in a flat manner, or organize them in different sub-directories as needed.</p>
-        </section>
-
-        <section>
-            <h2>i18n</h2>
-            <p>
-                The <code>i18n</code> directory contains multi-language configuration files to support internationalization. The name of each <code>.json</code> file in this directory follows the <code>Language-Tag</code> as defined in [[BCP47]], and represents the specific configuration for that particular language.
-                <p class="note">
-                    <span>Note:</span>
-                    The detailed format of the <code>.json </code> file is to be further developed.
-                </p>
-            </p>
-        </section>
+        <section id="sec-miniapp-resources">
+            <h3>MiniApp Resources</h3>
+            <p class="ednote">To add more text about the resources</p>
+            <section id="sec-miniapp-resources-json">
+                <h3>JSON Resources</h3>
+                <div class="issue" data-number="3"></div>
+            </section>
+            <section id="sec-miniapp-resources-xml">
+                <h3>XML Resources</h3>
+                <div class="issue" data-number="2"></div>
+            </section>
+            <section id="sec-miniapp-resources-css">
+                <h3>CSS Resources</h3>
+            </section>
+            <section id="sec-miniapp-resources-js">
+                <h3>JS Resources</h3>
+            </section>
+            <section id="sec-miniapp-resources-other">
+                <h3>Other Resources</h3>
+                <div class="ednote">To add images, libraries and others.</div>
+            </section>
+        </section> 
     </section>
-
+        
     <section>
         <h2>Security & Privacy Considerations</h2>
 
