@@ -679,16 +679,71 @@
         </section>            
     </section>
 
-    <section>
-        <h2>IANA Considerations</h2>
-        <p>
-            The proposed MIME type for the MiniApp package is <code>application/miniapp-pkg+zip</code> following <a href="https://tools.ietf.org/html/rfc6839#section-3.6">the +zip Structured Syntax Suffix</a> defined in [[RFC6839]]. It needs to be registered with <a href="https://www.iana.org/">IANA</a> when this work moves to a normative phase. There is no specific fragment identifier consideration for now.
+<section class="appendix informative" id="sec-media-type-registration">
+        <h2>Media Type Registration</h2>
+        <p>This appendix registers the <code>application/miniapp-pkg+zip</code> media type for MiniApp Packages, in conformance with BCP 13 [[RFC4289]] and <a href="https://www.w3.org/2020/01/registering-mediatypes.html">Register an Internet Media Type for a W3C Spec</a>.</p>
+
+        <p>A [=MiniApp Package=] file is a container technology based on the [[ZIP]] archive format, including some modifications.</p> 
+
+        <dl>
+            <dt>Type name:</dt>
+            <dd><code>application</code></dd>
+            <dt>Subtype name:</dt>
+            <dd><code>miniapp-pkg+zip</code></dd>
+            <dt>Required parameters:</dt>
+            <dd>"N/A"</dd>
+            <dt>Optional parameters:</dt>
+            <dd>"N/A"</dd>
+            <dt>Encoding considerations:</dt>
+            <dd>MiniApp Packages are binary files encoded in the <a href="https://www.iana.org/assignments/media-types/application/zip">application/zip</a> media type.</dd>
+            <dt>Security considerations:</dt>
+            <dd></dd>
+            <dt>Interoperability considerations:</dt>
+            <dd>The file, after including the signature, is not a standard ZIP but the inclusion does not affect parsing and operation of the file as a ZIP file.</dd>
+            <dt>Published specification:</dt>
+            <dd>This media type registration is for the MiniApp Package, as described in the specification located at @@@.</dd>
+            <dt>Applications that use this media type:</dt>
+            <dd>This media type is used for the distribution of MiniApps. The list, non exhaustive, of applications and software platforms that support this media type are:
+                <ul>
+                    <li>Alibaba MiniPrograms</li>
+                    <li>Quick Apps</li>
+                    <li>Baidu </li>
+                    <li>...</li>
+                </ul>
+            </dd>
+            <dt>Fragment identifier considerations:</dt>
+            <dd>"N/A"</dd>
+            <dt>Additional information:</dt>
+            <dd>
+                <dl>
+                    <dt>Deprecated alias names for this type:</dt>
+                    <dd>"N/A"</dd>
+                    <dt>Magic number(s):</dt>
+                    <dd>@@@</dd>
+                    <dt>File extension(s):</dt>
+                    <dd>MiniApps are usually identified with the extension <code>.ma</code>.</dd>
+                    <dt>Macintosh file type code(s):</dt>
+                    <dd>ZIP</dd>
+                </dl>
+            </dd>
+            <dt>Person & email address to contact for further information:</dt>
+            <dd>@@@</dd>
+            <dt>Intended usage:</dt>
+            <dd>COMMON</dd>
+            <dt>Restrictions on usage:</dt>
+            <dd>"N/A"</dd>
+            <dt>Author:</dt>
+            <dd>The MiniApp Packaging defines a file format developed by the W3C MiniApp Working Group.</dd>
+            <dt>Change controller:</dt>
+            <dd>W3C is the controller for the MiniApp Packaging specification</dd>
+            <dt>Provisional registration?:</dt>
+            <dd>"N/A"</dd>                      
+        </dl>
+        <div class="issue" data-number="4"></div> 
         <p class="note">
-            <span>Note:</span>
             A temporary solution could be <code>application/x-w3c-miniapp-pkg+zip</code> for the sake of any early implementation.
         </p>
-        </p>
-    </section>
+    </section>    
 
 </body>
 
