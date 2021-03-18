@@ -93,28 +93,51 @@
     </section>
     <section id="sotd">
     </section>
-
-    <section>
-        <p its-locale-filter-list="en" lang="en">
-            The Miniapp package file contains a manifest document (located in the root directory of the package). The manifest file includes an overview of the MiniApp, including page description and page path. The package file contains JavaScript code, one or more page files, including template code of page(s), CSS code for page style and JavaScript code for page logic. The MiniApp package file should support digital signature verification.
-        </p>
-        <p its-locale-filter-list="zh-hans" lang="zh-hans">
-            小程序包资源，包含一个配置文档，位于包的根目录下。配置文件应包括整个小程序的概述（页面描述及其对应路径，用于页面定位和开启）。包含 JavaScript 代码的应用级逻辑文件，一个或多个页面文件，包含页面结构的模板代码、页面样式的 CSS 代码和页面逻辑的 JavaScript 代码。小程序包应支持数字签名验证。
-        </p>
-        <p its-locale-filter-list="en" lang="en">
-            The MiniApp runtime environment (user agent) can identify MiniApp package files through standard package format and MIME media type. After fetching the MiniApp package file, all static page templates / CSS / JavaScript files are cached on the device through a standardized dereference step. These cached package resources are available until the next update without fetching the MiniApp package file again. In terms of launch mode, the MiniApp can be launched normally without network. The runtime environment (user agent) locates the specified startup page from the package cache path and starts the MiniApp according to the description of the manifest file.
-        </p>
-        <p its-locale-filter-list="zh-hans" lang="zh-hans">
-            小程序运行时环境，可通过标准的文件格式、媒体类型识别小程序包文件。获取（Fetch）小程序包后，通过标准化的解引用，将所有静态页面模板、CSS 和 JavaScript 文件缓存在设备上。在下次更新之前，这些资源始终可用，无需重新获取（Fetch）小程序包文件。启动方式上，小程序无需网络也可以正常启动，运行时环境根据小程序标准配置文件的描述（manifest），从包缓存路径中定位指定的启动页面，启动小程序。
-        </p>
+    <section id="sec-introduction">
+        <h2>Introduction</h2>
+        <section>
+            <h3>Overview</h3>
+            <p>MiniApp is a concept of light software application, that can be distributed through any digital means, and accessed through the Web. MiniApps are defined by a concrete file structure and all the resources are comprised within a single file that represents the whole MiniApp package that can be distributed and executed by [=MiniApp User Agents=].</p>
+            <p>A [=MiniApp Package=] contains a directory structure that holds the specific resources of the MiniApp that defines the rendering, operation, and interaction with the end-users — including static page templates, stylesheets, JavaScript documents, media files, and other resources — and the MiniApp Manifest. The MiniApp Manifest, located in the central directory of the package, describes the MiniApp, including information about page routing, styles, and other operational and rendering details of the MiniApp, as well as descriptive information for humans.</p>
+            <p>As defined in the signature section, MiniApps MAY support digital signature verification to guarantee the integrity of the package and contents during the delivery of the package.</p>
+            <p>The MiniApp runtime environment ([=MiniApp User Agent=]) identifies MiniApp package files through the standard package format and the specific MIME media type. After fetching the MiniApp package file, the [=MiniApp User Agent=] loads the static page templates, CSS, JavaScript files, and other resources into the cache, following a dereference step. These MiniApp resources will remain available in the cache until the next update, avoiding unnecessary network fetches.</p>
+            <p>In terms of launch mode, the MiniApp can be launched normally when offline. The [=MiniApp User Agent=] locates the specified startup page from the package cache path and launches the MiniApp according to the description of the [=manifest=] file.</p>
+        </section>
+        <section id="sec-terminology">
+            <h3>Terminology</h3>
+            <p>The following terms are specific to MiniApps.</p>
+            <dl class="termlist">
+                <dt><dfn id="dfn-signature" data-lt="signatures|signature|Digital Signature|Digital Signatures" data-dfn-type="dfn">Digital Signature</dfn></dt>
+                <dd>
+                    <p>A cryptographic mechanism and hashing techniques to prove the authenticity of [=resources=]. Digital signatures can demonstrate the origin, time, identity, and status of [=resources=] and of the [=MiniApp Package=].</p>
+                    <p>The usual scenario of MiniApps may involve two kinds of signatures: application developer signature, which gives a recipient strong reason to believe that this package was created by a known sender (authentication) and that the message was not altered in transit (integrity); and distributors’ signatures (for example, official marketplace signatures), which are used to ensure that the application permission is officially authorized, release channels and devices are authorized.</p>
+                </dd>
+                <dt><dfn id="dfn-filename" data-lt="file name|file names" data-dfn-type="dfn">File Name</dfn></dt>
+                <dd>The name of any file within a [=MiniApp Package=], either a directory or a file within a directory.</dd>
+                <dt><dfn id="dfn-magic-numbers" data-lt="magic numbers|signing block magic numbers" data-dfn-type="dfn">Signing Block Magic Numbers</dfn></dt>
+                <dd>A 16-byte sequence with a unique fingerprint that identifies a digital signature mechanism for a [=MiniApp Package=], stored in the Signing Block of [=MiniApp ZIP Container=].</dd>            
+                <dt><dfn id="dfn-manifest" data-lt="manifest|manifests" data-dfn-type="dfn">MiniApp Manifest</dfn></dt>
+                <dd>A JSON-based file that provides [=processors=] with metadata related to a MiniApp as specified in [[MINIAPP_MANIFEST]]. </dd>
+                <dt><dfn id="dfn-package" data-lt="MiniApp Package|MiniApp Packages" data-dfn-type="dfn">MiniApp Package</dfn></dt>
+                <dd>A logical document entity composed of a set of [=resources=] packaged in a [=MiniApp ZIP Container=].</dd>
+                <dt><dfn id="dfn-processor" data-lt="processors|processor" data-dfn-type="dfn">MiniApp Processor</dfn></dt>
+                <dd>A software application that processes [=MiniApp ZIP Containers=] according to the requirements of this specification.</dd>
+                <dt><dfn id="dfn-resource" data-lt="resources|resource" data-dfn-type="dfn">MiniApp Resource</dfn></dt>
+                <dd>A logical document that is part of the view or the logic of a MiniApp. Resources are included physically in [=MiniApp Packages=].</dd>
+                <dt><dfn id="dfn-page" data-lt="pages|page" data-dfn-type="dfn">MiniApp Page</dfn></dt>
+                <dd>A collection of information that is displayed in a [=MiniApp User Agent=], under the scope of a specific MiniApp. </dd>
+                <dt><dfn id="dfn-useragent" data-lt="MiniApp User <Agent></Agent>|MiniApp User Agents" data-dfn-type="dfn">MiniApp User Agent</dfn></dt>
+                <dd>A software application that gets, renders, and enables end-user interaction with a MiniApp.</dd>
+                <dt><dfn id="dfn-container" data-lt="MiniApp ZIP Container|MiniApp ZIP Containers" data-dfn-type="dfn">MiniApp ZIP Container</dfn></dt>
+                <dd>The ZIP-based packaging and distribution format for MiniApps, as defined in [=MiniApp ZIP Container=].</dd>
+                <dt><dfn id="dfn-root-directory" data-lt="root directory|root directories" data-dfn-type="dfn">Root Directory</dfn></dt>
+                <dd>The base directory of the [=MiniApp Package=] file system.</dd> 
+            </dl>
+        </section>
+        <section id="conformance">
+        </section>
     </section>
-
-    <section id='sotd'>
-        <!-- <p>
-            This is still a work in progress. The proposal is being incubated in the <a href="https://www.w3.org/community/miniapps/">W3C MiniApps Ecosystem Community Group</a>.
-        </p> -->
-    </section>
-
+    
     <section>
         <h2>Packaging</h2>
         <p>Each MiniApp package is wrapped as a [[ZIP]] file. It contains, at the root level, a global configuration file (<code>manifest.json</code>) to describe and configure the whole MiniApp, an application logic file (<code>app.js</code>), and a default style file (<code>app.css</code>).
