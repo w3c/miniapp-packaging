@@ -90,6 +90,9 @@
         <p>This specification defines semantics and conformance requirements for a [=MiniApp Package=], and the structure of the single file container that holds the resources of a MiniApp, including a [=manifest=] file, static page templates, stylesheets, JavaScript documents, media files and other resources. Instances of the [=MiniApp Package=] are used for MiniApp distribution and execution on runtime environments ([=MiniApp User Agent=]).</p>
     </section>
     <section id="sotd">
+        <aside class="warning">
+             This Editor Draft is a working document and it does not necessarily imply consensus of the Working Group.
+        </aside>
     </section>
     <section id="sec-introduction">
         <h2>Introduction</h2>
@@ -146,10 +149,10 @@
             <li>It MUST contain one CSS document, in the [=Root Directory=], named <code>app.css</code>, following the CSS Syntax Module Level 3 [[CSS-SYNTAX-3]].</li>
             <li>The whole [=MiniApp Package=] MUST be wrapped as a [[ZIP]] file, according to the requirements of [=MiniApp ZIP Containers=].</li>
         </ul>
-        <p class="ednote" title="To check the support of CSS">
+        <p class="issue" title="To check the support of CSS">
             To clarify if all CSS is supported or just a specific profile.
         </p>
-        <p class="ednote" title="To clarify the JS file format/syntax/APIs">
+        <p class="issue" title="To clarify the JS file format/syntax/APIs">
             To clarify the kind of JS file should be included.
         </p>
         <section id="sec-filestructure">
@@ -207,10 +210,10 @@
             <section>
                 <h3><code>i18n</code> Directory</h3>
                 <p>The <code>i18n</code> directory contains multi-language configuration files to support the internationalization of the MiniApp. The file name of each <code>.json</code> document in this directory follows the <code>Language-Tag</code> notation as defined in [[BCP47]], and represents the specific configuration for that particular language.</p>
-                <p class="ednote" title="Still to define the format">
+                <p class="issue" title="Still to define the format">
                         The detailed format of the <code>.json </code> file is to be further developed.
                 </p>
-                <p class="ednote" title="Still to define the locale file selection">
+                <p class="issue" title="Still to define the locale file selection">
                         To define the detailed process of file selection according to the system locale.
                 </p>
             </section>
@@ -240,14 +243,14 @@
                         </ul>
                     </li>
                 </ul>
-                <div class="ednote">
+                <div class="issue">
                     To complete the list of restricted characters.
                 </div>                
             </section>
         </section>
         <section id="sec-miniapp-resources">
             <h3>MiniApp Resources</h3>
-            <p class="ednote">To complete section with information about the following types of documents.</p>
+            <p class="issue">To complete section with information about the following types of documents.</p>
             <section id="sec-miniapp-resources-json">
                 <h3>JSON Resources</h3>
                 <div class="issue" data-number="3"></div>
@@ -258,14 +261,14 @@
             </section>
             <section id="sec-miniapp-resources-css">
                 <h3>CSS Resources</h3>
-                <div class="ednote">To add syntax and modules supported.</div>
+                <div class="issue">To add syntax and modules supported.</div>
             </section>
             <section id="sec-miniapp-resources-js">
                 <h3>JS Resources</h3>
             </section>
             <section id="sec-miniapp-resources-other">
                 <h3>Other Resources</h3>
-                <div class="ednote">To add images, libraries and others.</div>
+                <div class="issue">To add images, libraries and others.</div>
             </section>
         </section> 
     </section>
@@ -327,7 +330,7 @@
                 <dd>A 16-byte block that provides a quick way to identify the Signing Block as the preceding block of the Central Directory. This "magic numbers" byte sequence univocally identifies the type of digital signature included in the Signing Block.</li>
             </dl>
         </section>
-        <div class="ednote">
+        <div class="issue">
             To open a discussion to confirm this approach. 
         </div>             
     </section>
@@ -337,7 +340,7 @@
     </section>
     <section id="sec-miniapp-processing">
       <h2>MiniApp Package Processing</h2>
-      <p class"ednote">To include information about the steps for processing the package, including fetching, parsing, validating, etc.</p>
+      <p class"issue">To include information about the steps for processing the package, including fetching, parsing, validating, etc.</p>
     </section>     
     <section id="sec-security-privacy">
         <h2>Security and Privacy Considerations</h2>
@@ -369,7 +372,7 @@
 
     <section class="appendix informative" id="sec-acknowledgments">
         <h2>Acknowledgments</h2>
-		<div class="ednote">List all the contributors and W3C Team contacts</div>
+		<div class="issue">List all the contributors and W3C Team contacts</div>
     </section>
     <section class="appendix informative" id="sec-signature-schemes">
         <h2>Signature Schemes</h2>
