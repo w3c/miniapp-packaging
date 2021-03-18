@@ -368,6 +368,313 @@
         </section>
     </section>    
 
+    <section class="appendix informative" id="sec-signature-schemes">
+        <h2>Signature Schemes</h2>
+
+        <p>Every [=MiniApp Processor=] MAY support its own digital signature schemes depending on their needs. This section includes some examples of digital signature implementations supported in specific scenarios, such as developer verification and integrity of a MiniApp during its distribution.</p>   
+
+        <section  id="sec-signature-rpk">
+            <h3>RPK Signature Scheme</h3>
+            <p>One of the methods of Huawei Quick App to verify the authorship of the MiniApp Package is using a whole-file digital signature based on the APK Signature Scheme v2 [[?APK_SIGNATURE_V2]]. This signature scheme was developed to increase verification speed and preserve the integrity of the protected parts of the package.</p>
+            <p>Using this digital signature mechanism, every byte in the MiniApp package is involved in the signature generation. The resulting Signing Block is created and inserted into the package file, according to the <a href="sec-miniapp-digital-signature-requirements">Digital Signature Requirements</a>.</p>
+            <p>The Signing Block contains ID-value pairs with information about the signature and the signer identity.</p> 
+            
+            <p class="note">All data values in the RPK Signing Block are represented in little-endian format, and all length-prefixed fields use <code>uint32</code> for length.</p>
+            
+            <p>The description  uses the following basic data types:</p>
+            <dl>
+                <dt>uint64</dt>
+                <dd>64-bit (8-byte) unsigned integer in little-endian format</dd>
+                <dt>uint32</dt>
+                <dd>32-bit (4-byte) unsigned integer in little-endian format</dd>
+            </dl>
+
+            <h4>Signing Block Format</h4>
+            <p>The format of the RPK Signing Block is as follows:</p>
+            <ul>
+                <li><strong>block size</strong> in bytes, excluding this field (uint64)</li>
+                <li>Sequence of ID-value pairs (where the <a href="#sec-signing-block-signature">Signatures</a> are defined):
+                    <ul>
+                        <li><strong>size</strong> of ID-value pair (uint64)</li> 
+                        <li><strong>ID</strong> (uint32)</li>
+                        <li><strong>value</strong> (size of ID-value pair - 4 bytes)</li>
+                    </ul>
+                </li>
+                <li><strong>block size</strong> in bytes (the same as first field) (uint64)</li>
+                <li><strong>magic numbers</strong> “<code>RPK Sig Block 42</code>” (16 bytes)</li>
+            </ul>
+
+            <p>ID-value pairs with unknown IDs should be ignored when interpreting the block.</p>
+            <p>The "block size" value enables locating the start of the signing block in the whole ZIP file.</p>
+                
+            <section id="sec-signing-block-signature">
+                <h5>Signatures</h5>
+                <p>The signatures are stored as <strong>ID-value pairs</strong> with specific identifiers that represent the type of the signature. The supported signatures, and associated IDs, for RPK packages are the following:</p>
+                <ul>
+                    <li><code>0x01000101</code> Entire package signature, to guarantee the integrity of the MiniApp as a whole.</li>
+                    <li><code>0x01000201</code> File list signature</li>
+                </ul>
+
+                <section>
+                    <h6>Entire Package Signature</h6>
+                    <p>The ID-value pair in the Signing Block under ID <code>0x01000101</code> represents the data of the signature of the whole-file [=MiniApp Package=].</p>
+                    <p>The value of the ID-pair contains all the signature blocks and it has a variable length and its structure is as follows:</p>
+                    <ul>
+                        <li><strong>ID</strong>: <code>0x01000101</code> (uint32)</li>
+                        <li><strong>value</strong>:
+                            <ul>
+                                <li><strong>size</strong> of signer blocks, excluding this field (uint32)</li>
+                                <li>Sequence of <strong>signer blocks</strong>:
+                                    <ul>
+                                        <li><strong>size</strong> of signer block, excluding this field (uint32)</li>
+                                        <li><strong>signed data</strong>:
+                                            <ul>
+                                                <li><strong>size</strong> of digests, excluding this field (uint32)</li>
+                                                <li>Sequence of <strong>digests</strong>:
+                                                    <ul>
+                                                        <li><strong>size</strong> of digest block, excluding this field (uint32)</li>                                                
+                                                        <li><strong>signature algorithm ID</strong> (uint32)</li>
+                                                        <li><strong>size</strong> of digest content, excluding this field (uint32)</li>                                                
+                                                        <li><strong>digest</strong> content (variable length)</li>
+                                                    </ul>
+                                                </li>
+                                                <li><strong>size of certificates</strong>, excluding this field (uint32)</li>
+                                                <li>Sequence of <strong>certificates</strong>:
+                                                    <ul>
+                                                        <li><strong>size</strong> of certificate, excluding this field (uint32)</li>
+                                                        <li><strong>X.509 certificate</strong> [[?rfc2528]] in <abbr title="Abstract Syntax Notation One">ASN.1</abbr> <abbr title="Distinguished Encoding Rules">DER</abbr> form [[?X690]] (variable length)</li>
+                                                    </ul>
+                                                </li>
+                                                <li><strong>size</strong> of additional attributes, excluding this field (uint32)</li>                                                        
+                                                <li><strong>additional attributes</strong></li>
+                                            </ul>
+                                        <li><strong>size</strong> of signatures, excluding this field (uint32)</li>
+                                        <li>Sequence of <strong>signatures</strong>:
+                                            <ul>
+                                                <li><strong>size</strong> of signature, excluding this field (uint32)</li>
+                                                <li><strong>signature algorithm ID</strong> (uint32)</li>
+                                                <li><strong>size</strong> of signature content, excluding this field (uint32)</li>
+                                                <li><strong>signature content</strong> (variable length)</li>
+                                            </ul>
+                                        <li><strong>size</strong> of public key, excluding this field (uint32)</li>                                                    
+                                        <li><strong>public key</strong> in <abbr title="Abstract Syntax Notation One">ASN.1</abbr> <abbr title="Distinguished Encoding Rules">DER</abbr> [[?X690]] form (variable length)</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+                <section>
+                    <h6>Distributor Signature</h6>
+                    <p>The signature of the distributor preserves the integrity of the application during the distribution process, guaranteeing that:</p>
+                    <ol>
+                        <li>Application packages cannot be forged;</li>
+                        <li>Permissions on application packages cannot be changed randomly;</li>
+                        <li>Application package source may be verified.</li>
+                    </ol>
+
+                    <p>During the process of distributor signing, either the distributor or the developer adds a Provisioning Profile and uses the private key of the distributor to sign the signature.</p>
+                    <p>The provisioning profile is stored in the ID-value pair of the Signing Block under ID <code>0x02000201</code>.</p>
+                    <p>The value of the ID-pair contains all its signature blocks and it has a variable length and its structure is as follows:</p>
+                    <ul>
+                        <li><strong>ID</strong>: <code>0x02000201</code> (uint32)</li>
+                        <li><strong>value</strong>:
+                            <ul>
+                                <li><strong>size</strong> of signer block, excluding this field (uint32)</li>
+                                <li><strong>signer block</strong>:
+                                    <ul>
+                                        <li><strong>size</strong> of provisioning profile, excluding this field (uint32)</li>
+                                        <li><strong>provisioning profile</strong>. Sequence of provisioning profile ID-value pairs, according to the <a href="#sec-provisioning-profile-id">provisioning profile IDs</a>:
+                                            <ul>
+                                                <li><strong>size</strong> of ID-value pair, excluding this field (uint32)</li>
+                                                <li><strong>ID</strong> (uint32)</li>
+                                                <li><strong>value</strong> (variable length)</li>
+                                            </ul>
+                                        </li>
+                                        <li><strong>size</strong> of signature, excluding this field (uint32)</li>
+                                        <li><strong>signature algorithm ID</strong> according to the values of <a href="#sec-signature-algorithm-id">Signature Algorithm IDs</a> (uint32)</li>
+                                        <li><strong>size</strong> of signature content, excluding this field (uint32)</li>
+                                        <li><strong>signature content</strong> (variable length)</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+                <section id="sec-signature-algorithm-id">
+                    <h6>Signature Algorithm IDs:</h6>
+                    <ul>
+                        <li><code>0x0101</code> RSASSA-PSS with SHA2-256 digest, SHA2-256 MGF1, 32 bytes of salt, trailer: 0xbc</li>
+                        <li><code>0x0102</code> RSASSA-PSS with SHA2-512 digest, SHA2-512 MGF1, 64 bytes of salt, trailer: 0xbc</li>
+                        <li><code>0x0103</code> RSASSA-PKCS1-v1_5 with SHA2-256 digest. This is for build systems which require deterministic signatures.</li>
+                        <li><code>0x0104</code> RSASSA-PKCS1-v1_5 with SHA2-512 digest. This is for build systems which require deterministic signatures.</li>
+                        <li><code>0x0201</code> ECDSA with SHA2-256 digest</li>
+                        <li><code>0x0202</code> ECDSA with SHA2-512 digest</li>
+                        <li><code>0x0301</code> DSA with SHA2-256 digest</li>
+                    </ul>
+                </section>
+                <section id="sec-signature-key-sizes">             
+                    <h6>Supported keys sizes and <abbr title="elliptic-curve">EC</abbr> cryptography:</h6>
+                    <ul>
+                        <li><strong>RSA</strong>: 1024, 2048, 4096, 8192, 16384</li>
+                        <li><strong>EC</strong>: NIST P-256, P-384, P-521</li>
+                        <li><strong>DSA</strong>: 1024, 2048, 3072</li>
+                    </ul>
+                </section>                    
+                <section id="sec-provisioning-profile-id">
+                    <h6>Provisioning Profile IDs:</h6>
+                    
+                    <h7><code>0x01</code> Certificate Digest</h7>
+                    <ul>
+                        <li><strong>size</strong> of certificate digest block, excluding this field (uint32)</li>
+                        <li><strong>signature algorithm ID</strong> according to the values of <a href="#sec-signature-algorithm-id">Signature Algorithm IDs</a> (uint32)</li>
+                        <li><strong>size</strong> of certificate digest data, excluding this field (uint32)</li>
+                        <li><strong>certificate digest data</strong> (variable length)</li>
+                    </ul>
+
+                    <h7><code>0x02</code> Certificate</h7>
+                    <ul>
+                        <li><strong>size</strong> of certificate, excluding this field (uint32)</li>
+                        <li><strong>certificate data</strong> in <abbr title="Abstract Syntax Notation One">ASN.1</abbr> <abbr title="Distinguished Encoding Rules">DER</abbr> [[?X690]] form (variable length)</li>
+                    </ul>
+
+                    <h7><code>0x03</code> Usage</h7>
+                    <ul>
+                        <li><strong>app store</strong>, value: <code>0x01</code></li>
+                        <li><strong>debug</strong>, value: <code>0x02</code></li>
+                        <li><strong>enterprise</strong>, value: <code>0x03</code></li>
+                    </ul>
+
+                    <h7><code>0x04</code> Manifest</h7>
+                    <ul>
+                        <li><strong>size</strong> of manifest, excluding this field (uint32)</li>
+                        <li><strong>manifest</strong> in UTF-8 [[Unicode]] (variable length)</li>
+                    </ul>                    
+
+                    <h7><code>0x05</code> Device IDs</h7>
+                    <ul>
+                        <li><strong>size</strong> of Device IDs, excluding this field (uint32)</li>
+                        <li>Sequence of <strong>Device IDs</strong>:
+                            <ul>
+                                <li><strong>size</strong> of Device ID, excluding this field (uint32)</li>
+                                <li><strong>Device ID</strong>, represented in MD5 format [[?rfc1321]] (variable length)</li> 
+                            </ul>
+                        </li>
+                    </ul>  
+                </section>            
+            </section>
+        </section>
+        <section  id="sec-signature-pkcs7">
+            <h3>PKCS#7 Signature Scheme</h3>
+            <p>This signature scheme is based on the PKCS #7 Cryptographic Message Syntax [[?rfc2315]]. This method admits recursion, so one "digital envelope", the data block including encrypted content and encrypted keys, can be nested inside other. This signature scheme MAY cover also the different stages of packaging signature described in <a href="#sec-signature-rpk">RPK Signature Scheme</a>, including the developer signature and distributor signature.</p>
+            <p>This signature scheme includes the provisioning profile of the MiniApp at the developer signing stage. At a second stage, a distributor MAY replace the developer's signature with the its own signature. Likely in the <a href="#sec-signature-rpk">RPK Signature Scheme</a>, this approach generates a Signing Block to be included into the package file, according to the <a href="sec-miniapp-digital-signature-requirements">Digital Signature Requirements</a>.</p>
+
+            <p>The PKCS#7 Signing Block is defined as a data container that includes the block with the digital signature, data encrypted using the PKCS #7 syntax that contains the signatures and the signer identity.</p>
+    
+            
+            <p>The description  uses the following basic data types:</p>
+            <dl>
+                <dt>uint64</dt>
+                <dd>64-bit (8-byte) unsigned integer</dd>
+                <dt>uint32</dt>
+                <dd>32-bit (4-byte) unsigned integer</dd>
+                <dt>uint16</dt>
+                <dd>16-bit (2-byte) unsigned integer</dd>
+            </dl>
+
+            <h4>Signing Block Format</h4>
+            <p>The format of the PKCS#7 Signing Block is as follows:</p>
+            <ul>
+                <li id="pkcs7-profile-block-head"><strong>Signing block head</strong>
+                    <ul>
+                        <li><strong>type</strong> to indicate the type, according to <a href="#types-signing-blocks">Types of Signing Blocks</a> (1 byte)</li>
+                        <li><strong>tag</strong> to indicate the sub-type, according to <a href="#types-signing-blocks">Types of Signing Blocks</a> (1 byte)</li>
+                        <li><strong>length</strong> (uint16)</li>
+                        <li><strong>offset</strong> (uint32)</li>
+                    </ul>                    
+                </li>
+                <li>Signature Block head:
+                    <ul>
+                        <li><strong>reserved</strong> (4 bytes)</li>
+                        <li><strong>number of blocks</strong> (uint32)</li>
+                        <li><strong>size</strong> (uint32)</li>
+                        <li><strong>version</strong> (4 bytes)</li>
+                        <li><strong>magic numbers</strong> “<code>@@@</code>” (16 bytes)</li>
+                    </ul>
+                </li>
+                <li><strong>Data</strong></li>
+                <li><strong>Signature Block data</strong> in PKCS #7:
+                    <ul>
+                        <li>PKCS #7 Content Type set to <code>SignedData</code>:
+                            <ul>
+                                <li><strong>version</strong>: syntax version number</li>
+                                <li><strong>digest algorithms</strong>: a collection of message-digest algorithm identifiers</li>
+                                <li>The content that is signed:
+                                    <ul>
+                                        <li><strong>version</strong> (uint32)</li>
+                                        <li><strong>size</strong> (uint16)</li>
+                                        <li><strong>number of blocks</strong> (uint16)</li>
+                                        <li><strong>Content Hash</strong>:
+                                            <ul>
+                                                <li><strong>type</strong> (uint8)</li>
+                                                <li><strong>tag</strong> (uint8)</li>
+                                                <li><strong>algorithm ID</strong> (uint8)</li>
+                                                <li><strong>length</strong> (uint32)</li>
+                                                <li><strong>hash</strong> (variable length)</li>
+                                            </ul>  
+                                        </li>
+                                    </ul> 
+                                </li>
+                                <li><strong>certificates</strong>: a set of PKCS #6 extended certificates and X.509 certificates</li>
+                                <li><strong>crls</strong>: a set of certificate-revocation lists</li>
+                                <li><strong>signerInfos</strong>: a collection of per-signer information</li>
+                            </ul>
+                        </li>
+                        <li>Signer</li>
+                    </ul>
+                </li>
+                <li>Hw sign head:
+                    <ul>
+                        <li><strong>number of blocks</strong> (uint32)</li>
+                        <li><strong>size</strong> (uint32)</li>
+                        <li><strong>version</strong> (4 bytes)</li>
+                        <li><strong>magic numbers</strong> “<code>@@@</code>” (16 bytes)</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h5 id="types-signing-blocks">Types of Signing Blocks</h5>
+            <p>The type of the <a href="pkcs7-profile-block-head">Block Head</a> is identified by its attribute <code>type</code>. This attribute MUST take two different values:</p>
+            <ul>
+                <li><code>0</code> for File Signature blocks</li>
+                <li><code>1</code> for Provisioning Profile blocks</li>
+            </ul>
+            <p>If the value of type is set to <code>0</code> (File Signature block), the header MUST specify a narrower subtype, using the attribute <code>tag</code> in its <a href="pkcs7-profile-block-head">Block Head</a>. The values for this subtype are:</p>
+            <ul>
+                <li><code>0</code>: Default</li>
+                <li><code>1</code>: HASH (Whole file hash)</li> 
+                <li><code>0x80</code>: 1M_HASH_ROOT (1M block hash tree, root hash)</li>
+                <li><code>0x81</code>: 512K_HASH_ROOT (512K block hash tree, root hash)</li>
+                <li><code>0x82</code>: 256K_HASH_ROOT (256K block hash tree, root hash)</li>
+                <li><code>0x83</code>: 128K_HASH_ROOT (128K block hash tree, root hash)</li>
+                <li><code>0x84</code>: 64K_HASH_ROOT (64K block hash tree, root hash)</li>
+                <li><code>0x85</code>: 32K_HASH_ROOT (32K block hash tree, root hash)</li>
+                <li><code>0x86</code>: 16K_HASH_ROOT (16K block hash tree, root hash)</li>	
+                <li><code>0x87</code>: 8K_HASH_ROOT (8K block hash tree, root hash)</li>
+                <li><code>0x88</code>: 4K_HASH_ROOT (4K block hash tree, root hash)</li>
+                <li><code>0x90</code>: 1M_HASH_BLOCK (1M block hash tree)</li>
+                <li><code>0x91</code>: 512K_HASH_BLOCK (512K block hash tree)</li>
+                <li><code>0x92</code>: 256K_HASH_BLOCK (256K block hash tree)</li>
+                <li><code>0x93</code>: 128K_HASH_BLOCK (128K block hash tree)</li>	
+                <li><code>0x94</code>: 64K_HASH_BLOCK (64K block hash tree)</li>	
+                <li><code>0x95</code>: 32K_HASH_BLOCK (32K block hash tree)</li>
+                <li><code>0x96</code>: 16K_HASH_BLOCK (16K block hash tree)</li>	
+                <li><code>0x97</code>: 8K_HASH_BLOCK (8K block hash tree)</li>
+                <li><code>0x98</code>: 4K_HASH_BLOCK (4K block hash tree)</li>                
+            </ul>
+        </section>            
+    </section>
+
     <section>
         <h2>IANA Considerations</h2>
         <p>
