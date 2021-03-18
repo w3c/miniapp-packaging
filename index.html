@@ -88,13 +88,12 @@
 </head>
 
 <body>
-    <section id='abstract'>
-        <p its-locale-filter-list="en" lang="en">
-            This specification defines the standardized MiniApp packaging construction method, which provides a standard package structure description. The MiniApp package file packages all the static page templates / CSS / JavaScript files and the manifest file. The MiniApp package file can be used in any runtime environment (user agent).
-        </p>
-        <p its-locale-filter-list="zh-hans" lang="zh-hans">
-            本文描述了一个标准化的MiniApp包构建方式，提供一种标准的包结构描述，将小程序页面所需的所有静态页面模板、CSS 和 JavaScript 文件，和配置文件（Manifest）打包在一起，允许在任何运行时环境可使用。
-        </p>
+    <section id="abstract">
+        <p>This specification defines semantics and conformance requirements for a [=MiniApp Package=], and the structure of the single file container that holds the resources of a MiniApp, including a [=manifest=] file, static page templates, stylesheets, JavaScript documents, media files and other resources. Instances of the [=MiniApp Package=] are used for MiniApp distribution and execution on runtime environments ([=MiniApp User Agent=]).</p>
+    </section>
+
+
+    <section>
         <p its-locale-filter-list="en" lang="en">
             The Miniapp package file contains a manifest document (located in the root directory of the package). The manifest file includes an overview of the MiniApp, including page description and page path. The package file contains JavaScript code, one or more page files, including template code of page(s), CSS code for page style and JavaScript code for page logic. The MiniApp package file should support digital signature verification.
         </p>
