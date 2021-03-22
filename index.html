@@ -201,7 +201,7 @@
                     <li>A <code>.json</code> file is responsible for the configuration of a MiniApp page. The syntax and structure of these type of files are defined in the <a href="#sec-miniapp-resources-json">JSON Resources</a> section.</li>
                     <li>A <code>.xml</code> file is responsible for the structure of a MiniApp page, similar to HTML. The syntax and structure of these type of files are defined in the <a href="#sec-miniapp-resources-xml">XML Resources</a> section.</li>
                     <li>A <code>.css</code> file is responsible for the CSS style of a MiniApp page. The syntax and structure of these type of files are defined in the <a href="#sec-miniapp-resources-css">CSS Resources</a> section.</li>
-                    <li>A <code>.js</code> file is responsible for the service logic and lifecycle management (defined in MiniApp Lifecycle [[MINIAPP_LIFECYCLE]]) of a MiniApp page. The syntax and structure of these type of files are defined in the <a href="#sec-miniapp-resources-js">JS Resources</a> section.</li>
+                    <li>A <code>.js</code> file is responsible for the service logic and lifecycle management (defined in MiniApp Lifecycle [[MINIAPP_LIFECYCLE]]) of a MiniApp page. The syntax and structure of these type of files are defined in the <a href="#sec-miniapp-resources-js">Sripting Resources</a> section.</li>
                 </ul>
                 <div class="issue" data-number="3"></div> 
             </section>
@@ -259,18 +259,36 @@
             </section>
             <section id="sec-miniapp-resources-xml">
                 <h3>XML Resources</h3>
+                <p>MiniApp user interfaces, including the visual components that defines the structure and the interaction elements of the pages, are described in XML resources.</p>
+                <p>XML resources MUST meet all the following criteria:</p>
+                <dl class="conformance-list">
+                    <dt>File extension</dt>
+                    <dd>A XML document SHOULD use the file extension <code>.xml</code>.</dd>
+                </dl>
                 <div class="issue" data-number="2"></div>
             </section>
             <section id="sec-miniapp-resources-css">
                 <h3>CSS Resources</h3>
-                <p>The content is rendered and presented to end-users according to CSS Style Sheets. MiniApp User Agents support CSS modules as defined in the [[CSS_SNAPSHOT]].
+                <p>The content is rendered and presented to end-users according to CSS Style Sheets. MiniApp User Agents support CSS modules as defined in the [[CSS_SNAPSHOT]].</p>
+                <p>CSS resources MUST meet all the following criteria:</p>
+                <dl class="conformance-list">
+                    <dt>File extension</dt>
+                    <dd>A MiniApp stylesheet filename SHOULD use the file extension <code>.css</code>.</dd>
+                </dl>
                 <div class="issue">To add syntax and modules supported.</div>
             </section>
             <section id="sec-miniapp-resources-js">
-                <h3>JS Resources</h3>
+                <h3>Scripting Resources</h3>
+                <p>MiniApps contains scripting resources, documents written in JavaScript, that provide the MiniApp with functionality and logic.</p>
+                <p>Scripting resources MUST meet all the following criteria:</p>
+                <dl class="conformance-list">
+                    <dt>File extension</dt>
+                    <dd>A MiniApp JavaScript filename SHOULD use the file extension <code>.js</code>.</dd>
+                </dl>
             </section>
             <section id="sec-miniapp-resources-other">
                 <h3>Other Resources</h3>
+                <p>MiniApps contains scripting resources, documents written in JavaScript, that provide the MiniApp with functionality and logic.</p>
                 <div class="issue">To add images, libraries and others.</div>
             </section>
         </section> 
@@ -331,7 +349,7 @@
             <p>Although this document does not recommend any specific digital signature mechanism (i.e., hash algorithms, encryption methods, etc.), the [=Signing Block=], if present, MUST meet the following criteria:</p>
         	<dl class="conformance-list">
                 <dt>Signing Block Magic numbers</dt>
-                <dd>A 16-byte block that provides a quick way to identify the Signing Block as the preceding block of the Central Directory. This "magic numbers" byte sequence univocally identifies the type of digital signature included in the Signing Block.</li>
+                <dd>A 16-byte block that provides a quick way to identify the Signing Block as the preceding block of the Central Directory. This "magic numbers" byte sequence univocally identifies the type of digital signature included in the Signing Block.</dd>
             </dl>
         </section>
         <div class="issue">
