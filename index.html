@@ -144,8 +144,8 @@
             <li>The [=Root Directory=] MUST contain one configuration file, named <code>manifest.json</code>, to describe and configure the runtime environment as defined in [=MiniApp Manifest=].</li>
             <li>The [=Root Directory=] MUST contain one script document, named <code>app.js</code>, with the basic control logic of the MiniApp. </li>
             <li>The [=Root Directory=] MUST contain one stylesheet, named <code>app.css</code>, following the CSS Syntax Module Level 3 [[CSS-SYNTAX-3]].</li>
-            <li>It MAY contain other subdirectories and files of different nature as defined in the <a href="#sec-filestructure">>Directory and File System Structure</a>.</li>
             <li>The whole [=MiniApp Package=] MUST be wrapped as a [[ZIP]] file, according to the requirements of [=MiniApp ZIP Containers=].</li>
+            <li>The file system of a package MAY contain other subdirectories and files of different nature as defined in the <a href="#sec-filestructure">Directory and File System Structure</a>.</li>
         </ul>
         <p class="issue" title="To check the support of CSS">
             To clarify if all CSS is supported or just a specific profile.
@@ -283,7 +283,7 @@
         </section>
         <section id="sec-miniapp-zip-file-requirements">
             <h3>ZIP File Requirements</h3>
-            <p>A [=MiniApp ZIP Container=] uses the ZIP format [[ZIP]], including some particularities:</p>
+            <p>A [=MiniApp ZIP Container=] uses the ZIP format as defined in [[ZIP]], including some particularities:</p>
         	<ul class="conformance-list">
                 <li>The contents of the [=MiniApp ZIP Container=] MUST be a conforming [=MiniApp Package=].</li>
                 <li>MiniApp ZIP Containers MUST NOT use the ZIP encryption mechanisms.</li>                
@@ -293,6 +293,7 @@
                 <li>MiniApp ZIP Containers MUST NOT use patented features.</li>
                 <li>MiniApp ZIP Containers MAY include a special block, the [=MiniApp Signing Block=], to allow digital signatures affecting the whole package.</li>
             </ul>
+            <div class="issue" data-number="4"></div>
             <p>The structure of a MiniApp ZIP Container is as follows:</p>
             <pre>
     [ZIP File Entries]
@@ -739,7 +740,7 @@
             <dt>Provisional registration?:</dt>
             <dd>"N/A"</dd>                      
         </dl>
-        <div class="issue" data-number="4"></div> 
+        <div class="issue" data-number="4">This section needs to specify the technical details for the MIME type registration (like the extension).</div> 
         <p class="note">
             A temporary solution could be <code>application/x-w3c-miniapp-pkg+zip</code> for the sake of any early implementation.
         </p>
