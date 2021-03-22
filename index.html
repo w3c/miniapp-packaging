@@ -116,6 +116,10 @@
                 <dd>A cryptographic mechanism and hashing techniques to prove the authenticity of [=resources=]. Digital signatures can demonstrate the origin, time, identity, and status of [=resources=] and of the [=MiniApp Package=].</dd>
                 <dt><dfn id="dfn-filename" data-lt="file name|file names" data-dfn-type="dfn">File Name</dfn></dt>
                 <dd>The name of any file within a [=MiniApp Package=], either a directory or a file within a directory.</dd>
+                <dt><dfn id="dfn-i18n-directory" data-dfn-type="dfn">i18n directory</dfn></dt>
+                <dd>The subdirectory of the [=Root Directory=] that includes the [=localization resources=] of a [=MiniApp Package=].</dd>
+                <dt><dfn id="dfn-localization-resources" data-lt="localization resources|localization resource" data-dfn-type="dfn">localization resources</dfn></dt>
+                <dd>Documents of a [=MiniApp Package=] that include localized content as part of the <a href="#sec-miniapp-i18n">internationalization</a> mechanism of MiniApps.</dd>
                 <dt><dfn id="dfn-manifest" data-lt="manifest|manifests" data-dfn-type="dfn">MiniApp Manifest</dfn></dt>
                 <dd>A JSON-based file that provides [=processors=] with metadata related to a MiniApp as specified in [[MINIAPP_MANIFEST]]. </dd>
                 <dt><dfn id="dfn-package" data-lt="MiniApp Package|MiniApp Packages" data-dfn-type="dfn">MiniApp Package</dfn></dt>
@@ -161,22 +165,22 @@
             <h3>Directory and File System Structure</h3>
             <p>The MiniApp Package has a file structure with some restrictions and reserved files and subdirectories.</p> 
             <p>The following example shows a typical file system structure:</p>
-            <pre class="example">
+            <pre class="example" title="File sytem structure">
                 |___manifest.json
                 |___app.js
                 |___app.css
-                |___pages
+                |___pages/
                 |       |___page1.js
                 |       |___page1.xml
                 |       |___page1.json
                 |       |___page1.css
-                |___common
+                |___common/
                 |       |___componentA.js
                 |       |___componentA.xml
                 |       |___componentA.css
                 |       |___componentA.json
                 |       |___example.png
-                |___i18n
+                |___i18n/
                 |       |___zh-Hans.json
                 |       |___en-US.json
             </pre>
@@ -357,8 +361,25 @@
         </div>             
     </section>
     <section id="sec-miniapp-i18n">
-      <h2>Internationalization</h2>
-      <div class="issue" data-number="1"></div>
+        <h2>Internationalization</h2>
+        <p><dfn id="dfn-i18n" data-lt="internationalization|i18n" >Internationalization</dfn>, abbreviated to <abbr title="internationalization">i18n</abbr>, is the process of designing and developing a product in a way that ensures it can be easily adapted for users from any culture, region, or language.</p>
+        <p><dfn id="dfn-localization" data-lt="localization" >Localization</dfn> is the process of content adaptation to meet a target language or cultural requirements.</p>
+        <p>MiniApps enable localization of contents using a mechanism based on localized documents, placed in the reserved [=i18n Directory=]. This mechanism allows authors to place localization files, named according to a <code>language-range</code> [[RFC4647]] and the <code>.json</code> extension. This is, documents with the localization resources will be identified with language tags [[RFC4646]] that represent the locale of the content. [=MiniApp User Agents=] match the language ranges held by their locales to the appropriate locale file name.</p>
+        <div class="issue">To link with Manifest i18n Section</div> 
+        <pre class="example" title="Filenames based on language tags in the i18n directory">
+                /
+                |___i18n/
+                |     |___fr-FR.json
+                |     |___fr.json
+                |     |___en-US.json            
+                |     |___zh-Hans.json
+                |     |___ja-JP.json
+        </pre>
+        <section id="sec-miniapp-i18n-resource-format">
+            <h3>i18n Resources Format</h3>
+        </section>
+        
+        <div class="issue" data-number="1"></div>
     </section>
     <section id="sec-miniapp-processing">
       <h2>MiniApp Package Processing</h2>
