@@ -109,10 +109,7 @@
             <p>The following terms are specific to MiniApps.</p>
             <dl class="termlist">
                 <dt><dfn id="dfn-signature" data-lt="signatures|signature|Digital Signature|Digital Signatures" data-dfn-type="dfn">Digital Signature</dfn></dt>
-                <dd>
-                    <p>A cryptographic mechanism and hashing techniques to prove the authenticity of [=resources=]. Digital signatures can demonstrate the origin, time, identity, and status of [=resources=] and of the [=MiniApp Package=].</p>
-                    <p>The usual scenario of MiniApps may involve two kinds of signatures: application developer signature, which gives a recipient strong reason to believe that this package was created by a known sender (authentication) and that the message was not altered in transit (integrity); and distributors’ signatures (for example, official marketplace signatures), which are used to ensure that the application permission is officially authorized, release channels and devices are authorized.</p>
-                </dd>
+                <dd>A cryptographic mechanism and hashing techniques to prove the authenticity of [=resources=]. Digital signatures can demonstrate the origin, time, identity, and status of [=resources=] and of the [=MiniApp Package=].</dd>
                 <dt><dfn id="dfn-filename" data-lt="file name|file names" data-dfn-type="dfn">File Name</dfn></dt>
                 <dd>The name of any file within a [=MiniApp Package=], either a directory or a file within a directory.</dd>
                 <dt><dfn id="dfn-manifest" data-lt="manifest|manifests" data-dfn-type="dfn">MiniApp Manifest</dfn></dt>
@@ -144,9 +141,10 @@
         <p>A conformant [=MiniApp Package=] MUST meet the following criteria:</p>
         <ul class="conformance-list">
             <li>The file system of a package MUST have a file structure based on a common [=Root Directory=], and three specific subdirectories: <code>common</code>, <code>i18n</code>, and <code>pages</code>.</li>
-            <li>It MUST contain one configuration file in the [=Root Directory=], named <code>manifest.json</code>, to describe and configure the runtime environment as defined in [=MiniApp Manifest=].</li>
-            <li>It MUST contain one script document, in the [=Root Directory=], named <code>app.js</code>, with the basic control logic of the MiniApp. </li>
-            <li>It MUST contain one CSS document, in the [=Root Directory=], named <code>app.css</code>, following the CSS Syntax Module Level 3 [[CSS-SYNTAX-3]].</li>
+            <li>The [=Root Directory=] MUST contain one configuration file, named <code>manifest.json</code>, to describe and configure the runtime environment as defined in [=MiniApp Manifest=].</li>
+            <li>The [=Root Directory=] MUST contain one script document, named <code>app.js</code>, with the basic control logic of the MiniApp. </li>
+            <li>The [=Root Directory=] MUST contain one stylesheet, named <code>app.css</code>, following the CSS Syntax Module Level 3 [[CSS-SYNTAX-3]].</li>
+            <li>It MAY contain other subdirectories and files of different nature as defined in the <a href="#sec-filestructure">>Directory and File System Structure</a>.</li>
             <li>The whole [=MiniApp Package=] MUST be wrapped as a [[ZIP]] file, according to the requirements of [=MiniApp ZIP Containers=].</li>
         </ul>
         <p class="issue" title="To check the support of CSS">
@@ -349,8 +347,8 @@
             <p>To ensure the integrity and trustworthiness within the distribution stage of MiniApps, a [=MiniApp Package=] SHOULD be protected by one or more [=Digital Signatures=]. These signatures, along with certificates issued by trusted authorities, could help third parties to validate the authorship of the MiniApp (e.g. the MiniApp developer), and other entities involved in the development or distribution of the software (e.g., an application store as MiniApp distributor).</p>
             <p>The usual scenarios where digital signatures are included in MiniApps are, but not limited to:</p> 
             <ul>  
-                <li>A digital signature (with a valid certificate) of the author that ensures the origin of the MiniApp. Thus, an end-user or a hosting platform can decide whether to install the [=MiniApp Package=] depending on the status and quality of the author (e.g., credits, blocklist, certifications, etc.).</li>
-                <li>A digital signature (with a valid certificate) of the distributor guarantees the integrity of the package and, subsequently the trustworthiness of the delivery channel. This kind of signature protects end-users from tampering activities and ensures a healthy ecosystem of applications. </li>
+                <li>A digital signature (with a valid certificate) of the author that ensures the origin of the MiniApp, which gives a recipient strong reason to believe that this package was created by a known sender (authentication) and that the message was not altered in transit (integrity). Thus, an end-user or a hosting platform can decide whether to install the [=MiniApp Package=] depending on the status and quality of the author (e.g., credits, blocklist, certifications, etc.).</li>
+                <li>Distributors’ signatures (for example, official marketplace signatures), which are used to ensure the trustworthiness of the delivery channel. This kind of signature protects end-users from tampering activities and ensures a healthy ecosystem of applications. </li>
             </ul>
             <p>No specific digital signature mechanism, cryptographic technology, or algorithm is recommended in this specification. MiniApp vendors MAY or MAY NOT implement digital signature mechanisms, according to their use cases, always following the [=MiniApp Package=] requirements.</p>
 
