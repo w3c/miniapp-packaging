@@ -388,7 +388,7 @@
     <section id="sec-miniapp-processing">
       <h2>MiniApp Package Processing</h2>
         <p>
-            The essential steps for dereferencing a MiniApp package contains 7 steps. The user agent SHOULD follow the rules to process the package archive file. And user Agent SHOULD execute the fail process according to the package dereferencing algorithm.
+            The essential process for dereferencing, parsing and executing a MiniApp package is composed of seven steps. The user agent SHOULD follow the rules to process the package archive file. And user Agent SHOULD execute the fail process according to the package dereferencing algorithm.
         </p>
         <section>
             <h3>Step 1 - Acquire a MiniApp Archive</h3>
@@ -542,7 +542,10 @@
                         If MiniApp URI Scheme's specific the path is empty, The user agent SHOULD use the routing configuration pages in manifest.json (pages should be the path of all pages in the MiniApp). The first page SHOULD be the default first page.
                     </p>
                 </section>
-        </section>  
+        </section>
+        <div class="issue">
+            Section copied from the PR #90
+        </div>  
     </section>         
     <section id="sec-security-privacy">
         <h2>Security and Privacy Considerations</h2>
