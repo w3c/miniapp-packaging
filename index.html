@@ -87,10 +87,21 @@
                     title: "MiniApp Addressing",
                     href: "https://w3c.github.io/miniapp-addressing/"
                 },
+                MIME_SNIFF: {
+                    title: "MIME Sniffing",
+                    href: "https://mimesniff.spec.whatwg.org/"
+                },
             },
             a11y: true,            
         };
     </script>
+    <style>
+        .todo {
+            background-color: rgba(219, 79, 79, 0.22);
+            border: 3px rgb(247, 0, 0) dotted;
+            padding: 1rem;
+        }
+    </style>
 </head>
 
 <body>
@@ -141,7 +152,9 @@
                 <dt><dfn id="dfn-root-directory" data-lt="root directory|root directories" data-dfn-type="dfn">Root Directory</dfn></dt>
                 <dd>The base directory of the [=MiniApp Package=] file system.</dd> 
                 <dt><dfn id="dfn-magic-numbers" data-lt="magic numbers|signing block magic numbers" data-dfn-type="dfn">Signing Block Magic Numbers</dfn></dt>
-                <dd>A 16-byte sequence with a unique fingerprint that identifies a digital signature mechanism for a [=MiniApp Package=], stored in the Signing Block of [=MiniApp ZIP Container=].</dd>            
+                <dd>A 16-byte sequence with a unique fingerprint that identifies a digital signature mechanism for a [=MiniApp Package=], stored in the Signing Block of [=MiniApp ZIP Container=].</dd>
+                <dt><dfn id="dfn-start-page" data-lt="MiniApp Start Page|MiniApp Start Pages|start pages" data-dfn-type="dfn">Start Page</dfn></dt>
+                <dd>The entry point of a MiniApp. The resource that is loaded and rendered by the [=MiniApp User Agent=] at the launch of the application.</dd>  
             </dl>
         </section>
         <section id="conformance">
@@ -368,7 +381,7 @@
         <h2>Internationalization</h2>
         <p><dfn id="dfn-i18n" data-lt="internationalization|i18n" >Internationalization</dfn>, abbreviated to <abbr title="internationalization">i18n</abbr>, is the process of designing and developing a product in a way that ensures it can be easily adapted for users from any culture, region, or language.</p>
         <p><dfn id="dfn-localization" data-lt="localization" >Localization</dfn> is the process of content adaptation to meet a target language or cultural requirements.</p>
-        <p>MiniApps enable localization of contents using a mechanism based on localized documents, placed in the reserved [=i18n Directory=]. This mechanism allows authors to place localization files, named according to a <code>language-range</code> [[RFC4647]] and the <code>.json</code> extension. This is, documents with the localization resources will be identified with language tags [[RFC4646]] that represent the locale of the content. [=MiniApp User Agents=] match the language ranges held by their locales to the appropriate locale file name.</p>
+        <p>MiniApps enable localization of contents using a mechanism based on localized documents placed in the reserved [=i18n Directory=]. This mechanism allows authors to place localization files, named according to a <code>language-range</code> [[RFC4647]] and the <code>.json</code> extension. This is, documents with the localization resources will be identified with language tags [[RFC4646]] that represent the locale of the content. [=MiniApp User Agents=] match the language ranges held by their locales to the appropriate locale file name.</p>
         <div class="issue">To link with Manifest i18n Section</div> 
         <pre class="example" title="Filenames based on language tags in the i18n directory">
                 /
@@ -388,66 +401,129 @@
     <section id="sec-miniapp-processing">
       <h2>MiniApp Package Processing</h2>
         <p>
-            [=User Agents=] MUST follow the following algorithm to dereferencing, parsing and executing a [=MiniApp Package=]. 
+            [=User Agents=] MUST follow the following algorithm to dereference, parse and execute a [=MiniApp Package=]. 
         </p>
-        <p>To <dfn>process a [=MiniApp Package=]</dfn>, given an optional |miniapp_uri| perform the following steps:</p>
-        <ol>
-            <li>Acquire a [=MiniApp ZIP Package=]
-                <ol>
-                    <li>Fetch the file  over the network (i.e., using HTTPs, WebSocket, FTP, or other specific TCP/UDP based protocols), from the filesystem or any other channel</li>
-                    <li>Verify the MIME Type:
-                        <ol>
-                            <li>If the MIME Type of the file is equals to <code>application/miniapp-pkg+zip</code>, then process the file as a [=MiniApp ZIP Package=].</li>
-                            <li>Otherwise, the [=User Agent=] should exit the process, indicating MIME Type failure.</li>
-                        </ol>
-                    </li>
-                </ol>
-            </li>
-            <li>Verify the [=MiniApp ZIP Package=] file
-                <ol>
-                    <li>(OPTIONAL) Perform integrity check by verifying the digital signature(s)
-                        <ol>
-                            <li>Locate the immediately preceding section of the Central Directory of the ZIP file.</li>
-                            <li>Read the 16 byte block corresponding to the Signing Block magic numbers</li>
-                            <li>If the [=User Agent=] recognizes the sequence of bytes as valid signature scheme, process the digital signature.</li>
-                            <li>Otherwise the [=User Agent=] MAY decide to continue the process or exit the process.</li>
-                        </ol>
-                    </li>
-                </ol>
-            </li>
-            <li>Locate the [=MiniApp Manifest=] file in the [=Root Directory=].</li>
-            <li>Process the [=MiniApp Manifest=] File
-                <ol>
-                    <li>Parse JSON</li>
-                    <li>Extract descriptive metadata</li>
-                    <li>Extract system environment configuration parameters: |pages|</li>
-                </ol>
-            </li>
-            <li>Process Runtime
-                <ol>
-                    <li>Process Platform Runtime
-                        <ol>
-                            <li>Prepare logic layer of the runtime, locating and loading the essencial resources: <code>app.js</code>, <code>page.js</code></li>
-                            <li>Prepare the view layer of the runtime, locating and loading the resources: template HTML and CSS files.</li>
-                            <li>Locate the entry page |entry_page| (the first element in |pages|)</li>
-                        </ol>
-                    </li>
-                    <li>Package Reload
-                        <ul>
-                            <li>The [=User Agent=] SHOULD cache the Max-Age of a specific version of the package archive.</li>
-                        </ul>
-                    </li>
-                </ol>
-            </li>
-            <li>Locate the start files
-                <ol>
-                    <li>Locate <code>app.js</code> file in the [=Root Directory=], defining the global logic and lifecycle management of the MiniApp.</li>
-                    <li>If |miniapp_uri| is set, then parse the |miniapp_uri| and extract the entry page fragment |entry_page|, according to [[MINIAPP_ADDRESSING]].</li>
-                    <li>If |entry_page| is not set, then identify the the entry page specified in the first element in |pages|.</li>
-                    <li>Load the |entry_page|</li>
-                </ol>
-            </li>
+        <p>To <dfn>process a MiniApp Package</dfn>, given an optional |miniapp_uri|, perform the following steps:</p>
+        <ol class="algorithm">
+            <li>Let |miniapp_zip_file| be the result of [=retrieving a MiniApp ZIP Container=] with an optional |miniapp_uri|</li>
+            <li>[=Verify a MiniApp ZIP Container=] file with |miniapp_zip_file|.</li>
+            <li>Let |miniapp_package| be the result of unzipping the |miniapp_zip_file|.</li>
+            <li>If |miniapp_package| is an unzip exception, then return failure.</li>
+            <li>[=Process the MiniApp Manifest=] with |miniapp_package|.</li>
+            <li>Let |start_page| be the result of [=preparing the platform runtime=] with an optional |miniapp_uri|.</li>
+            <li>Execute runtime with |start_page|.</li>
         </ol>
+
+        <section id="sec-miniapp-processing-acquire">
+            <h3>Retrieve a MiniApp ZIP Container</h3>
+            <p>[=User Agents=] MAY obtain [=MiniApp ZIP Containers=] through different channels, retrieving the file over the network (i.e., using HTTPs, WebSocket, FTP, or other specific TCP/UDP based protocols), also from the filesystem or using any other mechanism.</p>
+            <p>To <dfn data-lt="retrieving a MiniApp ZIP Container" data-dfn-type="dfn">Retrieve a MiniApp ZIP Container</dfn>, given an optional |miniapp_uri|, perform the following steps. They return a [=MiniApp ZIP Container=].</p>
+            <ol class="algorithm">
+                <li>Let |resource| be a [=MiniApp ZIP Container=] as a result of resource retrieval.</li>
+                <li>Let |supplied_mime_type| be the result of applying the <a href="https://mimesniff.spec.whatwg.org/#supplied-mime-type-detection-algorithm">supplied MIME type detection algorithm</a> [[MIME_SNIFF]] with |resource|.</li>
+                <li>If |supplied_mime_type| is not equal to <code>application/miniapp-pkg+zip</code>, then return failure.</li>
+                <li>Return |resource|.</li>
+            </ol>
+        </section>
+
+        <section id="sec-miniapp-processing-verify">
+            <h3>Verify a MiniApp ZIP Container</h3>
+            <p>[=User Agents=] MAY guarantee the legitimacy and integrity of the [=MiniApp ZIP Container=] and its content by verifying digital signatures and applying cryptographic mechanisms.</p>  
+            <p>To <dfn data-lt="verifying a MiniApp ZIP Container">Verify a MiniApp ZIP Container</dfn>, given |miniapp_zip_file|, perform the following steps:</p>
+            <ol class="algorithm">
+                <li>If the [=User Agent=] has the capability to perform verification of the digital signature(s) of the |miniapp_zip_file|, then: </br>
+                    [=Process the Digital Signatures=] with |miniapp_zip_file|.
+                </li>
+            </ol>
+            <div class="issue">
+                To add more information about optional encryption? If so, align with the ZIP container section.  
+            </div>
+            <section id="sec-miniapp-processing-verify-magic">
+                <h4>Process Digital Signatures</h4>
+                <p>The [=MiniApp ZIP Container=] MAY contain a Signing Block that includes one or more signatures. The signing schemes and cryptographic mechanisms depend on the concrete implementation by [=User Agents=].</p> 
+                <p>Signing schemes are identified by the [=magic numbers=] section included in the [=MiniApp ZIP Container=], a 16-byte sequence located inmediately before the Central Directory of the ZIP package.</p>
+                <p>To <dfn data-lt="processing the digital signatures">Process the Digital Signatures</dfn>, given |miniapp_zip_file|, perform the following steps:</p>
+                <ol class="algorithm">
+                    <li>Let |magic_numbers| be a [=byte sequence=].</li>
+                    <li>Let |eocd_pointer| be the result of locating the byte sequence <code>0x06054b50</code> (read as little-endian) in |miniapp_zip_file| that marks the End of the Central Directory.</li>
+                    <li>Set |eocd_pointer| to |eocd_pointer| + 0x00000010.</li>
+                    <li>Let |cd_pointer| be the result of reading the 4-byte sequence at |eocd_pointer|.</li>
+                    <li>Let |magic_numbers_pointer| be |eocd_pointer| - 0x00000010.</li>
+                    <li>Set |magic_numbers| to the 16-byte block at |magic_numbers_pointer|.</li>
+                    <li>Process the digital signatures with |magic_numbers| and |miniapp_zip_file|.</li>
+                </ol>
+                <div class="example">
+                    <p>The MiniApp Signing Block may be encoded using any digital signature scheme that is identified by the 16-byte [=Magic Numbers=] block located just inmediately the Central Directory in the [=MiniApp ZIP Container=]. As shown in the example in <a href="#figure-miniapp-location-magic-numbers"></a>, the End of Central Directory, identified by the values <code>0x06054b50</code>, contains the offset that enables [=User Agents=] to identify the start of the Central Directory block, and subsequently the magic numbers at the end of the [=Signing Block=].</p>
+                    <figure id="figure-miniapp-location-magic-numbers">
+                        <img src="images/signature_bytes_central_directory.svg" alt="Location of the magic numbers within the MiniApp Package" />
+                        <figcaption>Example of End of Central Directory signature, location of the Central Directory and signature magic numbers</figcaption>
+                    </figure>
+                </div>
+            </section>
+        </section>
+
+        <section id="sec-miniapp-processing-manifest">
+            <h3>Process the MiniApp Manifest File</h3>
+            <p>[=User Agents=] MUST parse the [=MiniApp Manifest=], located in the [=MiniApp Package=], that contains global metadata about the MiniApp.</p>  
+            <p>To <dfn data-lt="processing the MiniApp Manifest">process the MiniApp Manifest</dfn>, given |miniapp_package|, perform the following steps. They return [=MiniApp Manifest=].</p>
+            <ol class="algorithm">
+                <li>If <code>manifest.json</code> does not exist in the [=Root Directory=], then return failure.</li>
+                <li>Let |manifest_json| be the result of [=parse JSON from bytes=] |miniapp_package|.</li>
+                <li>If |manifest_json| is a parsing exception, or the type of |manifest_json| is not [=object=], then return failure.</li>
+                <li>Extract descriptive metadata from |manifest_json|.</li>
+                <li>Return |manifest_json|.</li>
+            </ol>
+        </section>
+
+        <section id="sec-miniapp-processing-platform">
+            <h3>Prepare the platform runtime</h3>
+            <p>[=User Agents=] SHOULD prepare the runtime environment that contains both the logic and the view layers. The logic layer is responsible for logic and control of the application (i.e., <code>app.js</code>, and <code>page.js</code> files). The view layer is responsible for the visual environment and rendering, including the page resource files, such as component templates and stylesheets. In preparation for running a MiniApp, [=User Agents=] MUST set up the environment with the configuration specified by the [=MiniApp Manifest=] metadata.</p>
+            <p>[=User Agents=] MUST identify and load the first page as the MiniApp entry point, according to the following algorithm.</p>
+            <p>To <dfn data-lt="preparing the platform runtime">prepare the platform runtime</dfn>, given optional |miniapp_uri| and |manifest_json|, perform the following steps. They return a [=MiniApp Start Page=].</p>
+            <ol class="algorithm">
+                <li>If <code>app.js</code> does not exist in the [=Root Directory=], then return failure.</li>
+                <li>If <code>app.css</code> does not exist in the [=Root Directory=], then return failure.</li>
+                <li>If <code>i18n/</code> sub-directory does not exist in the [=Root Directory=], then return failure.</li>
+                <li>[=Check dependencies=] with |manifest_json|.</li>
+                <li>[=Reload package=] with |miniapp_uri|.</li>
+            </ol>
+            <section id="sec-miniapp-processing-platform-dependencies">
+                <h4>Check Dependencies</h4>
+                <p class="todo">To <dfn>check dependencies</dfn>, given |manifest_json|, perform the following steps...</p>
+            </section>
+            <section id="sec-miniapp-processing-platform-start-page">
+                <h4>Determine Start Page</h4>
+                <p>To <dfn>determine the start page</dfn>, given optional |miniapp_uri| and |manifest_json|, perform the following steps. They return a [=MiniApp Start Page=]</p>
+                <ol class="algorithm">
+                    <li>Let |start_page| be a [=MiniApp Start Page=].</li>
+                    <li>If |miniapp_uri| is set, then <br/>
+                        Set |start_page| as a result of [=extracting the start page from the MiniApp URI=].</li>
+                    <li>If |start_page| is not set or |start_page| is equal to null, then:<br/> 
+                        Set |start_page| as a result of [=extracting the start page from the manifest=].</li>
+                    <li>If |start_page| does not exist in the |miniapp_package|, then return failure.</li>
+                    <li>Return |start_page|</li>
+                </ol>  
+                <section id="sec-miniapp-processing-platform-start-page-uri">
+                    <h5>Extract Start Page From MiniApp URI</h5>
+                    <p class="todo">To <dfn data-lt="extracting the start page from the MiniApp URI">extract the start page from the MiniApp URI</dfn>, given |miniapp_uri|, perform the following steps...</p>
+                </section>
+                <section id="sec-miniapp-processing-platform-start-page-manifest">
+                    <h5>Extract Start Page From Manifest</h5>
+                    <p class="todo">To <dfn data-lt="extracting the start page from the manifest">extract the start page from the manifest</dfn>, given |manifest_json|, perform the following steps...</p>
+                </section>
+            </section>
+            <section id="sec-miniapp-processing-platform-reload-package">
+                <h4>Reload Package</h4>
+                <p>(The [=User Agent=] SHOULD cache the Max-Age of a specific version of the package archive).</p>
+                <p class="todo">To <dfn>reload package</dfn>, given |miniapp_uri|, perform the following steps...</p>
+            </section>
+        </section>
+
+        <section id="sec-miniapp-processing-execute">
+            <h3>Execute MiniApp Runtime</h3>
+            <p class="todo">To <dfn>execute the MiniApp Runtime</dfn>, given |start_page|, perform the following steps...</p>
+        </section>
+
         <div class="issue">
             Section extracted from the PR #90. Please, refine.
         </div>  
@@ -583,7 +659,7 @@
                 <section>
                     <h6>Distributor Signature</h6>
                     <p>The signature of the distributor preserves the integrity of the application during the distribution process, guaranteeing that:</p>
-                    <ol>
+                    <ol class="algorithm">
                         <li>Application packages cannot be forged;</li>
                         <li>Permissions on application packages cannot be changed randomly;</li>
                         <li>Application package source may be verified.</li>
