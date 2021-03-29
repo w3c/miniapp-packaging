@@ -136,17 +136,15 @@
                 <dt><dfn id="dfn-localization-resources" data-lt="localization resources|localization resource" data-dfn-type="dfn">localization resources</dfn></dt>
                 <dd>Documents of a [=MiniApp Package=] that include localized content as part of the <a href="#sec-miniapp-i18n">internationalization</a> mechanism of MiniApps.</dd>
                 <dt><dfn id="dfn-manifest" data-lt="manifest|manifests" data-dfn-type="dfn">MiniApp Manifest</dfn></dt>
-                <dd>A JSON-based file that provides [=processors=] with metadata related to a MiniApp as specified in [[MINIAPP_MANIFEST]]. </dd>
+                <dd>A JSON-based file that provides [=User Agents=] with metadata related to a MiniApp as specified in [[MINIAPP_MANIFEST]]. </dd>
                 <dt><dfn id="dfn-package" data-lt="MiniApp Package|MiniApp Packages" data-dfn-type="dfn">MiniApp Package</dfn></dt>
                 <dd>A logical document entity composed of a set of [=resources=] packaged in a [=MiniApp ZIP Container=].</dd>
-                <dt><dfn id="dfn-processor" data-lt="processors|processor" data-dfn-type="dfn">MiniApp Processor</dfn></dt>
-                <dd>A software application that processes [=MiniApp ZIP Containers=] according to the requirements of this specification.</dd>
                 <dt><dfn id="dfn-resource" data-lt="resources|resource" data-dfn-type="dfn">MiniApp Resource</dfn></dt>
                 <dd>A logical document that is part of the view or the logic of a MiniApp. Resources are included physically in [=MiniApp Packages=].</dd>
                 <dt><dfn id="dfn-page" data-lt="pages|page" data-dfn-type="dfn">MiniApp Page</dfn></dt>
                 <dd>A collection of information that is displayed in a [=MiniApp User Agent=], under the scope of a specific MiniApp. </dd>
                 <dt><dfn id="dfn-useragent" data-lt="User Agents|User Agent|MiniApp User Agent|MiniApp User Agents" data-dfn-type="dfn">MiniApp User Agent</dfn></dt>
-                <dd>A software application that gets, renders, and enables end-user interaction with a MiniApp.</dd>
+                <dd>A software application that gets, process and renders [=MiniApp Packages=], enablibing execution and end-user interaction with MiniApps.</dd>
                 <dt><dfn id="dfn-container" data-lt="MiniApp ZIP Container|MiniApp ZIP Containers" data-dfn-type="dfn">MiniApp ZIP Container</dfn></dt>
                 <dd>The ZIP-based packaging and distribution format for MiniApps, as defined in [=MiniApp ZIP Container=].</dd>
                 <dt><dfn id="dfn-root-directory" data-lt="root directory|root directories" data-dfn-type="dfn">Root Directory</dfn></dt>
@@ -350,7 +348,7 @@
                 <figcaption>ZIP package and MiniApp package with an optional signing block</figcaption>
             </figure>
 
-            <p>The [=MiniApp ZIP Container=] is parsed by first finding the start of the ZIP Central Directory (locating the ZIP End of Central Directory record at the end of the file, then reading the start offset of the Central Directory from the record). Every MiniApp Signing Block MAY include a [=Signing Block Magic Numbers=] block, as specified in <a href="#sec-miniapp-digital-signature-requirements">Digital Signature Requirements</a>, to identify the presence of digital signatures. Once the "magic numbers" block is recognized, the [=MiniApp Processor=] would be able to process the digital signatures stored in the Signing Block, in the immediately preceding section of the Central Directory, as shown in <a href="#figure-package-references"></a>.</p>
+            <p>The [=MiniApp ZIP Container=] is parsed by first finding the start of the ZIP Central Directory (locating the ZIP End of Central Directory record at the end of the file, then reading the start offset of the Central Directory from the record). Every MiniApp Signing Block MAY include a [=Signing Block Magic Numbers=] block, as specified in <a href="#sec-miniapp-digital-signature-requirements">Digital Signature Requirements</a>, to identify the presence of digital signatures. Once the "magic numbers" block is recognized, the [=User Agent=] would be able to process the digital signatures stored in the Signing Block, in the immediately preceding section of the Central Directory, as shown in <a href="#figure-package-references"></a>.</p>
 
 
             <figure id="figure-package-references">
@@ -563,7 +561,7 @@
     <section class="appendix informative" id="sec-signature-schemes">
         <h2>Signature Schemes</h2>
 
-        <p>Every [=MiniApp Processor=] MAY support its own digital signature schemes depending on their needs. This section includes some examples of digital signature implementations supported in specific scenarios, such as developer verification and integrity of a MiniApp during its distribution.</p>   
+        <p>Every [=User Agent=] MAY support its own digital signature schemes depending on their needs. This section includes some examples of digital signature implementations supported in specific scenarios, such as developer verification and integrity of a MiniApp during its distribution.</p>   
 
         <section  id="sec-signature-rpk">
             <h3>RPK Signature Scheme</h3>
