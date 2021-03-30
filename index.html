@@ -486,6 +486,7 @@
                 <li>If <code>app.css</code> does not exist in the [=Root Directory=], then return failure.</li>
                 <li>If <code>i18n/</code> sub-directory does not exist in the [=Root Directory=], then return failure.</li>
                 <li>[=Check dependencies=] with |manifest_json|.</li>
+                <li>[=Determine the start page=] with optional |miniapp_uri| and |manifest_json|.</li>
                 <li>[=Reload package=] with |miniapp_uri|.</li>
             </ol>
             <section id="sec-miniapp-processing-platform-dependencies">
@@ -494,15 +495,15 @@
             </section>
             <section id="sec-miniapp-processing-platform-start-page">
                 <h4>Determine Start Page</h4>
-                <p>To <dfn>determine the start page</dfn>, given optional |miniapp_uri| and |manifest_json|, perform the following steps. They return a [=MiniApp Start Page=]</p>
+                <p>To <dfn>determine the start page</dfn>, given optional |miniapp_uri| and |manifest_json|, perform the following steps. They return a [=string=].</p>
                 <ol class="algorithm">
-                    <li>Let |start_page| be a [=MiniApp Start Page=].</li>
+                    <li>Let |start_page_id| be a [=string=].</li>
                     <li>If |miniapp_uri| is set, then <br/>
-                        Set |start_page| as a result of [=extracting the start page from the MiniApp URI=].</li>
-                    <li>If |start_page| is not set or |start_page| is equal to null, then:<br/> 
-                        Set |start_page| as a result of [=extracting the start page from the manifest=].</li>
-                    <li>If |start_page| does not exist in the |miniapp_package|, then return failure.</li>
-                    <li>Return |start_page|</li>
+                        Set |start_page_id| as a result of [=extracting the start page from the MiniApp URI=].</li>
+                    <li>If |start_page_id| is not set or |start_page_id| is equal to null, then:<br/> 
+                        Set |start_page_id| as a result of [=extracting the start page from the manifest=].</li>
+                    <li>If |start_page_id| does not exist in the |miniapp_package|, then return failure.</li>
+                    <li>Return |start_page_id|</li>
                 </ol>  
                 <section id="sec-miniapp-processing-platform-start-page-uri">
                     <h5>Extract Start Page From MiniApp URI</h5>
@@ -510,14 +511,14 @@
                 </section>
                 <section id="sec-miniapp-processing-platform-start-page-manifest">
                     <h5>Extract Start Page From Manifest</h5>
-                    <p>To <dfn data-lt="extracting the start page from the manifest">extract the start page from the manifest</dfn>, given |manifest_json|, perform the following steps. They return a [=Start Page=].</p>
+                    <p>To <dfn data-lt="extracting the start page from the manifest">extract the start page from the manifest</dfn>, given |manifest_json|, perform the following steps. They return a [=string=].</p>
                     <ol class="algorithm" data-cite="infra">
-                        <li>Let |start_page| be the empty [=string=].</li>
+                        <li>Let |start_page_id| be the empty [=string=].</li>
                         <li>Let |pages_array| be null.</li>
                         <li>Set |pages_array| [=Get=](|manifest_json|, "pages").</li>
                         <li>If [=IsArray=](|pages_array|) is true and |pages_array|.length is greater than 0, then:<br/>
-                            Set |start_page| to |pages_array|[0].</li>
-                        <li>Return |start_page|.</li>
+                            Set |start_page_id| to |pages_array|[0].</li>
+                        <li>Return the |start_page_id|.</li>
                     </ol>
                 </section>
             </section>
@@ -532,10 +533,6 @@
             <h3>Execute MiniApp Runtime</h3>
             <p class="todo">To <dfn>execute the MiniApp Runtime</dfn>, given |start_page|, perform the following steps...</p>
         </section>
-
-        <div class="issue">
-            Section extracted from the PR #90. Please, refine.
-        </div>  
     </section>         
     <section id="sec-security-privacy">
         <h2>Security and Privacy Considerations</h2>
