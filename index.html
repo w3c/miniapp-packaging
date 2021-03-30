@@ -469,7 +469,7 @@
             <p>To <dfn data-lt="processing the MiniApp Manifest">process the MiniApp Manifest</dfn>, given |miniapp_package|, perform the following steps. They return [=MiniApp Manifest=].</p>
             <ol class="algorithm">
                 <li>If <code>manifest.json</code> does not exist in the [=Root Directory=], then return failure.</li>
-                <li>Let |manifest_json| be the result of [=parse JSON from bytes=] |miniapp_package|.</li>
+                <li>Let |manifest_json| be the result of [=parse JSON from bytes=] <code>manifest.json</code> file.</li>
                 <li>If |manifest_json| is a parsing exception, or the type of |manifest_json| is not [=object=], then return failure.</li>
                 <li>Extract descriptive metadata from |manifest_json|.</li>
                 <li>Return |manifest_json|.</li>
@@ -510,7 +510,15 @@
                 </section>
                 <section id="sec-miniapp-processing-platform-start-page-manifest">
                     <h5>Extract Start Page From Manifest</h5>
-                    <p class="todo">To <dfn data-lt="extracting the start page from the manifest">extract the start page from the manifest</dfn>, given |manifest_json|, perform the following steps...</p>
+                    <p>To <dfn data-lt="extracting the start page from the manifest">extract the start page from the manifest</dfn>, given |manifest_json|, perform the following steps. They return a [=Start Page=].</p>
+                    <ol class="algorithm" data-cite="infra">
+                        <li>Let |start_page| be the empty [=string=].</li>
+                        <li>Let |pages_array| be null.</li>
+                        <li>Set |pages_array| [=Get=](|manifest_json|, "pages").</li>
+                        <li>If [=IsArray=](|pages_array|) is true and |pages_array|.length is greater than 0, then:<br/>
+                            Set |start_page| to |pages_array|[0].</li>
+                        <li>Return |start_page|.</li>
+                    </ol>
                 </section>
             </section>
             <section id="sec-miniapp-processing-platform-reload-package">
