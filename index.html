@@ -117,11 +117,11 @@
         <h2>Introduction</h2>
         <section>
             <h3>Overview</h3>
-            <p>MiniApp is a concept of light software application, that can be distributed through any digital means, and accessed through the Web. MiniApps are defined by a concrete file structure and all the resources are comprised within a single file that represents the whole MiniApp package that can be distributed and executed by [=MiniApp User Agents=].</p>
-            <p>A [=MiniApp Package=] contains a directory structure that holds the specific resources of the MiniApp that defines the rendering, operation, and interaction with the end-users — including static page templates, stylesheets, JavaScript documents, media files, and other resources — and the MiniApp Manifest. The MiniApp Manifest, located in the central directory of the package, describes the MiniApp, including information about page routing, styles, and other operational and rendering details of the MiniApp, as well as descriptive information for humans.</p>
-            <p>As defined in the signature section, MiniApps MAY support digital signature verification to guarantee the integrity of the package and contents during the delivery of the package.</p>
-            <p>The MiniApp runtime environment ([=MiniApp User Agent=]) identifies MiniApp package files through the standard package format and the specific MIME media type. After fetching the MiniApp package file, the [=MiniApp User Agent=] loads the static page templates, CSS, JavaScript files, and other resources into the cache, following a dereference step. These MiniApp resources will remain available in the cache until the next update, avoiding unnecessary network fetches.</p>
-            <p>In terms of launch mode, the MiniApp can be launched normally when offline. The [=MiniApp User Agent=] locates the specified startup page from the package cache path and launches the MiniApp according to the description of the [=manifest=] file.</p>
+            <p>[=MiniApp=] is a concept of light software application, that can be distributed through any digital means, and accessed through the Web. MiniApps are defined by a concrete file structure and all their resources are packed within a single file that represents the whole [=MiniApp Package=] that can be processed and executed by [=MiniApp User Agents=].</p>
+            <p>A [=MiniApp Package=] contains a directory structure that holds the specific resources of the MiniApp that defines the rendering, operation, and interaction with the end-users — including static page templates, stylesheets, JavaScript documents, media files, and other resources — and the manifest. The [=MiniApp Manifest=], located in the central directory of the package, describes the MiniApp, including information about page routing, styles, and other operational and rendering details of the MiniApp, as well as descriptive information for humans.</p>
+            <p>As defined in <a href="#sec-security-privacy">Security and Privacy Considerations</a>, MiniApps MAY support [=digital signature=] verification to guarantee the integrity of the package and contents during the delivery of the package.</p>
+            <p>The MiniApp runtime environment ([=MiniApp User Agent=]) identifies MiniApp package files through the standard [=MiniApp Package=] format and the specific MIME media type, defined in this document. After retrieving the [=MiniApp ZIP Container=], the [=MiniApp User Agent=] loads the static page templates, CSS, JavaScript files, and other resources into the cache, following a <a href="#sec-miniapp-processing">dereference and processing algorithm</a>. These [=MiniApp Resources=] will remain available in the cache until the next update, avoiding unnecessary network fetches.</p>
+            <p>In terms of launch mode, a MiniApp can be launched normally when offline. The [=MiniApp User Agent=] locates the specified [=start page=] from the package cache path and launches the MiniApp according to the description set out in the [=manifest=] file.</p>
         </section>
         <section id="sec-terminology">
             <h3>Terminology</h3>
@@ -135,6 +135,8 @@
                 <dd>The subdirectory of the [=Root Directory=] that includes the [=localization resources=] of a [=MiniApp Package=].</dd>
                 <dt><dfn id="dfn-localization-resources" data-lt="localization resources|localization resource" data-dfn-type="dfn">localization resources</dfn></dt>
                 <dd>Documents of a [=MiniApp Package=] that include localized content as part of the <a href="#sec-miniapp-i18n">internationalization</a> mechanism of MiniApps.</dd>
+                <dt><dfn id="dfn-miniapp" data-lt="MiniApps" data-dfn-type="dfn">MiniApp</dfn></dt>
+                <dd>A light software application, that can be distributed through any digital means, and accessed through the Web. MiniApps are defined by a concrete file structure, distributed within a single file [=MiniApp ZIP Container=] that represents the whole [=MiniApp Package=] that can be processed and executed by [=MiniApp User Agents=].</dd>
                 <dt><dfn id="dfn-manifest" data-lt="manifest|manifests" data-dfn-type="dfn">MiniApp Manifest</dfn></dt>
                 <dd>A JSON-based file that provides [=User Agents=] with metadata related to a MiniApp as specified in [[MINIAPP_MANIFEST]]. </dd>
                 <dt><dfn id="dfn-package" data-lt="MiniApp Package|MiniApp Packages" data-dfn-type="dfn">MiniApp Package</dfn></dt>
@@ -144,7 +146,7 @@
                 <dt><dfn id="dfn-page" data-lt="pages|page" data-dfn-type="dfn">MiniApp Page</dfn></dt>
                 <dd>A collection of information that is displayed in a [=MiniApp User Agent=], under the scope of a specific MiniApp. </dd>
                 <dt><dfn id="dfn-useragent" data-lt="User Agents|User Agent|MiniApp User Agent|MiniApp User Agents" data-dfn-type="dfn">MiniApp User Agent</dfn></dt>
-                <dd>A software application that gets, process and renders [=MiniApp Packages=], enablibing execution and end-user interaction with MiniApps.</dd>
+                <dd>A software application that gets, process and renders [=MiniApp Packages=], enabling execution and end-user interaction with MiniApps.</dd>
                 <dt><dfn id="dfn-container" data-lt="MiniApp ZIP Container|MiniApp ZIP Containers" data-dfn-type="dfn">MiniApp ZIP Container</dfn></dt>
                 <dd>The ZIP-based packaging and distribution format for MiniApps, as defined in [=MiniApp ZIP Container=].</dd>
                 <dt><dfn id="dfn-root-directory" data-lt="root directory|root directories" data-dfn-type="dfn">Root Directory</dfn></dt>
@@ -512,11 +514,11 @@
                 <section id="sec-miniapp-processing-platform-start-page-manifest">
                     <h5>Extract Start Page From Manifest</h5>
                     <p>To <dfn data-lt="extracting the start page from the manifest">extract the start page from the manifest</dfn>, given |manifest_json|, perform the following steps. They return a [=string=].</p>
-                    <ol class="algorithm" data-cite="infra ecma262">
+                    <ol class="algorithm" data-cite="infra">
                         <li>Let |start_page_id| be the empty [=string=].</li>
                         <li>Let |pages_array| be null.</li>
-                        <li>Set |pages_array| [=Get=](|manifest_json|, "pages").</li>
-                        <li>If [=IsArray=](|pages_array|) is true and |pages_array|.length is greater than 0, then:<br/>
+                        <li>Set |pages_array| |manifest_json|["pages"].</li>
+                        <li>If IsArray(|pages_array|) is true and |pages_array|.length is greater than 0, then:<br/>
                             Set |start_page_id| to |pages_array|[0].</li>
                         <li>Return the |start_page_id|.</li>
                     </ol>
