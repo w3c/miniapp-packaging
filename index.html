@@ -158,6 +158,7 @@
             </dl>
         </section>
         <section id="conformance">
+            The MiniApp Packaging specification depends on the Infra Standard [[INFRA]] to describe algorithms.
         </section>
     </section>
 
@@ -401,7 +402,7 @@
         
         <div class="issue" data-number="1"></div>
     </section>
-    <section id="sec-miniapp-processing">
+    <section id="sec-miniapp-processing" data-cite="infra">
       <h2>MiniApp Package Processing</h2>
         <p>
             [=User Agents=] MUST follow the following algorithm to dereference, parse and execute a [=MiniApp Package=]. 
@@ -472,7 +473,7 @@
             <ol class="algorithm">
                 <li>If <code>manifest.json</code> does not exist in the [=Root Directory=], then return failure.</li>
                 <li>Let |manifest_json| be the result of [=parse JSON from bytes=] <code>manifest.json</code> file.</li>
-                <li>If |manifest_json| is a parsing exception, or the type of |manifest_json| is not [=object=], then return failure.</li>
+                <li>If |manifest_json| is a parsing exception, or the type of |manifest_json| is not object, then return failure.</li>
                 <li>Extract descriptive metadata from |manifest_json|.</li>
                 <li>Return |manifest_json|.</li>
             </ol>
@@ -497,8 +498,8 @@
             </section>
             <section id="sec-miniapp-processing-platform-start-page">
                 <h4>Determine Start Page</h4>
-                <p data-cite="infra">To <dfn>determine the start page</dfn>, given optional |miniapp_uri| and |manifest_json|, perform the following steps. They return a [=string=].</p>
-                <ol class="algorithm" data-cite="infra">
+                <p >To <dfn>determine the start page</dfn>, given optional |miniapp_uri| and |manifest_json|, perform the following steps. They return a [=string=].</p>
+                <ol class="algorithm">
                     <li>Let |start_page_id| be a [=string=].</li>
                     <li>If |miniapp_uri| is set, then <br/>
                         Set |start_page_id| as a result of [=extracting the start page from the MiniApp URI=].</li>
@@ -513,8 +514,8 @@
                 </section>
                 <section id="sec-miniapp-processing-platform-start-page-manifest">
                     <h5>Extract Start Page From Manifest</h5>
-                    <p data-cite="infra">To <dfn data-lt="extracting the start page from the manifest">extract the start page from the manifest</dfn>, given |manifest_json|, perform the following steps. They return a [=string=].</p>
-                    <ol class="algorithm" data-cite="infra">
+                    <p>To <dfn data-lt="extracting the start page from the manifest">extract the start page from the manifest</dfn>, given |manifest_json|, perform the following steps. They return a [=string=].</p>
+                    <ol class="algorithm">
                         <li>Let |start_page_id| be the empty [=string=].</li>
                         <li>Let |pages_array| be null.</li>
                         <li>Set |pages_array| |manifest_json|["pages"].</li>
