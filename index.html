@@ -303,7 +303,6 @@
             </section>
             <section id="sec-miniapp-resources-other">
                 <h3>Other Resources</h3>
-                <p>MiniApps contains scripting resources, documents written in JavaScript, that provide the MiniApp with functionality and logic.</p>
                 <div class="issue">To add images, libraries and others.</div>
             </section>
         </section> 
@@ -326,7 +325,7 @@
             <p>A [=MiniApp ZIP Container=] uses the ZIP format as defined in [[ZIP]], including some particularities:</p>
         	<ul class="conformance-list">
                 <li>The contents of the [=MiniApp ZIP Container=] MUST be a conforming [=MiniApp Package=].</li>
-                <li>MiniApp ZIP Containers MUST NOT use the ZIP encryption mechanisms.</li>
+                <li>MiniApp ZIP Containers MAY use the ZIP encryption mechanisms.</li>
                 <li>Data integrity MUST be provided for each file using CRC32 as specified in [[ZIP]].</li>
                 <li>MiniApp ZIP Containers MUST NOT use the features in the ZIP application note [[ZIP]] that allow ZIP files to be spanned across multiple storage media, or split into multiple files.</li>
                 <li>MiniApp ZIP Containers MUST include ZIP uncompressed and Deflate-compressed (method 8 [[ZIP]], lossless data compression) contents within the ZIP archive.</li>
