@@ -131,10 +131,6 @@
                 <dd>A cryptographic mechanism and hashing techniques to prove the authenticity of [=resources=]. Digital signatures can demonstrate the origin, time, identity, and status of [=resources=] and of the [=MiniApp Package=].</dd>
                 <dt><dfn id="dfn-filename" data-lt="file name|file names" data-dfn-type="dfn">File Name</dfn></dt>
                 <dd>The name of any file within a [=MiniApp Package=], either a directory or a file within a directory.</dd>
-                <dt><dfn id="dfn-i18n-directory" data-dfn-type="dfn">i18n directory</dfn></dt>
-                <dd>The subdirectory of the [=Root Directory=] that includes the [=localization resources=] of a [=MiniApp Package=].</dd>
-                <dt><dfn id="dfn-localization-resources" data-lt="localization resources|localization resource" data-dfn-type="dfn">localization resources</dfn></dt>
-                <dd>Documents of a [=MiniApp Package=] that include localized content as part of the <a href="#sec-miniapp-i18n">internationalization</a> mechanism of MiniApps.</dd>
                 <dt><dfn id="dfn-miniapp" data-lt="MiniApps" data-dfn-type="dfn">MiniApp</dfn></dt>
                 <dd>A light software application, that can be distributed through any digital means, and accessed through the Web. MiniApps are defined by a concrete file structure, distributed within a single file [=MiniApp ZIP Container=] that represents the whole [=MiniApp Package=] that can be processed and executed by [=MiniApp User Agents=].</dd>
                 <dt><dfn id="dfn-manifest" data-lt="manifest|manifests" data-dfn-type="dfn">MiniApp Manifest</dfn></dt>
@@ -149,10 +145,6 @@
                 <dd>A software application that gets, process and renders [=MiniApp Packages=], enabling execution and end-user interaction with MiniApps.</dd>
                 <dt><dfn id="dfn-container" data-lt="MiniApp ZIP Container|MiniApp ZIP Containers" data-dfn-type="dfn">MiniApp ZIP Container</dfn></dt>
                 <dd>The ZIP-based packaging and distribution format for MiniApps, as defined in [=MiniApp ZIP Container=].</dd>
-                <dt><dfn id="dfn-root-directory" data-lt="root directory|root directories" data-dfn-type="dfn">Root Directory</dfn></dt>
-                <dd>The base directory of the [=MiniApp Package=] file system.</dd> 
-                <dt><dfn id="dfn-magic-numbers" data-lt="magic numbers|signing block magic numbers" data-dfn-type="dfn">Signing Block Magic Numbers</dfn></dt>
-                <dd>A 16-byte sequence with a unique fingerprint that identifies a digital signature mechanism for a [=MiniApp Package=], stored in the Signing Block of [=MiniApp ZIP Container=].</dd>
                 <dt><dfn id="dfn-start-page" data-lt="MiniApp Start Page|MiniApp Start Pages|start pages" data-dfn-type="dfn">Start Page</dfn></dt>
                 <dd>The entry point of a MiniApp. The resource that is loaded and rendered by the [=MiniApp User Agent=] at the launch of the application.</dd>  
             </dl>
@@ -200,6 +192,8 @@
             </pre>
             <section>
                 <h3>Root Directory</h3>
+                <p>The <dfn id="dfn-root-directory" data-lt="root directory|root directories" data-dfn-type="dfn">Root Directory</dfn> is the base directory of the [=MiniApp Package=] file system.</dd> 
+
                 <p>The [=Root Directory=] of a [=MiniApp Package=] holds several reserved files that include global data and information about the lifecycle management of the MiniApp, including:</p>
                 <dl>
                     <dt><code>manifest.json</code></dt>
@@ -229,20 +223,9 @@
             </section>
             <section>
                 <h3><code>i18n</code> Directory</h3>
-                <p>The <code>i18n</code> directory contains multi-language configuration files to support the internationalization of the MiniApp. The file name of each <code>.json</code> document in this directory follows the <code>Language-Tag</code> notation as defined in [[BCP47]], and represents the specific configuration for that particular language.</p>
-                <pre class="example" title="i18n directory with three localization resources">
-                    /
-                    |___i18n/
-                    |       |___en-GB.json
-                    |       |___fr-FR.json                  
-                    |       |___zh-Hans.json
-                </pre>
-                <p class="issue" title="Still to define the format">
-                        The detailed format of the <code>.json </code> file is to be further developed.
-                </p>
-                <p class="issue" title="Still to define the locale file selection">
-                        To define the detailed process of file selection according to the system locale.
-                </p>
+                <p>The <dfn id="dfn-i18n-directory" data-dfn-type="dfn">i18n directory</dfn> is a subdirectory in the [=Root Directory=] that includes the [=localization resources=] of a [=MiniApp Package=].</p>
+                <p>The [=i18n Directory=] contains multi-language [=localization resources=] to support the internationalization of the MiniApp contents. The file name of each <code>.json</code> document in this directory follows the <code>Language-Tag</code> notation as defined in [[BCP47]], and represents the specific configuration for that particular language.</p>
+                <p>The [=i18n Directory=] MAY contain as many [=localization resources=] as languages or locales a MiniApp supports. The format of these files is defined in the <a href="#sec-miniapp-resources-i18n">Localization Resources</a> section.</p> 
             </section>
             <section>
                 <h3>File Names</h3>
@@ -310,6 +293,37 @@
                     <dd>A MiniApp JavaScript filename SHOULD use the file extension <code>.js</code>.</dd>
                 </dl>
             </section>
+            <section id="sec-miniapp-resources-i18n">
+                <h3>Localization Resources</h3>
+                <p>A <dfn id="dfn-localization-resources" data-lt="localization resources|localization resource" data-dfn-type="dfn">Localization Resource</dfn> is a document of a [=MiniApp Package=] that included localized content as part of the [=internationalization=] mechanism of MiniApps.</p>
+                <p>A multilingual MiniApp MAY has several [=Localization Resources=] that will be used during the [=localization=] process by the [=User Agents=] to render content according to the system locale or the user's language preferences. These resources contain JSON objects with key-value pairs that contain the unique identifier (the key) of a localizable term or expression and the representation in the concrete language (the value).</p>
+                <pre class="example" title="Localization resource">
+                    {
+                        "title": "Cool MiniApp",
+                        "about": "About this MiniApp",
+                        "intro-page": {
+                            "title" : "Introduction",
+                            "main" : "This is the body of the page"
+                        }
+                    }
+                </pre>
+                <p>[=Localization Resources=] MUST meet all the following criteria:</p>
+                <dl class="conformance-list">
+                    <dt>File extension</dt>
+                    <dd>A [=Localization Resource=] filename SHOULD use the file extension <code>.json</code>.</dd>
+                    <dt>Format</dt>
+                    <dd>A [=Localization Resource=] MUST be a valid JSON document.</dd>
+                    <dt>Structure</dt>
+                    <dd>A [=Localization Resource=] MUST be composed of key-value pairs. Each key represents a unique identifier for each localizable string (the values).</dd>
+                </dl>
+                <p class="issue" title="Still to define the format">
+                        The detailed format of the <code>.json </code> file is to be further developed.
+                </p>
+                <p class="issue" title="Still to define the locale file selection">
+                        To define the detailed process of file selection according to the system locale.
+                </p>
+                <div class="issue" data-number="1"></div>   
+            </section>
             <section id="sec-miniapp-resources-other">
                 <h3>Other Resources</h3>
                 <div class="issue">To add images, libraries and others.</div>
@@ -373,10 +387,11 @@
             <h3>Digital Signature Requirements</h3>  
             <p>A [=MiniApp ZIP Container=] MAY include none, one, or more [=signatures=] to help to detect any changes to the protected parts of the software, guaranteeing the integrity of the MiniApp.</p>
             <p>A <dfn id="dfn-signing_block" data-lt="Signing Block|MiniApp Signing Block|MiniApp Signing Blocks" data-dfn-type="dfn">MiniApp Signing Block</dfn> is a collection of bytes that contains specific information and metadata about the digital signature that affects a MiniApp, partially or as a whole. The [=Signing Block=] of a [=MiniApp ZIP Container=] MUST be located immediately before the central directory of the ZIP container, in a way that makes it easier to locate the block if exists.</p>
+            <p>The <dfn id="dfn-magic-numbers" data-lt="magic numbers|signing block magic numbers" data-dfn-type="dfn">Signing Block Magic Numbers</dfn> block is A 16-byte sequence with a unique fingerprint that identifies a digital signature mechanism for a [=MiniApp Package=], stored in the Signing Block of [=MiniApp ZIP Container=].</dd>
             <p>Although this document does not recommend any specific digital signature mechanism (i.e., hash algorithms, encryption methods, etc.), the [=Signing Block=], if present, MUST meet the following criteria:</p>
         	<dl class="conformance-list">
-                <dt>Signing Block Magic numbers</dt>
-                <dd>A 16-byte block that provides a quick way to identify the Signing Block as the preceding block of the Central Directory. This "magic numbers" byte sequence univocally identifies the type of digital signature included in the Signing Block.</dd>
+                <dt>Signing Block Magic Numbers</dt>
+                <dd>A [=Signing Block=] MUST contains [=Signing Block Magic numbers=], as the preceding block of the Central Directory to identify univocally the type of digital signature included.</dd>
             </dl>
         </section>
         <div class="issue">
@@ -387,22 +402,18 @@
         <h2>Internationalization</h2>
         <p><dfn id="dfn-i18n" data-lt="internationalization|i18n" >Internationalization</dfn>, abbreviated to <abbr title="internationalization">i18n</abbr>, is the process of designing and developing a product in a way that ensures it can be easily adapted for users from any culture, region, or language.</p>
         <p><dfn id="dfn-localization" data-lt="localization" >Localization</dfn> is the process of content adaptation to meet a target language or cultural requirements.</p>
-        <p>MiniApps enable localization of contents using a mechanism based on localized documents placed in the reserved [=i18n Directory=]. This mechanism allows authors to place localization files, named according to a <code>language-range</code> [[RFC4647]] and the <code>.json</code> extension. This is, documents with the localization resources will be identified with language tags [[RFC4646]] that represent the locale of the content. [=MiniApp User Agents=] match the language ranges held by their locales to the appropriate locale file name.</p>
+        <p>MiniApps enable localization of contents using a mechanism based on localized documents placed in the reserved [=i18n Directory=]. This mechanism allows authors to place [=localization resources=], named according to a <code>language-range</code> [[RFC4647]] and the <code>.json</code> extension. This is, documents with the localization resources will be identified with language tags [[RFC4646]] that represent the locale of the content. [=MiniApp User Agents=] match the language ranges held by their locales to the appropriate locale file name.</p>
+        <p>The format of the [=localization resources=] is defined in the <a href="#sec-miniapp-resources-i18n">Localization Resources</a> section.</p>
         <div class="issue">To link with Manifest i18n Section</div> 
         <pre class="example" title="Filenames based on language tags in the i18n directory">
                 /
                 |___i18n/
+                |     |___en-US.json
                 |     |___fr-FR.json
-                |     |___fr.json
-                |     |___en-US.json            
-                |     |___zh-Hans.json
+                |     |___fr.json            
                 |     |___ja-JP.json
-        </pre>
-        <section id="sec-miniapp-i18n-resource-format">
-            <h3>i18n Resources Format</h3>
-        </section>
-        
-        <div class="issue" data-number="1"></div>
+                |     |___zh-Hans.json                
+        </pre> 
     </section>
     <section id="sec-miniapp-processing" data-cite="infra">
       <h2>MiniApp Package Processing</h2>
