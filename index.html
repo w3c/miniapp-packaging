@@ -1,221 +1,962 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8" />
     <title>MiniApp Packaging</title>
-
-    <style>
-        .two-cols {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-        }
-
-        table {
-            border-collapse: collapse;
-        }
-
-        table,
-        th,
-        td {
-            border: 1px solid #666;
-        }
-
-        td {
-            padding: 2px 15px;
-        }
-    </style>
-
     <script async class="remove" src="https://www.w3.org/Tools/respec/respec-w3c"></script>
-
     <script class="remove">
         var respecConfig = {
             specStatus: "ED",
-            copyrightStart: "2020",
-            edDraftURI: "https://w3c.github.io/miniapp/specs/packaging/",
+            copyrightStart: "2021",
+            edDraftURI: "https://w3c.github.io/miniapp-packaging/",
 
             shortName: "miniapp-packaging",
 
-            editors: [{
-                name: "Qing An",
-                companyURL: "http://www.alibabagroup.com/en/global/home",
-                company: "Alibaba"
-            }, {
-                name: "Shouren Lan",
-                companyURL: "http://www.huawei.com/",
-                company: "Huawei"
-            }, {
-                name: "Zhiqiang Yu",
-                companyURL: "http://www.huawei.com/",
-                company: "Huawei"
-            }, {
-                name: "Yongjing Zhang",
-                companyURL: "http://www.huawei.com/",
-                company: "Huawei"
-            }, {
-                name: "Tengyuan Zhang",
-                companyURL: "https://www.baidu.com/",
-                company: "Baidu, Inc"
-            }, {
-                name: "Qian Liu",
-                companyURL: "https://www.baidu.com/",
-                company: "Baidu, Inc"
-            }, {
-                name: "Shuo Wang",
-                companyURL: "https://www.baidu.com/",
-                company: "Baidu, Inc"
-            }, {
-                name: "Dan Zhou",
-                companyURL: "https://www.baidu.com/",
-                company: "Baidu, Inc"
-            }],
-
+            editors: [
+                {
+                    name: "Martin Alvarez-Espinar",
+                    companyURL: "http://www.huawei.com",
+                    company: "Huawei"
+                },          
+                {
+                    name: "Qing An",
+                    companyURL: "http://www.alibabagroup.com/en/global/home",
+                    company: "Alibaba"
+                },
+                {
+                    name: "Tengyuan Zhang",
+                    companyURL: "https://www.baidu.com/",
+                    company: "Baidu, Inc"
+                },         
+                {
+                    name: "Yongjing Zhang",
+                    companyURL: "http://www.huawei.com/",
+                    company: "Huawei"
+                }, 
+                {
+                    name: "Dan Zhou",
+                    companyURL: "https://www.baidu.com/",
+                    company: "Baidu, Inc"
+                }
+            ],
+            formerEditors: [
+                {
+                    name: "Shouren Lan",
+                    companyURL: "http://www.huawei.com/",
+                    company: "Huawei"
+                }, 
+                {
+                    name: "Zhiqiang Yu",
+                    companyURL: "http://www.huawei.com/",
+                    company: "Huawei"
+                }, 
+                {
+                    name: "Qian Liu",
+                    companyURL: "https://www.baidu.com/",
+                    company: "Baidu, Inc"
+                }, 
+                {
+                    name: "Shuo Wang",
+                    companyURL: "https://www.baidu.com/",
+                    company: "Baidu, Inc"
+                }
+            ],
             group: "wg/miniapps",
-
             github: {
-              repoURL: "https://github.com/w3c/miniapp-packaging",
-              branch: "main",
+                repoURL: "https://github.com/w3c/miniapp-packaging",
+                branch: "main",
             },
+            localBiblio: {
+                APK_SIGNATURE_V2: {
+                    title: "APK Signature Scheme v2",
+                    href: "https://source.android.com/security/apksigning/v2"
+                },
+                CSS_SNAPSHOT: {
+                    title: "CSS Snapshot",
+                    href: "https://www.w3.org/TR/CSS/"
+                },                
+                MINIAPP_LIFECYCLE: {
+                    title: "MiniApp Lifecycle",
+                    href: "https://w3c.github.io/miniapp-lifecycle/"
+                },
+                MINIAPP_MANIFEST: {
+                    title: "MiniApp Manifest",
+                    href: "https://w3c.github.io/miniapp-manifest/"
+                },
+                MINIAPP_ADDRESSING: {
+                    title: "MiniApp Addressing",
+                    href: "https://w3c.github.io/miniapp-addressing/"
+                },
+                MIME_SNIFF: {
+                    title: "MIME Sniffing",
+                    href: "https://mimesniff.spec.whatwg.org/"
+                },
+            },
+            a11y: true,            
         };
     </script>
+    <style>
+        .todo {
+            background-color: rgba(219, 79, 79, 0.22);
+            border: 3px rgb(247, 0, 0) dotted;
+            padding: 1rem;
+        }
+    </style>
 </head>
 
 <body>
-    <section id='abstract'>
-        <p its-locale-filter-list="en" lang="en">
-            This specification defines the standardized MiniApp packaging construction method, which provides a standard package structure description. The MiniApp package file packages all the static page templates / CSS / JavaScript files and the manifest file. The MiniApp package file can be used in any runtime environment (user agent).
-        </p>
-        <p its-locale-filter-list="zh-hans" lang="zh-hans">
-            本文描述了一个标准化的MiniApp包构建方式，提供一种标准的包结构描述，将小程序页面所需的所有静态页面模板、CSS 和 JavaScript 文件，和配置文件（Manifest）打包在一起，允许在任何运行时环境可使用。
-        </p>
-        <p its-locale-filter-list="en" lang="en">
-            The Miniapp package file contains a manifest document (located in the root directory of the package). The manifest file includes an overview of the MiniApp, including page description and page path. The package file contains JavaScript code, one or more page files, including template code of page(s), CSS code for page style and JavaScript code for page logic. The MiniApp package file should support digital signature verification.
-        </p>
-        <p its-locale-filter-list="zh-hans" lang="zh-hans">
-            小程序包资源，包含一个配置文档，位于包的根目录下。配置文件应包括整个小程序的概述（页面描述及其对应路径，用于页面定位和开启）。包含 JavaScript 代码的应用级逻辑文件，一个或多个页面文件，包含页面结构的模板代码、页面样式的 CSS 代码和页面逻辑的 JavaScript 代码。小程序包应支持数字签名验证。
-        </p>
-        <p its-locale-filter-list="en" lang="en">
-            The MiniApp runtime environment (user agent) can identify MiniApp package files through standard package format and MIME media type. After fetching the MiniApp package file, all static page templates / CSS / JavaScript files are cached on the device through a standardized dereference step. These cached package resources are available until the next update without fetching the MiniApp package file again. In terms of launch mode, the MiniApp can be launched normally without network. The runtime environment (user agent) locates the specified startup page from the package cache path and starts the MiniApp according to the description of the manifest file.
-        </p>
-        <p its-locale-filter-list="zh-hans" lang="zh-hans">
-            小程序运行时环境，可通过标准的文件格式、媒体类型识别小程序包文件。获取（Fetch）小程序包后，通过标准化的解引用，将所有静态页面模板、CSS 和 JavaScript 文件缓存在设备上。在下次更新之前，这些资源始终可用，无需重新获取（Fetch）小程序包文件。启动方式上，小程序无需网络也可以正常启动，运行时环境根据小程序标准配置文件的描述（manifest），从包缓存路径中定位指定的启动页面，启动小程序。
-        </p>
+    <section id="abstract">
+        <p>This specification defines semantics and conformance requirements for a [=MiniApp Package=], and the structure of the single file container that holds the resources of a MiniApp, including a [=manifest=] file, static page templates, stylesheets, JavaScript documents, media files and other resources. Instances of the [=MiniApp Package=] are used for MiniApp distribution and execution on runtime environments ([=MiniApp User Agent=]).</p>
+    </section>
+    <section id="sotd">
+        <aside class="warning">
+             This Editor Draft is a working document and it does not necessarily imply consensus of the Working Group.
+        </aside>
+    </section>
+    <section id="sec-introduction">
+        <h2>Introduction</h2>
+        <section>
+            <h3>Overview</h3>
+            <p>[=MiniApp=] is a concept of light software application, that can be distributed through any digital means, and accessed through the Web. MiniApps are defined by a concrete file structure and all their resources are packed within a single file that represents the whole [=MiniApp Package=] that can be processed and executed by [=MiniApp User Agents=].</p>
+            <p>A [=MiniApp Package=] contains a directory structure that holds the specific resources of the MiniApp that defines the rendering, operation, and interaction with the end-users — including static page templates, stylesheets, JavaScript documents, media files, and other resources — and the manifest. The [=MiniApp Manifest=], located in the central directory of the package, describes the MiniApp, including information about page routing, styles, and other operational and rendering details of the MiniApp, as well as descriptive information for humans.</p>
+            <p>As defined in <a href="#sec-security-privacy">Security and Privacy Considerations</a>, MiniApps MAY support [=digital signature=] verification to guarantee the integrity of the package and contents during the delivery of the package.</p>
+            <p>The MiniApp runtime environment ([=MiniApp User Agent=]) identifies MiniApp package files through the standard [=MiniApp Package=] format and the specific MIME media type, defined in this document. After retrieving the [=MiniApp ZIP Container=], the [=MiniApp User Agent=] loads the static page templates, CSS, JavaScript files, and other resources into the cache, following a <a href="#sec-miniapp-processing">dereference and processing algorithm</a>. These [=MiniApp Resources=] will remain available in the cache until the next update, avoiding unnecessary network fetches.</p>
+            <p>In terms of launch mode, a MiniApp can be launched normally when offline. The [=MiniApp User Agent=] locates the specified [=start page=] from the package cache path and launches the MiniApp according to the description set out in the [=manifest=] file.</p>
+        </section>
+        <section id="sec-terminology">
+            <h3>Terminology</h3>
+            <p>The following terms are specific to MiniApps.</p>
+            <dl class="termlist">
+                <dt><dfn id="dfn-signature" data-lt="signatures|signature|Digital Signature|Digital Signatures" data-dfn-type="dfn">Digital Signature</dfn></dt>
+                <dd>A cryptographic mechanism and hashing techniques to prove the authenticity of [=resources=]. Digital signatures can demonstrate the origin, time, identity, and status of [=resources=] and of the [=MiniApp Package=].</dd>
+                <dt><dfn id="dfn-filename" data-lt="file name|file names" data-dfn-type="dfn">File Name</dfn></dt>
+                <dd>The name of any file within a [=MiniApp Package=], either a directory or a file within a directory.</dd>
+                <dt><dfn id="dfn-miniapp" data-lt="MiniApps" data-dfn-type="dfn">MiniApp</dfn></dt>
+                <dd>A light software application, that can be distributed through any digital means, and accessed through the Web. MiniApps are defined by a concrete file structure, distributed within a single file [=MiniApp ZIP Container=] that represents the whole [=MiniApp Package=] that can be processed and executed by [=MiniApp User Agents=].</dd>
+                <dt><dfn id="dfn-manifest" data-lt="manifest|manifests" data-dfn-type="dfn">MiniApp Manifest</dfn></dt>
+                <dd>A JSON-based file that provides [=User Agents=] with metadata related to a MiniApp as specified in [[MINIAPP_MANIFEST]]. </dd>
+                <dt><dfn id="dfn-package" data-lt="MiniApp Package|MiniApp Packages" data-dfn-type="dfn">MiniApp Package</dfn></dt>
+                <dd>A logical document entity composed of a set of [=resources=] packaged in a [=MiniApp ZIP Container=].</dd>
+                <dt><dfn id="dfn-resource" data-lt="resources|resource" data-dfn-type="dfn">MiniApp Resource</dfn></dt>
+                <dd>A logical document that is part of the view or the logic of a MiniApp. Resources are included physically in [=MiniApp Packages=].</dd>
+                <dt><dfn id="dfn-page" data-lt="pages|page" data-dfn-type="dfn">MiniApp Page</dfn></dt>
+                <dd>A collection of information that is displayed in a [=MiniApp User Agent=], under the scope of a specific MiniApp. </dd>
+                <dt><dfn id="dfn-useragent" data-lt="User Agents|User Agent|MiniApp User Agent|MiniApp User Agents" data-dfn-type="dfn">MiniApp User Agent</dfn></dt>
+                <dd>A software application that gets, process and renders [=MiniApp Packages=], enabling execution and end-user interaction with MiniApps.</dd>
+                <dt><dfn id="dfn-container" data-lt="MiniApp ZIP Container|MiniApp ZIP Containers" data-dfn-type="dfn">MiniApp ZIP Container</dfn></dt>
+                <dd>The ZIP-based packaging and distribution format for MiniApps, as defined in [=MiniApp ZIP Container=].</dd>
+                <dt><dfn id="dfn-start-page" data-lt="MiniApp Start Page|MiniApp Start Pages|start pages" data-dfn-type="dfn">Start Page</dfn></dt>
+                <dd>The entry point of a MiniApp. The resource that is loaded and rendered by the [=MiniApp User Agent=] at the launch of the application.</dd>  
+            </dl>
+        </section>
+        <section id="conformance">
+            The MiniApp Packaging specification depends on the Infra Standard [[INFRA]] to describe algorithms.
+        </section>
     </section>
 
-    <section id='sotd'>
-        <!-- <p>
-            This is still a work in progress. The proposal is being incubated in the <a href="https://www.w3.org/community/miniapps/">W3C MiniApps Ecosystem Community Group</a>.
-        </p> -->
-    </section>
+    <section id="sec-conformance">
+        <h2>Package Conformance</h2>
+        <p>A conformant [=MiniApp Package=] MUST meet the following criteria:</p>
+        <ul class="conformance-list">
+            <li>The file system of a package MUST have a file structure based on a common [=Root Directory=], and two specific subdirectories: <code>i18n</code>, and <code>pages</code>.</li>
+            <li>The [=Root Directory=] MAY include a subdirectory <code>common</code> to store resources available at application level.</li>
+            <li>The [=Root Directory=] MUST contain one configuration file, named <code>manifest.json</code>, to describe and configure the runtime environment as defined in [=MiniApp Manifest=].</li>
+            <li>The [=Root Directory=] MUST contain one script document, named <code>app.js</code>, with the basic control logic of the MiniApp. </li>
+            <li>The [=Root Directory=] MUST contain one stylesheet, named <code>app.css</code>, following the CSS Syntax Module Level 3 [[CSS-SYNTAX-3]].</li>
+            <li>The whole [=MiniApp Package=] MUST be wrapped as a [[ZIP]] file, according to the requirements of [=MiniApp ZIP Containers=].</li>
+            <li>The file system of a package MAY contain other subdirectories and files of different nature as defined in the <a href="#sec-filestructure">Directory and File System Structure</a>.</li>
+        </ul>
+        <section id="sec-filestructure">
+            <h3>Directory and File System Structure</h3>
+            <p>The MiniApp Package has a file structure with some restrictions and reserved files and subdirectories.</p> 
+            <p>The following example shows a typical file system structure:</p>
+            <pre class="example" title="File sytem structure">
+                /
+                |___manifest.json
+                |___app.js
+                |___app.css
+                |___pages/
+                |       |___page1.js
+                |       |___page1.xml
+                |       |___page1.json
+                |       |___page1.css
+                |___common/
+                |       |___componentA.js
+                |       |___componentA.xml
+                |       |___componentA.css
+                |       |___componentA.json
+                |       |___example.png
+                |___i18n/
+                |       |___zh-Hans.json
+                |       |___en-US.json
+            </pre>
+            <section>
+                <h3>Root Directory</h3>
+                <p>The <dfn id="dfn-root-directory" data-lt="root directory|root directories" data-dfn-type="dfn">Root Directory</dfn> is the base directory of the [=MiniApp Package=] file system.</dd> 
 
-    <section>
-        <h2>Packaging</h2>
-        <p>Each MiniApp package is wrapped as a [[ZIP]] file. It contains, at the root level, a global configuration file (<code>manifest.json</code>) to describe and configure the whole MiniApp, an application logic file (<code>app.js</code>), and a default style file (<code>app.css</code>).
-        </p>
+                <p>The [=Root Directory=] of a [=MiniApp Package=] holds several reserved files that include global data and information about the lifecycle management of the MiniApp, including:</p>
+                <dl>
+                    <dt><code>manifest.json</code></dt>
+                    <dd>The [=MiniApp Manifest=] is a JSON document responsible for the global configuration of the MiniApp. A manifest file contains a collection of mandatory and optional attributes that indicate the setup of the MiniApp, including routes and paths of the pages and the window configuration of the MiniApp (e.g., styles of the navigation bar, background image and color, page title, among other), according to the MiniApp Manifest specification [[MINIAPP_MANIFEST]].</dd>
+                    <dt><code>app.css</code></dt>
+                    <dd>This file is the default CSS stylesheet, responsible for the global appearance of the [=MiniApp pages=]. It MAY be empty.</dd>
+                    <dt><code>app.js</code></dt>
+                    <dd>This script document has the basic service logic of the MiniApp and includes the basic control of the MiniApp lifecycle, including the management of events for launch, showing and hiding the  MiniApp.</dd>
+                </dl>
+            </section>
+            <section>
+                <h3><code>pages</code> Directory</h3>
+                <p>The <code>pages</code> directory contains a set of files for the display and user interaction of the [=MiniApp Pages=].</p>
+                <p>A [=MiniApp Page=] is defined by a set of [=resources=], whose files are identified by the file name (e.g., <code>intro</code>) and a specific extension that defines the type [=resource=], such as the service logic (e.g., <code>intro.js</code>), the configuration (e.g., <code>intro.json</code>), the structure (e.g., <code>intro.xml</code>) and the scoped stylesheet (e.g., <code>intro.css</code>).</p>
+                <p>Developers MAY choose to store all the files related to a page either under the <code>pages</code> directory or organized in specific sub-directories for each page.</p>
+                <ul>
+                    <li>A <code>.json</code> file is responsible for the configuration of a MiniApp page. The syntax and structure of these types of files are defined in the <a href="#sec-miniapp-resources-json">JSON Resources</a> section.</li>
+                    <li>A <code>.xml</code> file is responsible for the structure of a MiniApp page, similar to HTML. The syntax and structure of these types of files are defined in the <a href="#sec-miniapp-resources-xml">XML Resources</a> section.</li>
+                    <li>A <code>.css</code> file is responsible for the CSS style of a MiniApp page. The syntax and structure of these types of files are defined in the <a href="#sec-miniapp-resources-css">CSS Resources</a> section.</li>
+                    <li>A <code>.js</code> file is responsible for the service logic and lifecycle management (defined in MiniApp Lifecycle [[MINIAPP_LIFECYCLE]]) of a MiniApp page. The syntax and structure of these types of files are defined in the <a href="#sec-miniapp-resources-js">Scripting Resources</a> section.</li>
+                </ul>
+                <div class="issue" data-number="3"></div> 
+            </section>
+            <section>
+                <h3><code>common</code> Directory</h3>
+                <p>The optional <code>common</code> directory contains resources such as components, multimedia resources, and libraries that are accessible from all [=MiniApp Pages=] in a MiniApp. The internal structure of this directory is flexible, so these common resources MAY be organized in customized subdirectories, and using different name conventions, as needed.</p>
+            </section>
+            <section>
+                <h3><code>i18n</code> Directory</h3>
+                <p>The <dfn id="dfn-i18n-directory" data-dfn-type="dfn">i18n directory</dfn> is a subdirectory in the [=Root Directory=] that includes the [=localization resources=] of a [=MiniApp Package=].</p>
+                <p>The [=i18n Directory=] contains multi-language [=localization resources=] to support the internationalization of the MiniApp contents. The file name of each <code>.json</code> document in this directory follows the <code>Language-Tag</code> notation as defined in [[BCP47]], and represents the specific configuration for that particular language.</p>
+                <p>The [=i18n Directory=] MAY contain as many [=localization resources=] as languages or locales a MiniApp supports. The format of these files is defined in the <a href="#sec-miniapp-resources-i18n">Localization Resources</a> section.</p> 
+            </section>
+            <section>
+                <h3>File Names</h3>
+                <p>Any [=File Name=] within a [=MiniApp Package=] MUST comply with the following restrictions to accomodate the potential limitations of the operating systems and facilitate the compatibility with the majority of the platforms:</p>
 
-        <p>The MiniApp package also contains multiple page related files in the <code>pages</code> directory, and other common resource files in the <code>common</code> directory </p>
-
-        <p>One typical illustrative example of a MiniApp package is the following:</p>
-
-        <pre class="example">
-            |___manifest.json
-            |___app.js
-            |___app.css
-            |___pages
-            |       |___page1.js
-            |       |___page1.xml
-            |       |___page1.json
-            |       |___page1.css
-            |___common
-            |       |___componentA.js
-            |       |___componentA.xml
-            |       |___componentA.css
-            |       |___componentA.json
-            |       |___example.png
-            |___i18n
-            |       |___zh-Hans.json
-            |       |___en-US.json
-        </pre>
-
-        <section>
-            <h2>root files</h2>
-            <p>
-                The MiniApp package contains at the root level the global data and lifecycle management of the MiniApp in the form of the following files:
-            </p>
-
-            <ul>
-                <li><code>manifest.json</code> is responsible for the global configuration of the MiniApp, such as the file paths of MiniApp pages and the window configuration (e.g. navigator bar, background image and color, page title, etc.). Details are specified in the <a href="../manifest/index.html">Manifest specification</a>.</li>
-                <li><code>app.css</code> is responsible for the global CSS style for all MiniApp pages.</li>
-                <li><code>app.js</code> is responsible for the service logic of the MiniApp as well as the lifecycle management of it, such as launching, showing and hiding the MiniApp.</li>
-            </ul>
+                <ul class="conformance-list">
+                    <li>File Names are case sensitive</li>
+                    <li>File Names MUST be UTF-8 [[Unicode]] encoded.</File>
+                    <li>File Names MUST NOT exceed 255 bytes.</li>
+                    <li>File Names MUST NOT use the following [[Unicode]] characters:
+                        <ul>
+                            <li>LESS-THAN SIGN: <code><</code> (<code>U+003C</code>)</li>
+                            <li>GREATER-THAN SIGN: <code>></code> (<code>U+003E</code>)</li>
+                            <li>COLON: <code>:</code> (<code>U+003A</code>)</li>
+                            <li>QUESTION MARK: <code>?</code> (<code>U+003F</code>)</li>
+                            <li>SOLIDUS: <code>/</code> (<code>U+002F</code>)</li>
+                            <li>REVERSE SOLIDUS: <code>\</code> (<code>U+005C</code>)</li>
+                            <li>VERTICAL LINE: <code>|</code> (<code>U+007C</code>)</li>
+                            <li>ASTERISK: <code>*</code> (<code>U+002A</code>)</li>
+                            <li>QUOTATION MARK: <code>"</code> (<code>U+0022</code>)</li>
+                            <li>FULL STOP at the end: <code>.</code> (<code>U+002E</code>)</li>
+                            <li>DEL (<code>U+007F</code>)</li>
+                            <li>C0 range (<code>U+0000</code> … <code>U+001F</code>)</li>
+                            <li>C1 range (<code>U+0080</code> … <code>U+009F</code>)</li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="issue">
+                    To complete the list of restricted characters.
+                </div>                
+            </section>
         </section>
-        <section>
-            <h2>pages</h2>
-            <p>
-                The <code>pages</code> directory contains sets of files for the display and user interaction of all MiniApp pages. Each set of files that shares the same base file name (e.g. 'page1') with different extension names describe a particular page on different aspects, such as the service logic (e.g. page1.js), the configuration (e.g. page1.json), the structure (e.g. page1.xml) and the style (e.g page1.css). Developers can choose to put all page files directly under the <code>pages</code> directory in a flat manner, or organize them in different sub-directories for different pages.
-            </p>
-
-            <ul>
-                <li>A <code>.json</code> file is responsible for the configuration of a MiniApp page.</li>
-                <li>A <code>.xml</code> file is responsible for the structure of a MiniApp page, similar to HTML.</li>
-                <li>A <code>.css</code> file is responsible for the CSS style of a MiniApp page.</li>
-                <li>A <code>.js</code> file is responsible for the service logic and lifecycle management (defined in <a href="https://w3c.github.io/miniapp/specs/lifecycle/">MiniApp Lifecycle</a>) of a MiniApp page.</li>
-            </ul>
-        </section>
-
-        <section>
-            <h2>common</h2>
-            <p>The <code>common</code> directory contains common resources such as components, multimedia resources, and utils (js files). Developers can choose to put all resource files directly under the <code>common</code> directory in a flat manner, or organize them in different sub-directories as needed.</p>
-        </section>
-
-        <section>
-            <h2>i18n</h2>
-            <p>
-                The <code>i18n</code> directory contains multi-language configuration files to support internationalization. The name of each <code>.json</code> file in this directory follows the <code>Language-Tag</code> as defined in [[BCP47]], and represents the specific configuration for that particular language.
-                <p class="note">
-                    <span>Note:</span>
-                    The detailed format of the <code>.json </code> file is to be further developed.
+        <section id="sec-miniapp-resources">
+            <h3>MiniApp Resources</h3>
+            <section id="sec-miniapp-resources-json">
+                <h3>JSON Resources</h3>
+                <div class="issue" data-number="3"></div>
+            </section>
+            <section id="sec-miniapp-resources-xml">
+                <h3>XML Resources</h3>
+                <p>MiniApp user interfaces, including the visual components that defines the structure and the interaction elements of the pages, are described in XML resources.</p>
+                <p>XML resources MUST meet all the following criteria:</p>
+                <dl class="conformance-list">
+                    <dt>File extension</dt>
+                    <dd>A XML document SHOULD use the file extension <code>.xml</code>.</dd>
+                </dl>
+                <div class="issue" data-number="2"></div>
+            </section>
+            <section id="sec-miniapp-resources-css">
+                <h3>CSS Resources</h3>
+                <p>The content is rendered and presented to end-users according to CSS Style Sheets. MiniApp User Agents support CSS modules as defined in the [[CSS_SNAPSHOT]].</p>
+                <p>CSS resources MUST meet all the following criteria:</p>
+                <dl class="conformance-list">
+                    <dt>File extension</dt>
+                    <dd>A MiniApp stylesheet filename SHOULD use the file extension <code>.css</code>.</dd>
+                </dl>
+                <div class="issue">To add syntax and modules supported.</div>
+            </section>
+            <section id="sec-miniapp-resources-js">
+                <h3>Scripting Resources</h3>
+                <p>MiniApps contains scripting resources, documents written in JavaScript, that provide the MiniApp with functionality and logic.</p>
+                <p>Scripting resources MUST meet all the following criteria:</p>
+                <dl class="conformance-list">
+                    <dt>File extension</dt>
+                    <dd>A MiniApp JavaScript filename SHOULD use the file extension <code>.js</code>.</dd>
+                </dl>
+            </section>
+            <section id="sec-miniapp-resources-i18n">
+                <h3>Localization Resources</h3>
+                <p>A <dfn id="dfn-localization-resources" data-lt="localization resources|localization resource" data-dfn-type="dfn">Localization Resource</dfn> is a document of a [=MiniApp Package=] that included localized content as part of the [=internationalization=] mechanism of MiniApps.</p>
+                <p>A multilingual MiniApp MAY has several [=Localization Resources=] that will be used during the [=localization=] process by the [=User Agents=] to render content according to the system locale or the user's language preferences. These resources contain JSON objects with key-value pairs that contain the unique identifier (the key) of a localizable term or expression and the representation in the concrete language (the value).</p>
+                <pre class="example" title="Localization resource">
+                    {
+                        "title": "Cool MiniApp",
+                        "about": "About this MiniApp",
+                        "intro-page": {
+                            "title" : "Introduction",
+                            "main" : "This is the body of the page"
+                        }
+                    }
+                </pre>
+                <p>[=Localization Resources=] MUST meet all the following criteria:</p>
+                <dl class="conformance-list">
+                    <dt>File extension</dt>
+                    <dd>A [=Localization Resource=] filename SHOULD use the file extension <code>.json</code>.</dd>
+                    <dt>Format</dt>
+                    <dd>A [=Localization Resource=] MUST be a valid JSON document.</dd>
+                    <dt>Structure</dt>
+                    <dd>A [=Localization Resource=] MUST be composed of key-value pairs. Each key represents a unique identifier for each localizable string (the values).</dd>
+                </dl>
+                <p class="issue" title="Still to define the format">
+                        The detailed format of the <code>.json </code> file is to be further developed.
                 </p>
-            </p>
-        </section>
+                <p class="issue" title="Still to define the locale file selection">
+                        To define the detailed process of file selection according to the system locale.
+                </p>
+                <div class="issue" data-number="1"></div>   
+            </section>
+            <section id="sec-miniapp-resources-other">
+                <h3>Other Resources</h3>
+                <div class="issue">To add images, libraries and others.</div>
+            </section>
+        </section> 
     </section>
-
-    <section>
-        <h2>Security & Privacy Considerations</h2>
-
-        <section>
-            <h2>Integrity & Trustworthiness</h2>
-            <p>
-                To ensure the integrity and trustworthiness, a MiniApp package SHOULD be protected by one or more digital signatures by the author (e.g. the MiniApp developer) and/or distributors (e.g. an application store) along with certificates issued by trusted authorities.
-                <li>A digital signature (with a valid certificate) by the author ensures the origin of the MiniApp, so that an end user or a hosting platform can decide whether to install the MiniApp package according to the knowledge about the author (e.g. credits, blocklist, quality).</li>
-                <li>A digital signature (with a valid certificate) by a distributor ensures the integrity of the package and trustworthiness of the delivery channel, so that the end user can be protected from tampered software and can benefit from a healthier ecosystem. </li>
-            </p>
-        
-            <p>
-                Proven technologies such as [[RFC5652]] (i.e. PKCS#7) can be used as the solution of the digital signatures for MiniApp package. Further evaluation is expected regarding whether it needs to be standardized in detail (e.g. the content scope under protection, additional attributes of concern, file format of the signature block, procedures), or is left to the discretion of implementations.
-            </p>
+  <section id="sec-miniapp-zip-container">
+      <h2>MiniApp ZIP Container</h2>
+        <section id="sec-miniapp-zip-container-intro" class="informative">
+            <h3>Introduction</h3>
+            <p>A [=MiniApp ZIP Container=] is a physical single-file representation of a MiniApp that can be used to distribute it in different scenarios, including:</p>
+            <ul>
+                <li>An organization that stores and lists catalogs of MiniApps (i.e., marketplace);</li>
+                <li>A developer that builds a MiniApp and delivers it to a marketplace;</li>
+                <li>A developer that shares a MiniApp with the <abbr title="Quality Assurance">QA</abbr> department for testing.</li>
+            </ul>
+            <p>A [=MiniApp ZIP Container=] contains all the resources that conforms a MiniApp, according to the [=MiniApp Package=] structure in a single file. This format supports the 
+   use of compression mechanisms and MAY use encryption mechanisms to protect files within the file.</p>
         </section>
-        
-        <section>
-            <h2>Confidentiality</h2>
-            <p>
-                There is no requirement to develop a standardized encryption mechanism for the MiniApp package to protect its confidentiality. However, it doesn't preclude an implementation from deploying some encryption mechanism for  special purpose.
-        
-            </p>
-        </section>
+        <section id="sec-miniapp-zip-file-requirements">
+            <h3>ZIP File Requirements</h3>
+            <p>A [=MiniApp ZIP Container=] uses the ZIP format as defined in [[ZIP]], including some particularities:</p>
+        	<ul class="conformance-list">
+                <li>The contents of the [=MiniApp ZIP Container=] MUST be a conforming [=MiniApp Package=].</li>
+                <li>MiniApp ZIP Containers MUST NOT use the ZIP encryption mechanisms.</li>
+                <li>Data integrity MUST be provided for each file using CRC32 as specified in [[ZIP]].</li>
+                <li>MiniApp ZIP Containers MUST NOT use the features in the ZIP application note [[ZIP]] that allow ZIP files to be spanned across multiple storage media, or split into multiple files.</li>
+                <li>MiniApp ZIP Containers MUST include ZIP uncompressed (method <code>0</code>, file stored) and Deflate-compressed (method <code>0</code>, lossless data compression) contents within the ZIP archive, according to the [[ZIP]] specification.</li>
+                <li>MiniApp ZIP Containers MUST use UTF-8 [[Unicode]] for encoding filenames.</li>
+                <li>MiniApp ZIP Containers MUST NOT use patented features.</li>
+                <li>MiniApp ZIP Containers MAY include a special block, the [=MiniApp Signing Block=], to allow digital signatures affecting the whole package.</li>
+                <li>The minimum version of ZIP to extract a [=MiniApp ZIP Container=] is <code>2.0</code> (supporting folders and Deflate compression), according to the [[ZIP]] specification.</li>
+            </ul>
+            <div class="issue" data-number="4"></div>
+            <p>The structure of a MiniApp ZIP Container is as follows:</p>
+            <pre>
+    [ZIP File Entries]
+    [MiniApp Signing Block]    
+    [ZIP Central Directory]
+    [End of ZIP Central Directory]</pre>
 
+            <figure id="figure-zip-summary">
+                <img src="images/signature_zip_summary.svg" alt="Structure of standard ZIP package and the MiniApp package with a signing block in the middle" />
+                <figcaption>ZIP package and MiniApp package with an optional signing block</figcaption>
+            </figure>
+
+            <p>The [=MiniApp ZIP Container=] is parsed by first finding the start of the ZIP Central Directory (locating the ZIP End of Central Directory record at the end of the file, then reading the start offset of the Central Directory from the record). Every MiniApp Signing Block MAY include a [=Signing Block Magic Numbers=] block, as specified in <a href="#sec-miniapp-digital-signature-requirements">Digital Signature Requirements</a>, to identify the presence of digital signatures. Once the "magic numbers" block is recognized, the [=User Agent=] would be able to process the digital signatures stored in the Signing Block, in the immediately preceding section of the Central Directory, as shown in <a href="#figure-package-references"></a>.</p>
+
+
+            <figure id="figure-package-references">
+                <img src="images/signature_zip_complete.svg" alt="Structure of standard ZIP package and the MiniApp package with a signing block in the middle and references to the different blocks of the package" />
+                <figcaption>ZIP and MiniApp packages with references to the different blocks using relative offset addessing</figcaption>
+            </figure>
+
+            <p>MiniApps vendors MAY adopt the digital signature schemes depending on their needs.</p>  
+            <p class="ednote" title="To add extension">
+                MiniApp files MAY be identified by the .ma file extension although the use of a file extension is not required.
+            </p>    
+        </section>
+        <section id="sec-miniapp-digital-signature-requirements">
+            <h3>Digital Signature Requirements</h3>  
+            <p>A [=MiniApp ZIP Container=] MAY include none, one, or more [=signatures=] to help to detect any changes to the protected parts of the software, guaranteeing the integrity of the MiniApp.</p>
+            <p>A <dfn id="dfn-signing_block" data-lt="Signing Block|MiniApp Signing Block|MiniApp Signing Blocks" data-dfn-type="dfn">MiniApp Signing Block</dfn> is a collection of bytes that contains specific information and metadata about the digital signature that affects a MiniApp, partially or as a whole. The [=Signing Block=] of a [=MiniApp ZIP Container=] MUST be located immediately before the central directory of the ZIP container, in a way that makes it easier to locate the block if exists.</p>
+            <p>The <dfn id="dfn-magic-numbers" data-lt="magic numbers|signing block magic numbers" data-dfn-type="dfn">Signing Block Magic Numbers</dfn> block is A 16-byte sequence with a unique fingerprint that identifies a digital signature mechanism for a [=MiniApp Package=], stored in the Signing Block of [=MiniApp ZIP Container=].</dd>
+            <p>Although this document does not recommend any specific digital signature mechanism (i.e., hash algorithms, encryption methods, etc.), the [=Signing Block=], if present, MUST meet the following criteria:</p>
+        	<dl class="conformance-list">
+                <dt>Signing Block Magic Numbers</dt>
+                <dd>A [=Signing Block=] MUST contains [=Signing Block Magic numbers=], as the preceding block of the Central Directory to identify univocally the type of digital signature included.</dd>
+            </dl>
+        </section>
+        <div class="issue">
+            To open a discussion to confirm this approach. 
+        </div>             
     </section>
-
-    <section>
-        <h2>IANA Considerations</h2>
+    <section id="sec-miniapp-i18n">
+        <h2>Internationalization</h2>
+        <p><dfn id="dfn-i18n" data-lt="internationalization|i18n" >Internationalization</dfn>, abbreviated to <abbr title="internationalization">i18n</abbr>, is the process of designing and developing a product in a way that ensures it can be easily adapted for users from any culture, region, or language.</p>
+        <p><dfn id="dfn-localization" data-lt="localization" >Localization</dfn> is the process of content adaptation to meet a target language or cultural requirements.</p>
+        <p>MiniApps enable localization of contents using a mechanism based on localized documents placed in the reserved [=i18n Directory=]. This mechanism allows authors to place [=localization resources=], named according to a <code>language-range</code> [[RFC4647]] and the <code>.json</code> extension. This is, documents with the localization resources will be identified with language tags [[RFC4646]] that represent the locale of the content. [=MiniApp User Agents=] match the language ranges held by their locales to the appropriate locale file name.</p>
+        <p>The format of the [=localization resources=] is defined in the <a href="#sec-miniapp-resources-i18n">Localization Resources</a> section.</p>
+        <div class="issue">To link with Manifest i18n Section</div> 
+        <pre class="example" title="Filenames based on language tags in the i18n directory">
+                /
+                |___i18n/
+                |     |___en-US.json
+                |     |___fr-FR.json
+                |     |___fr.json            
+                |     |___ja-JP.json
+                |     |___zh-Hans.json                
+        </pre> 
+    </section>
+    <section id="sec-miniapp-processing" data-cite="infra">
+      <h2>MiniApp Package Processing</h2>
         <p>
-            The proposed MIME type for the MiniApp package is <code>application/miniapp-pkg+zip</code> following <a href="https://tools.ietf.org/html/rfc6839#section-3.6">the +zip Structured Syntax Suffix</a> defined in [[RFC6839]]. It needs to be registered with <a href="https://www.iana.org/">IANA</a> when this work moves to a normative phase. There is no specific fragment identifier consideration for now.
+            [=User Agents=] MUST follow the following algorithm to dereference, parse and execute a [=MiniApp Package=]. 
+        </p>
+        <p>To <dfn>process a MiniApp Package</dfn>, given an optional |miniapp_uri|, perform the following steps:</p>
+        <ol class="algorithm">
+            <li>Let |miniapp_zip_file| be the result of [=retrieving a MiniApp ZIP Container=] with an optional |miniapp_uri|</li>
+            <li>[=Verify a MiniApp ZIP Container=] file with |miniapp_zip_file|.</li>
+            <li>Let |miniapp_package| be the result of unzipping the |miniapp_zip_file|.</li>
+            <li>If |miniapp_package| is an unzip exception, then return failure.</li>
+            <li>[=Process the MiniApp Manifest=] with |miniapp_package|.</li>
+            <li>Let |start_page| be the result of [=preparing the platform runtime=] with an optional |miniapp_uri|.</li>
+            <li>Execute runtime with |start_page|.</li>
+        </ol>
+
+        <section id="sec-miniapp-processing-acquire">
+            <h3>Retrieve a MiniApp ZIP Container</h3>
+            <p>[=User Agents=] MAY obtain [=MiniApp ZIP Containers=] through different channels, retrieving the file over the network (i.e., using HTTPs, WebSocket, FTP, or other specific TCP/UDP based protocols), also from the filesystem or using any other mechanism.</p>
+            <p>To <dfn data-lt="retrieving a MiniApp ZIP Container" data-dfn-type="dfn">Retrieve a MiniApp ZIP Container</dfn>, given an optional |miniapp_uri|, perform the following steps. They return a [=MiniApp ZIP Container=].</p>
+            <ol class="algorithm">
+                <li>Let |resource| be a [=MiniApp ZIP Container=] as a result of resource retrieval.</li>
+                <li>Let |supplied_mime_type| be the result of applying the <a href="https://mimesniff.spec.whatwg.org/#supplied-mime-type-detection-algorithm">supplied MIME type detection algorithm</a> [[MIME_SNIFF]] with |resource|.</li>
+                <li>If |supplied_mime_type| is not equal to <code>application/miniapp-pkg+zip</code>, then return failure.</li>
+                <li>Return |resource|.</li>
+            </ol>
+        </section>
+
+        <section id="sec-miniapp-processing-verify">
+            <h3>Verify a MiniApp ZIP Container</h3>
+            <p>[=User Agents=] MAY guarantee the legitimacy and integrity of the [=MiniApp ZIP Container=] and its content by verifying digital signatures and applying cryptographic mechanisms.</p>  
+            <p>To <dfn data-lt="verifying a MiniApp ZIP Container">Verify a MiniApp ZIP Container</dfn>, given |miniapp_zip_file|, perform the following steps:</p>
+            <ol class="algorithm">
+                <li>If the [=User Agent=] has the capability to perform verification of the digital signature(s) of the |miniapp_zip_file|, then: </br>
+                    [=Process the Digital Signatures=] with |miniapp_zip_file|.
+                </li>
+            </ol>
+            <div class="issue">
+                To add more information about optional encryption? If so, align with the ZIP container section.  
+            </div>
+            <section id="sec-miniapp-processing-verify-magic">
+                <h4>Process Digital Signatures</h4>
+                <p>The [=MiniApp ZIP Container=] MAY contain a Signing Block that includes one or more signatures. The signing schemes and cryptographic mechanisms depend on the concrete implementation by [=User Agents=].</p> 
+                <p>Signing schemes are identified by the [=magic numbers=] section included in the [=MiniApp ZIP Container=], a 16-byte sequence located inmediately before the Central Directory of the ZIP package.</p>
+                <p>To <dfn data-lt="processing the digital signatures">Process the Digital Signatures</dfn>, given |miniapp_zip_file|, perform the following steps:</p>
+                <ol class="algorithm">
+                    <li>Let |magic_numbers| be a [=byte sequence=].</li>
+                    <li>Let |eocd_pointer| be the result of locating the byte sequence <code>0x06054b50</code> (read as little-endian) in |miniapp_zip_file| that marks the End of the Central Directory.</li>
+                    <li>Set |eocd_pointer| to |eocd_pointer| + 0x00000010.</li>
+                    <li>Let |cd_pointer| be the result of reading the 4-byte sequence at |eocd_pointer|.</li>
+                    <li>Let |magic_numbers_pointer| be |eocd_pointer| - 0x00000010.</li>
+                    <li>Set |magic_numbers| to the 16-byte block at |magic_numbers_pointer|.</li>
+                    <li>Process the digital signatures with |magic_numbers| and |miniapp_zip_file|.</li>
+                </ol>
+                <div class="example">
+                    <p>The MiniApp Signing Block may be encoded using any digital signature scheme that is identified by the 16-byte [=Magic Numbers=] block located just inmediately the Central Directory in the [=MiniApp ZIP Container=]. As shown in the example in <a href="#figure-miniapp-location-magic-numbers"></a>, the End of Central Directory, identified by the values <code>0x06054b50</code>, contains the offset that enables [=User Agents=] to identify the start of the Central Directory block, and subsequently the magic numbers at the end of the [=Signing Block=].</p>
+                    <figure id="figure-miniapp-location-magic-numbers">
+                        <img src="images/signature_bytes_central_directory.svg" alt="Location of the magic numbers within the MiniApp Package" />
+                        <figcaption>Example of End of Central Directory signature, location of the Central Directory and signature magic numbers</figcaption>
+                    </figure>
+                </div>
+            </section>
+        </section>
+
+        <section id="sec-miniapp-processing-manifest">
+            <h3>Process the MiniApp Manifest File</h3>
+            <p>[=User Agents=] MUST parse the [=MiniApp Manifest=], located in the [=MiniApp Package=], that contains global metadata about the MiniApp.</p>  
+            <p>To <dfn data-lt="processing the MiniApp Manifest">process the MiniApp Manifest</dfn>, given |miniapp_package|, perform the following steps. They return [=MiniApp Manifest=].</p>
+            <ol class="algorithm">
+                <li>If <code>manifest.json</code> does not exist in the [=Root Directory=], then return failure.</li>
+                <li>Let |manifest_json| be the result of [=parse JSON from bytes=] <code>manifest.json</code> file.</li>
+                <li>If |manifest_json| is a parsing exception, or the type of |manifest_json| is not object, then return failure.</li>
+                <li>Extract descriptive metadata from |manifest_json|.</li>
+                <li>Return |manifest_json|.</li>
+            </ol>
+        </section>
+
+        <section id="sec-miniapp-processing-platform">
+            <h3>Prepare the platform runtime</h3>
+            <p>[=User Agents=] SHOULD prepare the runtime environment that contains both the logic and the view layers. The logic layer is responsible for logic and control of the application (i.e., <code>app.js</code>, and <code>page.js</code> files). The view layer is responsible for the visual environment and rendering, including the page resource files, such as component templates and stylesheets. In preparation for running a MiniApp, [=User Agents=] MUST set up the environment with the configuration specified by the [=MiniApp Manifest=] metadata.</p>
+            <p>[=User Agents=] MUST identify and load the first page as the MiniApp entry point, according to the following algorithm.</p>
+            <p>To <dfn data-lt="preparing the platform runtime">prepare the platform runtime</dfn>, given optional |miniapp_uri| and |manifest_json|, perform the following steps. They return a [=MiniApp Start Page=].</p>
+            <ol class="algorithm">
+                <li>If <code>app.js</code> does not exist in the [=Root Directory=], then return failure.</li>
+                <li>If <code>app.css</code> does not exist in the [=Root Directory=], then return failure.</li>
+                <li>If <code>i18n/</code> sub-directory does not exist in the [=Root Directory=], then return failure.</li>
+                <li>[=Check dependencies=] with |manifest_json|.</li>
+                <li>[=Determine the start page=] with optional |miniapp_uri| and |manifest_json|.</li>
+                <li>[=Reload package=] with |miniapp_uri|.</li>
+            </ol>
+            <section id="sec-miniapp-processing-platform-dependencies">
+                <h4>Check Dependencies</h4>
+                <p class="todo">To <dfn>check dependencies</dfn>, given |manifest_json|, perform the following steps...</p>
+            </section>
+            <section id="sec-miniapp-processing-platform-start-page">
+                <h4>Determine Start Page</h4>
+                <p >To <dfn>determine the start page</dfn>, given optional |miniapp_uri| and |manifest_json|, perform the following steps. They return a [=string=].</p>
+                <ol class="algorithm">
+                    <li>Let |start_page_id| be a [=string=].</li>
+                    <li>If |miniapp_uri| is set, then <br/>
+                        Set |start_page_id| as a result of [=extracting the start page from the MiniApp URI=].</li>
+                    <li>If |start_page_id| is not set or |start_page_id| is equal to null, then:<br/> 
+                        Set |start_page_id| as a result of [=extracting the start page from the manifest=].</li>
+                    <li>If |start_page_id| does not exist in the |miniapp_package|, then return failure.</li>
+                    <li>Return |start_page_id|</li>
+                </ol>  
+                <section id="sec-miniapp-processing-platform-start-page-uri">
+                    <h5>Extract Start Page From MiniApp URI</h5>
+                    <p class="todo">To <dfn data-lt="extracting the start page from the MiniApp URI">extract the start page from the MiniApp URI</dfn>, given |miniapp_uri|, perform the following steps...</p>
+                </section>
+                <section id="sec-miniapp-processing-platform-start-page-manifest">
+                    <h5>Extract Start Page From Manifest</h5>
+                    <p>To <dfn data-lt="extracting the start page from the manifest">extract the start page from the manifest</dfn>, given |manifest_json|, perform the following steps. They return a [=string=].</p>
+                    <ol class="algorithm">
+                        <li>Let |start_page_id| be the empty [=string=].</li>
+                        <li>Let |pages_array| be null.</li>
+                        <li>Set |pages_array| |manifest_json|["pages"].</li>
+                        <li>If IsArray(|pages_array|) is true and |pages_array|.length is greater than 0, then:<br/>
+                            Set |start_page_id| to |pages_array|[0].</li>
+                        <li>Return the |start_page_id|.</li>
+                    </ol>
+                </section>
+            </section>
+            <section id="sec-miniapp-processing-platform-reload-package">
+                <h4>Reload Package</h4>
+                <p>(The [=User Agent=] SHOULD cache the Max-Age of a specific version of the package archive).</p>
+                <p class="todo">To <dfn>reload package</dfn>, given |miniapp_uri|, perform the following steps...</p>
+            </section>
+        </section>
+
+        <section id="sec-miniapp-processing-execute">
+            <h3>Execute MiniApp Runtime</h3>
+            <p class="todo">To <dfn>execute the MiniApp Runtime</dfn>, given |start_page|, perform the following steps...</p>
+        </section>
+    </section>         
+    <section id="sec-security-privacy">
+        <h2>Security and Privacy Considerations</h2>
+        <section>
+            <h3>Package Integrity and Trustworthiness</h3>
+            <p>To ensure the integrity and trustworthiness within the distribution stage of MiniApps, a [=MiniApp Package=] SHOULD be protected by one or more [=Digital Signatures=]. These signatures, along with certificates issued by trusted authorities, could help third parties to validate the authorship of the MiniApp (e.g. the MiniApp developer), and other entities involved in the development or distribution of the software (e.g., an application store as MiniApp distributor).</p>
+            <p>The usual scenarios where digital signatures are included in MiniApps are, but not limited to:</p> 
+            <ul>  
+                <li>A digital signature (with a valid certificate) of the author that ensures the origin of the MiniApp, which gives a recipient strong reason to believe that this package was created by a known sender (authentication) and that the message was not altered in transit (integrity). Thus, an end-user or a hosting platform can decide whether to install the [=MiniApp Package=] depending on the status and quality of the author (e.g., credits, blocklist, certifications, etc.).</li>
+                <li>Distributors’ signatures (for example, official marketplace signatures), which are used to ensure the trustworthiness of the delivery channel. This kind of signature protects end-users from tampering activities and ensures a healthy ecosystem of applications. </li>
+            </ul>
+            <p>No specific digital signature mechanism, cryptographic technology, or algorithm is recommended in this specification. MiniApp vendors MAY or MAY NOT implement digital signature mechanisms, according to their use cases, always following the [=MiniApp Package=] requirements.</p>
+
+            <P>Any MiniApp may have different digital signatures, using different methods, as represented in the <a href="#figure-miniapp-signatures-example"></a>.</P>
+            
+            <figure id="figure-miniapp-signatures-example">
+                <img src="images/signature_zip_example.svg" alt="Example of signing blocks with different signature scheme in the MiniApp Package" />
+                <figcaption>Example of different signature methods included in the MiniApp package</figcaption>
+            </figure>
+
+            <p class="note">Some examples of technologies and encryption methods are introduced in the <a href="#sec-signature-schemes"></a>.</p>
+
+        </section>
+        <section>
+            <h3>Content Confidentiality</h3>
+            <p>This specification does not recommend any encryption mechanism for the MiniApp package to protect its confidentiality. However, it doesn't preclude an implementation from deploying some encryption mechanism for special purposes.</p>
+        </section>
+    </section>    
+
+    <section class="appendix informative" id="sec-acknowledgments">
+        <h2>Acknowledgments</h2>
+		<div class="issue">List all the contributors and W3C Team contacts</div>
+    </section>
+    <section class="appendix informative" id="sec-signature-schemes">
+        <h2>Signature Schemes</h2>
+
+        <p>Every [=User Agent=] MAY support its own digital signature schemes depending on their needs. This section includes some examples of digital signature implementations supported in specific scenarios, such as developer verification and integrity of a MiniApp during its distribution.</p>   
+
+        <section  id="sec-signature-rpk">
+            <h3>RPK Signature Scheme</h3>
+            <p>One of the methods of Huawei Quick App to verify the authorship of the MiniApp Package is using a whole-file digital signature based on the APK Signature Scheme v2 [[?APK_SIGNATURE_V2]]. This signature scheme was developed to increase verification speed and preserve the integrity of the protected parts of the package.</p>
+            <p>Using this digital signature mechanism, every byte in the MiniApp package is involved in the signature generation. The resulting Signing Block is created and inserted into the package file, according to the <a href="sec-miniapp-digital-signature-requirements">Digital Signature Requirements</a>.</p>
+            <p>The Signing Block contains ID-value pairs with information about the signature and the signer identity.</p> 
+            
+            <p class="note">All data values in the RPK Signing Block are represented in little-endian format, and all length-prefixed fields use <code>uint32</code> for length.</p>
+            
+            <p>The description  uses the following basic data types:</p>
+            <dl>
+                <dt>uint64</dt>
+                <dd>64-bit (8-byte) unsigned integer in little-endian format</dd>
+                <dt>uint32</dt>
+                <dd>32-bit (4-byte) unsigned integer in little-endian format</dd>
+            </dl>
+
+            <h4>Signing Block Format</h4>
+            <p>The format of the RPK Signing Block is as follows:</p>
+            <ul>
+                <li><strong>block size</strong> in bytes, excluding this field (uint64)</li>
+                <li>Sequence of ID-value pairs (where the <a href="#sec-signing-block-signature">Signatures</a> are defined):
+                    <ul>
+                        <li><strong>size</strong> of ID-value pair (uint64)</li> 
+                        <li><strong>ID</strong> (uint32)</li>
+                        <li><strong>value</strong> (size of ID-value pair - 4 bytes)</li>
+                    </ul>
+                </li>
+                <li><strong>block size</strong> in bytes (the same as first field) (uint64)</li>
+                <li><strong>magic numbers</strong> “<code>RPK Sig Block 42</code>” (16 bytes)</li>
+            </ul>
+
+            <p>ID-value pairs with unknown IDs should be ignored when interpreting the block.</p>
+            <p>The "block size" value enables locating the start of the signing block in the whole ZIP file.</p>
+                
+            <section id="sec-signing-block-signature">
+                <h5>Signatures</h5>
+                <p>The signatures are stored as <strong>ID-value pairs</strong> with specific identifiers that represent the type of the signature. The supported signatures, and associated IDs, for RPK packages are the following:</p>
+                <ul>
+                    <li><code>0x01000101</code> Entire package signature, to guarantee the integrity of the MiniApp as a whole.</li>
+                    <li><code>0x01000201</code> File list signature</li>
+                </ul>
+
+                <section>
+                    <h6>Entire Package Signature</h6>
+                    <p>The ID-value pair in the Signing Block under ID <code>0x01000101</code> represents the data of the signature of the whole-file [=MiniApp Package=].</p>
+                    <p>The value of the ID-pair contains all the signature blocks and it has a variable length and its structure is as follows:</p>
+                    <ul>
+                        <li><strong>ID</strong>: <code>0x01000101</code> (uint32)</li>
+                        <li><strong>value</strong>:
+                            <ul>
+                                <li><strong>size</strong> of signer blocks, excluding this field (uint32)</li>
+                                <li>Sequence of <strong>signer blocks</strong>:
+                                    <ul>
+                                        <li><strong>size</strong> of signer block, excluding this field (uint32)</li>
+                                        <li><strong>signed data</strong>:
+                                            <ul>
+                                                <li><strong>size</strong> of digests, excluding this field (uint32)</li>
+                                                <li>Sequence of <strong>digests</strong>:
+                                                    <ul>
+                                                        <li><strong>size</strong> of digest block, excluding this field (uint32)</li>                                                
+                                                        <li><strong>signature algorithm ID</strong> (uint32)</li>
+                                                        <li><strong>size</strong> of digest content, excluding this field (uint32)</li>                                                
+                                                        <li><strong>digest</strong> content (variable length)</li>
+                                                    </ul>
+                                                </li>
+                                                <li><strong>size of certificates</strong>, excluding this field (uint32)</li>
+                                                <li>Sequence of <strong>certificates</strong>:
+                                                    <ul>
+                                                        <li><strong>size</strong> of certificate, excluding this field (uint32)</li>
+                                                        <li><strong>X.509 certificate</strong> [[?rfc2528]] in <abbr title="Abstract Syntax Notation One">ASN.1</abbr> <abbr title="Distinguished Encoding Rules">DER</abbr> form [[?X690]] (variable length)</li>
+                                                    </ul>
+                                                </li>
+                                                <li><strong>size</strong> of additional attributes, excluding this field (uint32)</li>                                                        
+                                                <li><strong>additional attributes</strong></li>
+                                            </ul>
+                                        <li><strong>size</strong> of signatures, excluding this field (uint32)</li>
+                                        <li>Sequence of <strong>signatures</strong>:
+                                            <ul>
+                                                <li><strong>size</strong> of signature, excluding this field (uint32)</li>
+                                                <li><strong>signature algorithm ID</strong> (uint32)</li>
+                                                <li><strong>size</strong> of signature content, excluding this field (uint32)</li>
+                                                <li><strong>signature content</strong> (variable length)</li>
+                                            </ul>
+                                        <li><strong>size</strong> of public key, excluding this field (uint32)</li>                                                    
+                                        <li><strong>public key</strong> in <abbr title="Abstract Syntax Notation One">ASN.1</abbr> <abbr title="Distinguished Encoding Rules">DER</abbr> [[?X690]] form (variable length)</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+                <section>
+                    <h6>Distributor Signature</h6>
+                    <p>The signature of the distributor preserves the integrity of the application during the distribution process, guaranteeing that:</p>
+                    <ol class="algorithm">
+                        <li>Application packages cannot be forged;</li>
+                        <li>Permissions on application packages cannot be changed randomly;</li>
+                        <li>Application package source may be verified.</li>
+                    </ol>
+
+                    <p>During the process of distributor signing, either the distributor or the developer adds a Provisioning Profile and uses the private key of the distributor to sign the signature.</p>
+                    <p>The provisioning profile is stored in the ID-value pair of the Signing Block under ID <code>0x02000201</code>.</p>
+                    <p>The value of the ID-pair contains all its signature blocks and it has a variable length and its structure is as follows:</p>
+                    <ul>
+                        <li><strong>ID</strong>: <code>0x02000201</code> (uint32)</li>
+                        <li><strong>value</strong>:
+                            <ul>
+                                <li><strong>size</strong> of signer block, excluding this field (uint32)</li>
+                                <li><strong>signer block</strong>:
+                                    <ul>
+                                        <li><strong>size</strong> of provisioning profile, excluding this field (uint32)</li>
+                                        <li><strong>provisioning profile</strong>. Sequence of provisioning profile ID-value pairs, according to the <a href="#sec-provisioning-profile-id">provisioning profile IDs</a>:
+                                            <ul>
+                                                <li><strong>size</strong> of ID-value pair, excluding this field (uint32)</li>
+                                                <li><strong>ID</strong> (uint32)</li>
+                                                <li><strong>value</strong> (variable length)</li>
+                                            </ul>
+                                        </li>
+                                        <li><strong>size</strong> of signature, excluding this field (uint32)</li>
+                                        <li><strong>signature algorithm ID</strong> according to the values of <a href="#sec-signature-algorithm-id">Signature Algorithm IDs</a> (uint32)</li>
+                                        <li><strong>size</strong> of signature content, excluding this field (uint32)</li>
+                                        <li><strong>signature content</strong> (variable length)</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+                <section id="sec-signature-algorithm-id">
+                    <h6>Signature Algorithm IDs:</h6>
+                    <ul>
+                        <li><code>0x0101</code> RSASSA-PSS with SHA2-256 digest, SHA2-256 MGF1, 32 bytes of salt, trailer: 0xbc</li>
+                        <li><code>0x0102</code> RSASSA-PSS with SHA2-512 digest, SHA2-512 MGF1, 64 bytes of salt, trailer: 0xbc</li>
+                        <li><code>0x0103</code> RSASSA-PKCS1-v1_5 with SHA2-256 digest. This is for build systems which require deterministic signatures.</li>
+                        <li><code>0x0104</code> RSASSA-PKCS1-v1_5 with SHA2-512 digest. This is for build systems which require deterministic signatures.</li>
+                        <li><code>0x0201</code> ECDSA with SHA2-256 digest</li>
+                        <li><code>0x0202</code> ECDSA with SHA2-512 digest</li>
+                        <li><code>0x0301</code> DSA with SHA2-256 digest</li>
+                    </ul>
+                </section>
+                <section id="sec-signature-key-sizes">             
+                    <h6>Supported keys sizes and <abbr title="elliptic-curve">EC</abbr> cryptography:</h6>
+                    <ul>
+                        <li><strong>RSA</strong>: 1024, 2048, 4096, 8192, 16384</li>
+                        <li><strong>EC</strong>: NIST P-256, P-384, P-521</li>
+                        <li><strong>DSA</strong>: 1024, 2048, 3072</li>
+                    </ul>
+                </section>                    
+                <section id="sec-provisioning-profile-id">
+                    <h6>Provisioning Profile IDs:</h6>
+                    
+                    <h7><code>0x01</code> Certificate Digest</h7>
+                    <ul>
+                        <li><strong>size</strong> of certificate digest block, excluding this field (uint32)</li>
+                        <li><strong>signature algorithm ID</strong> according to the values of <a href="#sec-signature-algorithm-id">Signature Algorithm IDs</a> (uint32)</li>
+                        <li><strong>size</strong> of certificate digest data, excluding this field (uint32)</li>
+                        <li><strong>certificate digest data</strong> (variable length)</li>
+                    </ul>
+
+                    <h7><code>0x02</code> Certificate</h7>
+                    <ul>
+                        <li><strong>size</strong> of certificate, excluding this field (uint32)</li>
+                        <li><strong>certificate data</strong> in <abbr title="Abstract Syntax Notation One">ASN.1</abbr> <abbr title="Distinguished Encoding Rules">DER</abbr> [[?X690]] form (variable length)</li>
+                    </ul>
+
+                    <h7><code>0x03</code> Usage</h7>
+                    <ul>
+                        <li><strong>app store</strong>, value: <code>0x01</code></li>
+                        <li><strong>debug</strong>, value: <code>0x02</code></li>
+                        <li><strong>enterprise</strong>, value: <code>0x03</code></li>
+                    </ul>
+
+                    <h7><code>0x04</code> Manifest</h7>
+                    <ul>
+                        <li><strong>size</strong> of manifest, excluding this field (uint32)</li>
+                        <li><strong>manifest</strong> in UTF-8 [[Unicode]] (variable length)</li>
+                    </ul>                    
+
+                    <h7><code>0x05</code> Device IDs</h7>
+                    <ul>
+                        <li><strong>size</strong> of Device IDs, excluding this field (uint32)</li>
+                        <li>Sequence of <strong>Device IDs</strong>:
+                            <ul>
+                                <li><strong>size</strong> of Device ID, excluding this field (uint32)</li>
+                                <li><strong>Device ID</strong>, represented in MD5 format [[?rfc1321]] (variable length)</li> 
+                            </ul>
+                        </li>
+                    </ul>  
+                </section>            
+            </section>
+        </section>
+        <section  id="sec-signature-pkcs7">
+            <h3>PKCS#7 Signature Scheme</h3>
+            <p>This signature scheme is based on the PKCS #7 Cryptographic Message Syntax [[?rfc2315]]. This method admits recursion, so one "digital envelope", the data block including encrypted content and encrypted keys, can be nested inside other. This signature scheme MAY cover also the different stages of packaging signature described in <a href="#sec-signature-rpk">RPK Signature Scheme</a>, including the developer signature and distributor signature.</p>
+            <p>This signature scheme includes the provisioning profile of the MiniApp at the developer signing stage. At a second stage, a distributor MAY replace the developer's signature with the its own signature. Likely in the <a href="#sec-signature-rpk">RPK Signature Scheme</a>, this approach generates a Signing Block to be included into the package file, according to the <a href="sec-miniapp-digital-signature-requirements">Digital Signature Requirements</a>.</p>
+
+            <p>The PKCS#7 Signing Block is defined as a data container that includes the block with the digital signature, data encrypted using the PKCS #7 syntax that contains the signatures and the signer identity.</p>
+    
+            
+            <p>The description  uses the following basic data types:</p>
+            <dl>
+                <dt>uint64</dt>
+                <dd>64-bit (8-byte) unsigned integer</dd>
+                <dt>uint32</dt>
+                <dd>32-bit (4-byte) unsigned integer</dd>
+                <dt>uint16</dt>
+                <dd>16-bit (2-byte) unsigned integer</dd>
+            </dl>
+
+            <h4>Signing Block Format</h4>
+            <p>The format of the PKCS#7 Signing Block is as follows:</p>
+            <ul>
+                <li id="pkcs7-profile-block-head"><strong>Signing block head</strong>
+                    <ul>
+                        <li><strong>type</strong> to indicate the type, according to <a href="#types-signing-blocks">Types of Signing Blocks</a> (1 byte)</li>
+                        <li><strong>tag</strong> to indicate the sub-type, according to <a href="#types-signing-blocks">Types of Signing Blocks</a> (1 byte)</li>
+                        <li><strong>length</strong> (uint16)</li>
+                        <li><strong>offset</strong> (uint32)</li>
+                    </ul>                    
+                </li>
+                <li>Signature Block head:
+                    <ul>
+                        <li><strong>reserved</strong> (4 bytes)</li>
+                        <li><strong>number of blocks</strong> (uint32)</li>
+                        <li><strong>size</strong> (uint32)</li>
+                        <li><strong>version</strong> (4 bytes)</li>
+                        <li><strong>magic numbers</strong> “<code>MIX Sig Block 42</code>” (16 bytes)</li>
+                    </ul>
+                </li>
+                <li><strong>Data</strong></li>
+                <li><strong>Signature Block data</strong> in PKCS #7:
+                    <ul>
+                        <li>PKCS #7 Content Type set to <code>SignedData</code>:
+                            <ul>
+                                <li><strong>version</strong>: syntax version number</li>
+                                <li><strong>digest algorithms</strong>: a collection of message-digest algorithm identifiers</li>
+                                <li>The content that is signed:
+                                    <ul>
+                                        <li><strong>version</strong> (uint32)</li>
+                                        <li><strong>size</strong> (uint16)</li>
+                                        <li><strong>number of blocks</strong> (uint16)</li>
+                                        <li><strong>Content Hash</strong>:
+                                            <ul>
+                                                <li><strong>type</strong> (uint8)</li>
+                                                <li><strong>tag</strong> (uint8)</li>
+                                                <li><strong>algorithm ID</strong> (uint8)</li>
+                                                <li><strong>length</strong> (uint32)</li>
+                                                <li><strong>hash</strong> (variable length)</li>
+                                            </ul>  
+                                        </li>
+                                    </ul> 
+                                </li>
+                                <li><strong>certificates</strong>: a set of PKCS #6 extended certificates and X.509 certificates</li>
+                                <li><strong>crls</strong>: a set of certificate-revocation lists</li>
+                                <li><strong>signerInfos</strong>: a collection of per-signer information</li>
+                            </ul>
+                        </li>
+                        <li>Signer</li>
+                    </ul>
+                </li>
+                <li>Hw sign head:
+                    <ul>
+                        <li><strong>number of blocks</strong> (uint32)</li>
+                        <li><strong>size</strong> (uint32)</li>
+                        <li><strong>version</strong> (4 bytes)</li>
+                        <li><strong>magic numbers</strong> “<code>MIX Sig Block 42</code>” (16 bytes)</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h5 id="types-signing-blocks">Types of Signing Blocks</h5>
+            <p>The type of the <a href="pkcs7-profile-block-head">Block Head</a> is identified by its attribute <code>type</code>. This attribute MUST take two different values:</p>
+            <ul>
+                <li><code>0</code> for File Signature blocks</li>
+                <li><code>1</code> for Provisioning Profile blocks</li>
+            </ul>
+            <p>If the value of type is set to <code>0</code> (File Signature block), the header MUST specify a narrower subtype, using the attribute <code>tag</code> in its <a href="pkcs7-profile-block-head">Block Head</a>. The values for this subtype are:</p>
+            <ul>
+                <li><code>0</code>: Default</li>
+                <li><code>1</code>: HASH (Whole file hash)</li> 
+                <li><code>0x80</code>: 1M_HASH_ROOT (1M block hash tree, root hash)</li>
+                <li><code>0x81</code>: 512K_HASH_ROOT (512K block hash tree, root hash)</li>
+                <li><code>0x82</code>: 256K_HASH_ROOT (256K block hash tree, root hash)</li>
+                <li><code>0x83</code>: 128K_HASH_ROOT (128K block hash tree, root hash)</li>
+                <li><code>0x84</code>: 64K_HASH_ROOT (64K block hash tree, root hash)</li>
+                <li><code>0x85</code>: 32K_HASH_ROOT (32K block hash tree, root hash)</li>
+                <li><code>0x86</code>: 16K_HASH_ROOT (16K block hash tree, root hash)</li>	
+                <li><code>0x87</code>: 8K_HASH_ROOT (8K block hash tree, root hash)</li>
+                <li><code>0x88</code>: 4K_HASH_ROOT (4K block hash tree, root hash)</li>
+                <li><code>0x90</code>: 1M_HASH_BLOCK (1M block hash tree)</li>
+                <li><code>0x91</code>: 512K_HASH_BLOCK (512K block hash tree)</li>
+                <li><code>0x92</code>: 256K_HASH_BLOCK (256K block hash tree)</li>
+                <li><code>0x93</code>: 128K_HASH_BLOCK (128K block hash tree)</li>	
+                <li><code>0x94</code>: 64K_HASH_BLOCK (64K block hash tree)</li>	
+                <li><code>0x95</code>: 32K_HASH_BLOCK (32K block hash tree)</li>
+                <li><code>0x96</code>: 16K_HASH_BLOCK (16K block hash tree)</li>	
+                <li><code>0x97</code>: 8K_HASH_BLOCK (8K block hash tree)</li>
+                <li><code>0x98</code>: 4K_HASH_BLOCK (4K block hash tree)</li>                
+            </ul>
+        </section>            
+    </section>
+
+<section class="appendix informative" id="sec-media-type-registration">
+        <h2>Media Type Registration</h2>
+        <p>This appendix registers the <code>application/miniapp-pkg+zip</code> media type for MiniApp Packages, in conformance with BCP 13 [[RFC4289]] and <a href="https://www.w3.org/2020/01/registering-mediatypes.html">Register an Internet Media Type for a W3C Spec</a>.</p>
+
+        <p>A [=MiniApp Package=] file is a container technology based on the [[ZIP]] archive format, including some modifications.</p> 
+
+        <dl>
+            <dt>Type name:</dt>
+            <dd><code>application</code></dd>
+            <dt>Subtype name:</dt>
+            <dd><code>miniapp-pkg+zip</code></dd>
+            <dt>Required parameters:</dt>
+            <dd>"N/A"</dd>
+            <dt>Optional parameters:</dt>
+            <dd>"N/A"</dd>
+            <dt>Encoding considerations:</dt>
+            <dd>MiniApp Packages are binary files encoded in the <a href="https://www.iana.org/assignments/media-types/application/zip">application/zip</a> media type. See <a href="https://tools.ietf.org/html/rfc6839#section-3.6">RFC 6839, section 3.6</a> [[RFC6839]].</dd>
+            <dt>Security considerations:</dt>
+            <dd></dd>
+            <dt>Interoperability considerations:</dt>
+            <dd>The file, after including the signature, is not a standard ZIP but the inclusion does not affect parsing and operation of the file as a ZIP file.</dd>
+            <dt>Published specification:</dt>
+            <dd>This media type registration is for the MiniApp Package, as described in the specification located at <a href="https://www.w3.org/TR/miniapp-packaging/">https://www.w3.org/TR/miniapp-packaging/</a>.</dd>
+            <dt>Applications that use this media type:</dt>
+            <dd>This media type is used for the distribution of MiniApps. The list, non exhaustive, of applications and software platforms that support this media type are:
+                <ul>
+                    <li>Alibaba MiniPrograms</li>
+                    <li>Quick Apps</li>
+                    <li>Baidu </li>
+                    <li>...</li>
+                </ul>
+            </dd>
+            <dt>Fragment identifier considerations:</dt>
+            <dd>"N/A"</dd>
+            <dt>Additional information:</dt>
+            <dd>
+                <dl>
+                    <dt>Deprecated alias names for this type:</dt>
+                    <dd>"N/A"</dd>
+                    <dt>Magic number(s):</dt>
+                    <dd>@@@</dd>
+                    <dt>File extension(s):</dt>
+                    <dd>MiniApps are usually identified with the extension <code>.ma</code>.</dd>
+                    <dt>Macintosh file type code(s):</dt>
+                    <dd>ZIP</dd>
+                </dl>
+            </dd>
+            <dt>Person & email address to contact for further information:</dt>
+            <dd>@@@</dd>
+            <dt>Intended usage:</dt>
+            <dd>COMMON</dd>
+            <dt>Restrictions on usage:</dt>
+            <dd>"N/A"</dd>
+            <dt>Author:</dt>
+            <dd>The MiniApp Packaging defines a file format developed by the W3C MiniApp Working Group.</dd>
+            <dt>Change controller:</dt>
+            <dd>W3C is the controller for the MiniApp Packaging specification</dd>
+            <dt>Provisional registration?:</dt>
+            <dd>"N/A"</dd>                      
+        </dl>
+        <div class="issue" data-number="4">This section needs to specify the technical details for the MIME type registration (like the extension).</div> 
         <p class="note">
-            <span>Note:</span>
             A temporary solution could be <code>application/x-w3c-miniapp-pkg+zip</code> for the sake of any early implementation.
         </p>
-        </p>
-    </section>
+
+        <p class="issue">Should processors check the integrity of the package (Security considerations section)?</p>
+
+    </section>    
 
 </body>
 
