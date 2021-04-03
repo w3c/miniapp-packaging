@@ -192,7 +192,7 @@
             </pre>
             <section>
                 <h3>Root Directory</h3>
-                <p>The <dfn id="dfn-root-directory" data-lt="root directory|root directories" data-dfn-type="dfn">Root Directory</dfn> is the base directory of the [=MiniApp Package=] file system.</dd> 
+                <p>The <dfn id="dfn-root-directory" data-lt="root directory|root directories" data-dfn-type="dfn">Root Directory</dfn> is the base directory of the [=MiniApp Package=] file system.</p> 
 
                 <p>The [=Root Directory=] of a [=MiniApp Package=] holds several reserved files that include global data and information about the lifecycle management of the MiniApp, including:</p>
                 <dl>
@@ -233,11 +233,11 @@
 
                 <ul class="conformance-list">
                     <li>File Names are case sensitive</li>
-                    <li>File Names MUST be UTF-8 [[Unicode]] encoded.</File>
+                    <li>File Names MUST be UTF-8 [[Unicode]] encoded.</li>
                     <li>File Names MUST NOT exceed 255 bytes.</li>
                     <li>File Names MUST NOT use the following [[Unicode]] characters:
                         <ul>
-                            <li>LESS-THAN SIGN: <code><</code> (<code>U+003C</code>)</li>
+                            <li>LESS-THAN SIGN: <code>&lt;</code> (<code>U+003C</code>)</li>
                             <li>GREATER-THAN SIGN: <code>></code> (<code>U+003E</code>)</li>
                             <li>COLON: <code>:</code> (<code>U+003A</code>)</li>
                             <li>QUESTION MARK: <code>?</code> (<code>U+003F</code>)</li>
@@ -387,7 +387,7 @@
             <h3>Digital Signature Requirements</h3>  
             <p>A [=MiniApp ZIP Container=] MAY include none, one, or more [=signatures=] to help to detect any changes to the protected parts of the software, guaranteeing the integrity of the MiniApp.</p>
             <p>A <dfn id="dfn-signing_block" data-lt="Signing Block|MiniApp Signing Block|MiniApp Signing Blocks" data-dfn-type="dfn">MiniApp Signing Block</dfn> is a collection of bytes that contains specific information and metadata about the digital signature that affects a MiniApp, partially or as a whole. The [=Signing Block=] of a [=MiniApp ZIP Container=] MUST be located immediately before the central directory of the ZIP container, in a way that makes it easier to locate the block if exists.</p>
-            <p>The <dfn id="dfn-magic-numbers" data-lt="magic numbers|signing block magic numbers" data-dfn-type="dfn">Signing Block Magic Numbers</dfn> block is A 16-byte sequence with a unique fingerprint that identifies a digital signature mechanism for a [=MiniApp Package=], stored in the Signing Block of [=MiniApp ZIP Container=].</dd>
+            <p>The <dfn id="dfn-magic-numbers" data-lt="magic numbers|signing block magic numbers" data-dfn-type="dfn">Signing Block Magic Numbers</dfn> block is A 16-byte sequence with a unique fingerprint that identifies a digital signature mechanism for a [=MiniApp Package=], stored in the Signing Block of [=MiniApp ZIP Container=].</p>
             <p>Although this document does not recommend any specific digital signature mechanism (i.e., hash algorithms, encryption methods, etc.), the [=Signing Block=], if present, MUST meet the following criteria:</p>
         	<dl class="conformance-list">
                 <dt>Signing Block Magic Numbers</dt>
@@ -448,7 +448,7 @@
             <p>[=User Agents=] MAY guarantee the legitimacy and integrity of the [=MiniApp ZIP Container=] and its content by verifying digital signatures and applying cryptographic mechanisms.</p>  
             <p>To <dfn data-lt="verifying a MiniApp ZIP Container">Verify a MiniApp ZIP Container</dfn>, given |miniapp_zip_file|, perform the following steps:</p>
             <ol class="algorithm">
-                <li>If the [=User Agent=] has the capability to perform verification of the digital signature(s) of the |miniapp_zip_file|, then: </br>
+                <li>If the [=User Agent=] has the capability to perform verification of the digital signature(s) of the |miniapp_zip_file|, then: <br>
                     [=Process the Digital Signatures=] with |miniapp_zip_file|.
                 </li>
             </ol>
