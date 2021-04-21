@@ -67,30 +67,26 @@
                 branch: "main",
             },
             localBiblio: {
-                APK_SIGNATURE_V2: {
+                "APK-SIGNATURE-V2": {
                     title: "APK Signature Scheme v2",
                     href: "https://source.android.com/security/apksigning/v2"
                 },
-                CSS_SNAPSHOT: {
+                "CSS-SNAPSHOT": {
                     title: "CSS Snapshot",
                     href: "https://www.w3.org/TR/CSS/"
                 },                
-                MINIAPP_LIFECYCLE: {
+                "MINIAPP-LIFECYCLE": {
                     title: "MiniApp Lifecycle",
                     href: "https://w3c.github.io/miniapp-lifecycle/"
                 },
-                MINIAPP_MANIFEST: {
+                "MINIAPP-MANIFEST": {
                     title: "MiniApp Manifest",
                     href: "https://w3c.github.io/miniapp-manifest/"
                 },
-                MINIAPP_ADDRESSING: {
+                "MINIAPP-ADDRESSING": {
                     title: "MiniApp Addressing",
                     href: "https://w3c.github.io/miniapp-addressing/"
-                },
-                MIME_SNIFF: {
-                    title: "MIME Sniffing",
-                    href: "https://mimesniff.spec.whatwg.org/"
-                },
+                }
             },
             a11y: true,            
         };
@@ -134,7 +130,7 @@
                 <dt><dfn id="dfn-miniapp" data-lt="MiniApps" data-dfn-type="dfn">MiniApp</dfn></dt>
                 <dd>A light software application, that can be distributed through any digital means, and accessed through the Web. MiniApps are defined by a concrete file structure, distributed within a single file [=MiniApp ZIP Container=] that represents the whole [=MiniApp Package=] that can be processed and executed by [=MiniApp User Agents=].</dd>
                 <dt><dfn id="dfn-manifest" data-lt="manifest|manifests" data-dfn-type="dfn">MiniApp Manifest</dfn></dt>
-                <dd>A JSON-based file that provides [=User Agents=] with metadata related to a MiniApp as specified in [[MINIAPP_MANIFEST]]. </dd>
+                <dd>A JSON-based file that provides [=User Agents=] with metadata related to a MiniApp as specified in [[MINIAPP-MANIFEST]]. </dd>
                 <dt><dfn id="dfn-package" data-lt="MiniApp Package|MiniApp Packages" data-dfn-type="dfn">MiniApp Package</dfn></dt>
                 <dd>A logical document entity composed of a set of [=resources=] packaged in a [=MiniApp ZIP Container=].</dd>
                 <dt><dfn id="dfn-resource" data-lt="resources|resource" data-dfn-type="dfn">MiniApp Resource</dfn></dt>
@@ -199,7 +195,7 @@
                 <p>The [=Root Directory=] of a [=MiniApp Package=] holds several reserved files that include global data and information about the lifecycle management of the MiniApp, including:</p>
                 <dl>
                     <dt><code>manifest.json</code></dt>
-                    <dd>The [=MiniApp Manifest=] is a JSON document responsible for the global configuration of the MiniApp. A manifest file contains a collection of mandatory and optional attributes that indicate the setup of the MiniApp, including routes and paths of the pages and the window configuration of the MiniApp (e.g., styles of the navigation bar, background image and color, page title, among other), according to the MiniApp Manifest specification [[MINIAPP_MANIFEST]].</dd>
+                    <dd>The [=MiniApp Manifest=] is a JSON document responsible for the global configuration of the MiniApp. A manifest file contains a collection of mandatory and optional attributes that indicate the setup of the MiniApp, including routes and paths of the pages and the window configuration of the MiniApp (e.g., styles of the navigation bar, background image and color, page title, among other), according to the MiniApp Manifest specification [[MINIAPP-MANIFEST]].</dd>
                     <dt><code>app.css</code></dt>
                     <dd>This file is the default CSS stylesheet, responsible for the global appearance of the [=MiniApp pages=]. It MAY be empty.</dd>
                     <dt><code>app.js</code></dt>
@@ -215,7 +211,7 @@
                     <li>A <code>.json</code> file is responsible for the configuration of a MiniApp page. The syntax and structure of these types of files are defined in the <a href="#sec-miniapp-resources-json">JSON Resources</a> section.</li>
                     <li>A <code>.xml</code> file is responsible for the structure of a MiniApp page, similar to HTML. The syntax and structure of these types of files are defined in the <a href="#sec-miniapp-resources-xml">XML Resources</a> section.</li>
                     <li>A <code>.css</code> file is responsible for the CSS style of a MiniApp page. The syntax and structure of these types of files are defined in the <a href="#sec-miniapp-resources-css">CSS Resources</a> section.</li>
-                    <li>A <code>.js</code> file is responsible for the service logic and lifecycle management (defined in MiniApp Lifecycle [[MINIAPP_LIFECYCLE]]) of a MiniApp page. The syntax and structure of these types of files are defined in the <a href="#sec-miniapp-resources-js">Scripting Resources</a> section.</li>
+                    <li>A <code>.js</code> file is responsible for the service logic and lifecycle management (defined in MiniApp Lifecycle [[MINIAPP-LIFECYCLE]]) of a MiniApp page. The syntax and structure of these types of files are defined in the <a href="#sec-miniapp-resources-js">Scripting Resources</a> section.</li>
                 </ul>
                 <div class="issue" data-number="3"></div> 
             </section>
@@ -278,7 +274,7 @@
             </section>
             <section id="sec-miniapp-resources-css">
                 <h3>CSS Resources</h3>
-                <p>The content is rendered and presented to end-users according to CSS Style Sheets. MiniApp User Agents support CSS modules as defined in the [[CSS_SNAPSHOT]].</p>
+                <p>The content is rendered and presented to end-users according to CSS Style Sheets. MiniApp User Agents support CSS modules as defined in the [[CSS-SNAPSHOT]].</p>
                 <p>CSS resources MUST meet all the following criteria:</p>
                 <dl class="conformance-list">
                     <dt>File extension</dt>
@@ -439,7 +435,7 @@
             <p>To <dfn data-lt="retrieving a MiniApp ZIP Container" data-dfn-type="dfn">Retrieve a MiniApp ZIP Container</dfn>, given an optional |miniapp_uri|, perform the following steps. They return a [=MiniApp ZIP Container=].</p>
             <ol class="algorithm">
                 <li>Let |resource| be a [=MiniApp ZIP Container=] as a result of resource retrieval.</li>
-                <li>Let |supplied_mime_type| be the result of applying the <a href="https://mimesniff.spec.whatwg.org/#supplied-mime-type-detection-algorithm">supplied MIME type detection algorithm</a> [[MIME_SNIFF]] with |resource|.</li>
+                <li>Let |supplied_mime_type| be the result of applying the <a href="https://mimesniff.spec.whatwg.org/#supplied-mime-type-detection-algorithm">supplied MIME type detection algorithm</a> [[MIMESNIFF]] with |resource|.</li>
                 <li>If |supplied_mime_type| is not equal to <code>application/miniapp-pkg+zip</code>, then return failure.</li>
                 <li>Return |resource|.</li>
             </ol>
@@ -591,7 +587,7 @@
 
         <section  id="sec-signature-rpk">
             <h3>RPK Signature Scheme</h3>
-            <p>One of the methods of Huawei Quick App to verify the authorship of the MiniApp Package is using a whole-file digital signature based on the APK Signature Scheme v2 [[?APK_SIGNATURE_V2]]. This signature scheme was developed to increase verification speed and preserve the integrity of the protected parts of the package.</p>
+            <p>One of the methods of Huawei Quick App to verify the authorship of the MiniApp Package is using a whole-file digital signature based on the APK Signature Scheme v2 [[?APK-SIGNATURE-V2]]. This signature scheme was developed to increase verification speed and preserve the integrity of the protected parts of the package.</p>
             <p>Using this digital signature mechanism, every byte in the MiniApp package is involved in the signature generation. The resulting Signing Block is created and inserted into the package file, according to the <a href="sec-miniapp-digital-signature-requirements">Digital Signature Requirements</a>.</p>
             <p>The Signing Block contains ID-value pairs with information about the signature and the signer identity.</p> 
             
@@ -935,7 +931,7 @@
                 </dl>
             </dd>
             <dt>Person & email address to contact for further information:</dt>
-            <dd>@@@</dd>
+            <dd>The <a href="https://www.w3.org/2021/miniapps/" rel="nofollow">MiniApps Working Group</a> can be contacted at <a href= "https://lists.w3.org/Archives/Public/public-miniapps-wg/" rel= "nofollow">public-miniapps-wg@w3.org</a>.</dd>
             <dt>Intended usage:</dt>
             <dd>COMMON</dd>
             <dt>Restrictions on usage:</dt>
