@@ -141,6 +141,8 @@
                 <dd>A software application that gets, process and renders [=MiniApp Packages=], enabling execution and end-user interaction with MiniApps.</dd>
                 <dt><dfn id="dfn-container" data-lt="MiniApp ZIP Container|MiniApp ZIP Containers" data-dfn-type="dfn">MiniApp ZIP Container</dfn></dt>
                 <dd>The ZIP-based packaging and distribution format for MiniApps, as defined in [=MiniApp ZIP Container=].</dd>
+                <dt><dfn id="dfn-widget" data-lt="widget|widgets" data-dfn-type="dfn">MiniApp Widget</dfn></dt>
+                <dd>A special type of [=MiniApp Page=] that is displayed standalone in host environments such as assistants and device search pages to connect MiniApp services in specific scenarios.</dd>
                 <dt><dfn id="dfn-start-page" data-lt="MiniApp Start Page|MiniApp Start Pages|start pages" data-dfn-type="dfn">Start Page</dfn></dt>
                 <dd>The entry point of a MiniApp. The resource that is loaded and rendered by the [=MiniApp User Agent=] at the launch of the application.</dd>  
             </dl>
@@ -710,9 +712,7 @@
                             </ul>
                         </li>
                     </ul>
-                </section>
-                <section id="sec-signature-algorithm-id">
-                    <h6>Signature Algorithm IDs:</h6>
+                    <h6 id="sec-signature-algorithm-id">Signature Algorithm IDs</h6>
                     <ul>
                         <li><code>0x0101</code> RSASSA-PSS with SHA2-256 digest, SHA2-256 MGF1, 32 bytes of salt, trailer: 0xbc</li>
                         <li><code>0x0102</code> RSASSA-PSS with SHA2-512 digest, SHA2-512 MGF1, 64 bytes of salt, trailer: 0xbc</li>
@@ -722,55 +722,53 @@
                         <li><code>0x0202</code> ECDSA with SHA2-512 digest</li>
                         <li><code>0x0301</code> DSA with SHA2-256 digest</li>
                     </ul>
-                </section>
-                <section id="sec-signature-key-sizes">             
-                    <h6>Supported keys sizes and <abbr title="elliptic-curve">EC</abbr> cryptography:</h6>
+                    <h6 id="sec-signature-key-sizes">Supported keys sizes and <abbr title="elliptic-curve">EC</abbr> cryptography:</h6>
                     <ul>
                         <li><strong>RSA</strong>: 1024, 2048, 4096, 8192, 16384</li>
                         <li><strong>EC</strong>: NIST P-256, P-384, P-521</li>
                         <li><strong>DSA</strong>: 1024, 2048, 3072</li>
                     </ul>
-                </section>                    
-                <section id="sec-provisioning-profile-id">
-                    <h6>Provisioning Profile IDs:</h6>
-                    
-                    <h7><code>0x01</code> Certificate Digest</h7>
+                    <h6 id="sec-provisioning-profile-id">Provisioning Profile IDs</h6>
                     <ul>
-                        <li><strong>size</strong> of certificate digest block, excluding this field (uint32)</li>
-                        <li><strong>signature algorithm ID</strong> according to the values of <a href="#sec-signature-algorithm-id">Signature Algorithm IDs</a> (uint32)</li>
-                        <li><strong>size</strong> of certificate digest data, excluding this field (uint32)</li>
-                        <li><strong>certificate digest data</strong> (variable length)</li>
-                    </ul>
-
-                    <h7><code>0x02</code> Certificate</h7>
-                    <ul>
-                        <li><strong>size</strong> of certificate, excluding this field (uint32)</li>
-                        <li><strong>certificate data</strong> in <abbr title="Abstract Syntax Notation One">ASN.1</abbr> <abbr title="Distinguished Encoding Rules">DER</abbr> [[?X690]] form (variable length)</li>
-                    </ul>
-
-                    <h7><code>0x03</code> Usage</h7>
-                    <ul>
-                        <li><strong>app store</strong>, value: <code>0x01</code></li>
-                        <li><strong>debug</strong>, value: <code>0x02</code></li>
-                        <li><strong>enterprise</strong>, value: <code>0x03</code></li>
-                    </ul>
-
-                    <h7><code>0x04</code> Manifest</h7>
-                    <ul>
-                        <li><strong>size</strong> of manifest, excluding this field (uint32)</li>
-                        <li><strong>manifest</strong> in UTF-8 [[Unicode]] (variable length)</li>
-                    </ul>                    
-
-                    <h7><code>0x05</code> Device IDs</h7>
-                    <ul>
-                        <li><strong>size</strong> of Device IDs, excluding this field (uint32)</li>
-                        <li>Sequence of <strong>Device IDs</strong>:
+                        <li><code>0x01</code> Certificate Digest
                             <ul>
-                                <li><strong>size</strong> of Device ID, excluding this field (uint32)</li>
-                                <li><strong>Device ID</strong>, represented in MD5 format [[?rfc1321]] (variable length)</li> 
+                                <li><strong>size</strong> of certificate digest block, excluding this field (uint32)</li>
+                                <li><strong>signature algorithm ID</strong> according to the values of <a href="#sec-signature-algorithm-id">Signature Algorithm IDs</a> (uint32)</li>
+                                <li><strong>size</strong> of certificate digest data, excluding this field (uint32)</li>
+                                <li><strong>certificate digest data</strong> (variable length)</li>
                             </ul>
                         </li>
-                    </ul>  
+                        <li><code>0x02</code> Certificate
+                            <ul>
+                                <li><strong>size</strong> of certificate, excluding this field (uint32)</li>
+                                <li><strong>certificate data</strong> in <abbr title="Abstract Syntax Notation One">ASN.1</abbr> <abbr title="Distinguished Encoding Rules">DER</abbr> [[?X690]] form (variable length)</li>
+                            </ul>
+                        </li>
+                        <li><code>0x03</code> Usage:
+                            <ul>
+                                <li><strong>app store</strong>, value: <code>0x01</code></li>
+                                <li><strong>debug</strong>, value: <code>0x02</code></li>
+                                <li><strong>enterprise</strong>, value: <code>0x03</code></li>
+                            </ul>
+                        </li>
+                        <li><code>0x04</code> Manifest
+                            <ul>
+                                <li><strong>size</strong> of manifest, excluding this field (uint32)</li>
+                                <li><strong>manifest</strong> in UTF-8 [[Unicode]] (variable length)</li>
+                            </ul>
+                        </li>
+                        <li><code>0x05</code> Device IDs
+                            <ul>
+                                <li><strong>size</strong> of Device IDs, excluding this field (uint32)</li>
+                                <li>Sequence of <strong>Device IDs</strong>:
+                                    <ul>
+                                        <li><strong>size</strong> of Device ID, excluding this field (uint32)</li>
+                                        <li><strong>Device ID</strong>, represented in MD5 format [[?rfc1321]] (variable length)</li> 
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </section>            
             </section>
         </section>
@@ -910,12 +908,11 @@
             <dd>This media type registration is for the MiniApp Package, as described in the specification located at <a href="https://www.w3.org/TR/miniapp-packaging/">https://www.w3.org/TR/miniapp-packaging/</a>.</dd>
             <dt>Applications that use this media type:</dt>
             <dd>This media type is used for the distribution of MiniApps. The list, non exhaustive, of applications and software platforms that support this media type are:
-                <ul>
-                    <li>Alibaba MiniPrograms</li>
-                    <li>Quick Apps</li>
-                    <li>Baidu </li>
-                    <li>...</li>
-                </ul>
+            <ul>
+                <li><a href="https://open.alipay.com/channel/miniIndex.htm" hreflang="zh">Alipay Mini Apps</a></li>
+                <li><a href="https://smartprogram.baidu.com/developer/index.html" hreflang="zh">Baidu Smart Programs</a></li>
+                <li><a href="https://www.quickapp.cn/" hreflang="zh">Quick Apps</a></li>
+            </ul>
             </dd>
             <dt>Fragment identifier considerations:</dt>
             <dd>"N/A"</dd>
