@@ -765,7 +765,7 @@
         <section  id="sec-signature-pkcs7">
             <h3>PKCS#7 Signature Scheme</h3>
             <p>This signature scheme is based on the PKCS #7 Cryptographic Message Syntax [[?rfc2315]]. It MAY cover different stages of packaging signature described in <a href="#sec-signature-rpk">RPK Signature Scheme</a>, including the developer signature and distributor signature.</p>
-            <p>This signature scheme includes the [=Provisioning Profile=] of the MiniApp and the developer's signature at the first stage (developer signing stage). At the second stage (distributor signing stage), a distributor MAY replace the developer's signature with the its own signature. Like the <a href="#sec-signature-rpk">RPK Signature Scheme</a>, this approach generates a Signing Block to be included into the package file, according to the <a href="sec-miniapp-digital-signature-requirements">Digital Signature Requirements</a>.</p>
+            <p>This signature scheme includes the [=Provisioning Profile=] of the MiniApp and the developer's signature at the first stage (developer signing stage). At the second stage (distributor signing stage), a distributor MAY replace the developer's signature with the its own signature. Like the <a href="#sec-signature-rpk">RPK Signature Scheme</a>, this approach generates a Signing Block to be included into the package file, according to the <a href="#sec-miniapp-digital-signature-requirements">Digital Signature Requirements</a>.</p>
 
             <p>The PKCS#7 Signing Block is defined as a data container that includes the block with the digital signature, data encrypted using the PKCS #7 syntax that contains the signatures and the signer identity.</p>
     
