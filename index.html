@@ -468,7 +468,7 @@
                     <li>Process the digital signatures with |magic_numbers| and |miniapp_zip_file|.</li>
                 </ol>
                 <div class="example">
-                    <p>The MiniApp Signing Block may be encoded using any digital signature scheme that is identified by the 16-byte [=Magic Numbers=] block located just inmediately the Central Directory in the [=MiniApp ZIP Container=]. As shown in the example in <a href="#figure-miniapp-location-magic-numbers"></a>, the End of Central Directory, identified by the values <code>0x06054b50</code>, contains the offset that enables [=User Agents=] to identify the start of the Central Directory block, and subsequently the magic numbers at the end of the [=Signing Block=].</p>
+                    <p>The MiniApp Signing Block may be encoded using any digital signature scheme that is identified by the 16-byte [=Magic Numbers=] block located just immediately the Central Directory in the [=MiniApp ZIP Container=]. As shown in the example in <a href="#figure-miniapp-location-magic-numbers"></a>, the End of Central Directory, identified by the values <code>0x06054b50</code>, contains the offset that enables [=User Agents=] to identify the start of the Central Directory block, and subsequently the magic numbers at the end of the [=Signing Block=].</p>
                     <figure id="figure-miniapp-location-magic-numbers">
                         <img src="images/signature_bytes_central_directory.svg" alt="Location of the magic numbers within the MiniApp Package" />
                         <figcaption>Example of End of Central Directory signature, location of the Central Directory and signature magic numbers</figcaption>
@@ -558,16 +558,9 @@
                 <li>A digital signature (with a valid certificate) of the author that ensures the origin of the MiniApp, which gives a recipient strong reason to believe that this package was created by a known sender (authentication) and that the message was not altered in transit (integrity). Thus, an end-user or a hosting platform can decide whether to install the [=MiniApp Package=] depending on the status and quality of the author (e.g., credits, blocklist, certifications, etc.).</li>
                 <li>Distributors’ signatures (for example, official marketplace signatures), which are used to ensure the trustworthiness of the delivery channel. This kind of signature protects end-users from tampering activities and ensures a healthy ecosystem of applications. </li>
             </ul>
-            <p>No specific digital signature mechanism, cryptographic technology, or algorithm is recommended in this specification. MiniApp vendors MAY or MAY NOT implement digital signature mechanisms, according to their use cases, always following the [=MiniApp Package=] requirements.</p>
+            <p>No specific digital signature mechanism, cryptographic technology, or algorithm is recommended in this specification. MiniApp vendors MAY or MAY NOT implement digital signature mechanisms, according to their use cases. When implemented, the <a href="#sec-miniapp-digital-signature-requirements"></a> shall be followed.</p>
 
-            <P>Any MiniApp may have different digital signatures, using different methods, as represented in the <a href="#figure-miniapp-signatures-example"></a>.</P>
-            
-            <figure id="figure-miniapp-signatures-example">
-                <img src="images/signature_zip_example.svg" alt="Example of signing blocks with different signature scheme in the MiniApp Package" />
-                <figcaption>Example of different signature methods included in the MiniApp package</figcaption>
-            </figure>
-
-            <p class="note">Some examples of technologies and encryption methods are introduced in the <a href="#sec-signature-schemes"></a>.</p>
+            <p>Some examples of technologies and encryption methods are introduced in the <a href="#sec-signature-schemes"></a>.</p>
 
         </section>
         <section>
@@ -583,15 +576,20 @@
     <section class="appendix informative" id="sec-signature-schemes">
         <h2>Signature Schemes</h2>
 
-        <p>Every [=User Agent=] MAY support its own digital signature schemes depending on their needs. This section includes some examples of digital signature implementations supported in specific scenarios, such as developer verification and integrity of a MiniApp during its distribution.</p>   
+        <p>Every [=User Agent=] MAY support its own digital signature schemes depending on their needs. This section includes some examples of digital signature implementations as illustrated in <a href="#figure-miniapp-signatures-example"></a>. They can be used in specific scenarios, such as developer verification and integrity of a MiniApp during its distribution.</p>   
+
+                  
+            <figure id="figure-miniapp-signatures-example">
+                <img src="images/signature_zip_example.svg" alt="Example of signing blocks with different signature scheme in the MiniApp Package" />
+                <figcaption>Example of different signature methods included in the MiniApp package</figcaption>
+            </figure>
 
         <section  id="sec-signature-rpk">
             <h3>RPK Signature Scheme</h3>
-            <p>One of the methods of Huawei Quick App to verify the authorship of the MiniApp Package is using a whole-file digital signature based on the APK Signature Scheme v2 [[?APK-SIGNATURE-V2]]. This signature scheme was developed to increase verification speed and preserve the integrity of the protected parts of the package.</p>
-            <p>Using this digital signature mechanism, every byte in the MiniApp package is involved in the signature generation. The resulting Signing Block is created and inserted into the package file, according to the <a href="sec-miniapp-digital-signature-requirements">Digital Signature Requirements</a>.</p>
-            <p>The Signing Block contains ID-value pairs with information about the signature and the signer identity.</p> 
-            
-            <p class="note">All data values in the RPK Signing Block are represented in little-endian format, and all length-prefixed fields use <code>uint32</code> for length.</p>
+            <p>As one implementation of MiniApp, <a href="https://www.quickapp.cn/" hreflang="zh">Quick Apps</a> use a so-called RPK (Runnable Package) Signature Scheme, which is similar to the APK Signature Scheme v2 [[?APK-SIGNATURE-V2]], to verify the authorship of the MiniApp Package. This signature scheme takes every byte in a MiniApp package into the signature generation. The resulting [=Signing Block=] is created and inserted into the package file, according to the <a href="sec-miniapp-digital-signature-requirements">Digital Signature Requirements</a>.</p>
+            <p>The [=Signing Block=] contains ID-value pairs with information about the signature and the signer identity.</p> 
+          
+             <p class="note">All data values in the RPK [=Signing Block=] are represented in little-endian format, and all length-prefixed fields use <code>uint32</code> for length.</p>
             
             <p>The description  uses the following basic data types:</p>
             <dl>
@@ -621,14 +619,11 @@
                 
             <section id="sec-signing-block-signature">
                 <h5>Signatures</h5>
-                <p>The signatures are stored as <strong>ID-value pairs</strong> with specific identifiers that represent the type of the signature. The supported signatures, and associated IDs, for RPK packages are the following:</p>
-                <ul>
-                    <li><code>0x01000101</code> Entire package signature, to guarantee the integrity of the MiniApp as a whole.</li>
-                    <li><code>0x01000201</code> File list signature</li>
-                </ul>
-
+                <p>The signatures are stored as <strong>ID-value pairs</strong> with specific identifiers that represent the types of the signature. The supported signatures, and associated IDs, for RPK packages are described in the following sub-clauses.</p>
+                
+                <p class="ednote" title="package-splitting"> There are cases where a MiniApp package is split into multiple sub-packages (by a distribution platform e.g. an app-store) for the user agent to download and execute it in a progressive fashion to improve the user experience. In such a case, additional signature types (thus IDs) would be needed to ensure the integrity of each sub-package as well as the whole. Details are for further study.</p>
                 <section>
-                    <h6>Entire Package Signature</h6>
+                    <h6>Developer Signature</h6>
                     <p>The ID-value pair in the Signing Block under ID <code>0x01000101</code> represents the data of the signature of the whole-file [=MiniApp Package=].</p>
                     <p>The value of the ID-pair contains all the signature blocks and it has a variable length and its structure is as follows:</p>
                     <ul>
@@ -678,15 +673,10 @@
                 </section>
                 <section>
                     <h6>Distributor Signature</h6>
-                    <p>The signature of the distributor preserves the integrity of the application during the distribution process, guaranteeing that:</p>
-                    <ol class="algorithm">
-                        <li>Application packages cannot be forged;</li>
-                        <li>Permissions on application packages cannot be changed randomly;</li>
-                        <li>Application package source may be verified.</li>
-                    </ol>
+                    <p>The signature of the distributor preserves the integrity of the application during the distribution process, guaranteeing that the package is verified by the trusted distributor and the permission control policy (in the form of a <dfn id="dfn-provisioning-profile" data-dfn-type="dfn">Provisioning Profile</dfn>) from the distributor is enforced upon the package.</p>
 
-                    <p>During the process of distributor signing, either the distributor or the developer adds a Provisioning Profile and uses the private key of the distributor to sign the signature.</p>
-                    <p>The provisioning profile is stored in the ID-value pair of the Signing Block under ID <code>0x02000201</code>.</p>
+                    <p>During the process of distributor signing, either the distributor or the developer adds a [=Provisioning Profile=] and uses the private key of the distributor to sign the signature.</p>
+                    <p>The [=Provisioning Profile=] is stored in the ID-value pair of the Signing Block under ID <code>0x02000201</code>.</p>
                     <p>The value of the ID-pair contains all its signature blocks and it has a variable length and its structure is as follows:</p>
                     <ul>
                         <li><strong>ID</strong>: <code>0x02000201</code> (uint32)</li>
@@ -695,8 +685,8 @@
                                 <li><strong>size</strong> of signer block, excluding this field (uint32)</li>
                                 <li><strong>signer block</strong>:
                                     <ul>
-                                        <li><strong>size</strong> of provisioning profile, excluding this field (uint32)</li>
-                                        <li><strong>provisioning profile</strong>. Sequence of provisioning profile ID-value pairs, according to the <a href="#sec-provisioning-profile-id">provisioning profile IDs</a>:
+                                        <li><strong>size</strong> of the [=Provisioning Profile=], excluding this field (uint32)</li>
+                                        <li><strong>provisioning profile</strong>. Sequence of the provisioning profile ID-value pairs, according to the <a href="#sec-provisioning-profile-id">provisioning profile IDs</a>:
                                             <ul>
                                                 <li><strong>size</strong> of ID-value pair, excluding this field (uint32)</li>
                                                 <li><strong>ID</strong> (uint32)</li>
@@ -774,8 +764,8 @@
         </section>
         <section  id="sec-signature-pkcs7">
             <h3>PKCS#7 Signature Scheme</h3>
-            <p>This signature scheme is based on the PKCS #7 Cryptographic Message Syntax [[?rfc2315]]. This method admits recursion, so one "digital envelope", the data block including encrypted content and encrypted keys, can be nested inside other. This signature scheme MAY cover also the different stages of packaging signature described in <a href="#sec-signature-rpk">RPK Signature Scheme</a>, including the developer signature and distributor signature.</p>
-            <p>This signature scheme includes the provisioning profile of the MiniApp at the developer signing stage. At a second stage, a distributor MAY replace the developer's signature with the its own signature. Likely in the <a href="#sec-signature-rpk">RPK Signature Scheme</a>, this approach generates a Signing Block to be included into the package file, according to the <a href="sec-miniapp-digital-signature-requirements">Digital Signature Requirements</a>.</p>
+            <p>This signature scheme is based on the PKCS #7 Cryptographic Message Syntax [[?rfc2315]]. It MAY cover different stages of packaging signature described in <a href="#sec-signature-rpk">RPK Signature Scheme</a>, including the developer signature and distributor signature.</p>
+            <p>This signature scheme includes the [=Provisioning Profile=] of the MiniApp and the developer's signature at the first stage (developer signing stage). At the second stage (distributor signing stage), a distributor MAY replace the developer's signature with the its own signature. Like the <a href="#sec-signature-rpk">RPK Signature Scheme</a>, this approach generates a Signing Block to be included into the package file, according to the <a href="#sec-miniapp-digital-signature-requirements">Digital Signature Requirements</a>.</p>
 
             <p>The PKCS#7 Signing Block is defined as a data container that includes the block with the digital signature, data encrypted using the PKCS #7 syntax that contains the signatures and the signer identity.</p>
     
@@ -855,7 +845,7 @@
             <p>The type of the <a href="pkcs7-profile-block-head">Block Head</a> is identified by its attribute <code>type</code>. This attribute MUST take two different values:</p>
             <ul>
                 <li><code>0</code> for File Signature blocks</li>
-                <li><code>1</code> for Provisioning Profile blocks</li>
+                <li><code>1</code> for [=Provisioning Profile=] blocks</li>
             </ul>
             <p>If the value of type is set to <code>0</code> (File Signature block), the header MUST specify a narrower subtype, using the attribute <code>tag</code> in its <a href="pkcs7-profile-block-head">Block Head</a>. The values for this subtype are:</p>
             <ul>
