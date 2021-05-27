@@ -891,19 +891,23 @@
             <dt>Encoding considerations:</dt>
             <dd>MiniApp Packages are binary files encoded in the <a href="https://www.iana.org/assignments/media-types/application/zip">application/zip</a> media type. See <a href="https://tools.ietf.org/html/rfc6839#section-3.6">RFC 6839, section 3.6</a> [[RFC6839]].</dd>
             <dt>Security considerations:</dt>
-            <dd></dd>
+            <dd>Security considerations that apply to application/zip also apply to MiniApp package files. User Agents that process MiniApp package files should rigorously check the size and validity of data retrieved. When digital signatures are available in a MiniApp package file, the User Agent SHOULD implement necessary mechanisms to check the integrity and trustworthiness of the file according to the digital signatures, so as to to protect the end user and the hosting platform from the damage of package tampering or corruption. See more at [[[#sec-security-privacy]]].</dd>
             <dt>Interoperability considerations:</dt>
             <dd>The file, after including the signature, is not a standard ZIP but the inclusion does not affect parsing and operation of the file as a ZIP file.</dd>
             <dt>Published specification:</dt>
             <dd>This media type registration is for the MiniApp Package, as described in the specification located at <a href="https://www.w3.org/TR/miniapp-packaging/">https://www.w3.org/TR/miniapp-packaging/</a>.</dd>
             <dt>Applications that use this media type:</dt>
-            <dd>This media type is used for the distribution of MiniApps. The list, non exhaustive, of applications and software platforms that support this media type are:
+            <dd>This media type is used for the distribution of MiniApps. The list, non exhaustive, of applications and software platforms that (intend to) support this media type are:
             <ul>
+                <li><a href="https://mp.360.cn/" hreflang="zh">360 Mini Programs</a></li>
                 <li><a href="https://open.alipay.com/channel/miniIndex.htm" hreflang="zh">Alipay Mini Apps</a></li>
                 <li><a href="https://smartprogram.baidu.com/developer/index.html" hreflang="zh">Baidu Smart Programs</a></li>
                 <li><a href="https://www.quickapp.cn/" hreflang="zh">Quick Apps</a></li>
             </ul>
             </dd>
+            <p class="ednote" title="To update the supporting applications">
+                The listed applications above are the base technologies to develop this spec. They are not using the proposed media type yet, but will potentially support it when the spec is ready. The list shall be confirmed/updated later.
+            </p>   
             <dt>Fragment identifier considerations:</dt>
             <dd>"N/A"</dd>
             <dt>Additional information:</dt>
@@ -912,7 +916,7 @@
                     <dt>Deprecated alias names for this type:</dt>
                     <dd>"N/A"</dd>
                     <dt>Magic number(s):</dt>
-                    <dd>@@@</dd>
+                    <dd>50 4B 03 04</dd>
                     <dt>File extension(s):</dt>
                     <dd>MiniApps are usually identified with the extension <code>.ma</code>.</dd>
                     <dt>Macintosh file type code(s):</dt>
