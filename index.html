@@ -96,7 +96,7 @@
     </style>
 </head>
 
-<body>
+<body data-cite="MINIAPP-MANIFEST">
     <section id="abstract">
         <p>This specification defines semantics and conformance requirements for a [=MiniApp package=], and the structure of the single file container that holds the resources of a MiniApp, including a [=manifest=] file, static page templates, stylesheets, JavaScript documents, media files and other resources. Instances of the [=MiniApp package=] are used for MiniApp distribution and execution on runtime environments ([=MiniApp user agent=]).</p>
     </section>
@@ -110,7 +110,7 @@
         <section>
             <h3>Overview</h3>
             <p>[=MiniApp=] is a concept of light software application, that can be distributed through any digital means, and accessed through the Web. MiniApps are defined by a concrete file structure and all their resources are packed within a single file that represents the whole [=MiniApp package=] that can be processed and executed by [=MiniApp user agents=].</p>
-            <p>A [=MiniApp package=] contains a directory structure that holds the specific resources of the MiniApp that defines the rendering, operation, and interaction with the end-users — including static page templates, stylesheets, JavaScript documents, media files, and other resources — and the manifest. The [=MiniApp Manifest=], located in the central directory of the package, describes the MiniApp, including information about page routing, styles, and other operational and rendering details of the MiniApp, as well as descriptive information for humans.</p>
+            <p>A [=MiniApp package=] contains a directory structure that holds the specific resources of the MiniApp that defines the rendering, operation, and interaction with the end-users — including static page templates, stylesheets, JavaScript documents, media files, and other resources — and the manifest. The [=MiniApp manifest=], located in the central directory of the package, describes the MiniApp, including information about page routing, styles, and other operational and rendering details of the MiniApp, as well as descriptive information for humans.</p>
             <p>As defined in <a href="#sec-security-privacy">Security and Privacy Considerations</a>, MiniApps MAY support [=digital signature=] verification to guarantee the integrity of the package and contents during the delivery of the package.</p>
             <p>The MiniApp runtime environment ([=MiniApp user agent=]) identifies MiniApp package files through the standard [=MiniApp package=] format and the specific MIME media type, defined in this document. After retrieving the [=MiniApp ZIP container=], the [=MiniApp user agent=] loads the static page templates, CSS, JavaScript files, and other resources into the cache, following a <a href="#sec-miniapp-processing">dereference and processing algorithm</a>. These [=MiniApp resources=] will remain available in the cache until the next update, avoiding unnecessary network fetches.</p>
             <p>In terms of launch mode, a MiniApp can be launched normally when offline. The [=MiniApp user agent=] locates the specified [=start page=] from the package cache path and launches the MiniApp according to the description set out in the [=manifest=] file.</p>
@@ -118,7 +118,7 @@
         <section id="sec-terminology">
             <h3>Terminology</h3>
             <p>The following terms are specific to MiniApps.</p>
-            <dl class="termlist" data-cite="MINIAPP-MANIFEST">
+            <dl class="termlist">
                 <dt><dfn id="dfn-signature" data-lt="signatures|signature|digital signature|digital signatures" data-dfn-type="dfn">Digital signature</dfn></dt>
                 <dd>A cryptographic mechanism and hashing techniques to prove the authenticity of [=resources=]. Digital signatures can demonstrate the origin, time, identity, and status of [=resources=] and of the [=MiniApp package=].</dd>
                 <dt><dfn id="dfn-filename" data-lt="file name|file names" data-dfn-type="dfn">File name</dfn></dt>
@@ -156,7 +156,7 @@
             <li>The [=root directory=] MUST contain one script document, named <code>app.js</code>, with the basic control logic of the MiniApp. </li>
             <li>The [=root directory=] MUST contain one stylesheet, named <code>app.css</code>, following the CSS Syntax Module Level 3 [[CSS-SYNTAX-3]].</li>
             <li>The whole [=MiniApp package=] MUST be wrapped as a [[ZIP]] file, according to the requirements of [=MiniApp ZIP containers=].</li>
-            <li>The file system of a package MAY contain other subdirectories and files of different nature as defined in the <a href="#sec-filestructure">Directory and File System Structure</a>.</li>
+            <li>The file system of a package MAY contain other subdirectories and files of different nature as defined in the <a href="#sec-filestructure">Directory and File System Structure</a> section.</li>
         </ul>
         <section id="sec-filestructure">
             <h3>Directory and File System Structure</h3>
@@ -189,7 +189,7 @@
                 <p>The [=root directory=] of a [=MiniApp package=] holds several reserved files that include global data and information about the lifecycle management of the MiniApp, including:</p>
                 <dl>
                     <dt><code>manifest.json</code></dt>
-                    <dd>The [=MiniApp Manifest=] is a JSON document responsible for the global configuration of the MiniApp. A manifest file contains a collection of mandatory and optional attributes that indicate the setup of the MiniApp, including routes and paths of the pages and the window configuration of the MiniApp (e.g., styles of the navigation bar, background image and color, page title, among other), according to the MiniApp Manifest specification [[MINIAPP-MANIFEST]].</dd>
+                    <dd>The [=MiniApp manifest=] is a JSON document responsible for the global configuration of the MiniApp. A manifest file contains a collection of mandatory and optional attributes that indicate the setup of the MiniApp, including routes and paths of the pages and the window configuration of the MiniApp (e.g., styles of the navigation bar, background image and color, page title, among other), according to the MiniApp Manifest specification [[MINIAPP-MANIFEST]].</dd>
                     <dt><code>app.css</code></dt>
                     <dd>This file is the default CSS stylesheet, responsible for the global appearance of the [=MiniApp pages=]. It MAY be empty.</dd>
                     <dt><code>app.js</code></dt>
@@ -288,7 +288,7 @@
             <section id="sec-miniapp-resources-i18n">
                 <h3>localization resources</h3>
                 <p>A <dfn id="dfn-localization-resources" data-lt="MiniApp localization resources|Localization resources|localization resources" data-dfn-type="dfn">MiniApp localization resource</dfn> is a document of a [=MiniApp package=] that included localized content as part of the [=internationalization=] mechanism of MiniApps.</p>
-                <p>A multilingual MiniApp MAY has several [=localization resources=] that will be used during the [=localization=] process by the [=User Agents=] to render content according to the system locale or the user's language preferences. These resources contain JSON objects with key-value pairs that contain the unique identifier (the key) of a localizable term or expression and the representation in the concrete language (the value).</p>
+                <p>A multilingual MiniApp MAY has several [=localization resources=] that will be used during the [=localization=] process by the [=user agents=] to render content according to the system locale or the user's language preferences. These resources contain JSON objects with key-value pairs that contain the unique identifier (the key) of a localizable term or expression and the representation in the concrete language (the value).</p>
                 <pre class="example" title="Localization resource">
                     {
                         "title": "Cool MiniApp",
@@ -362,7 +362,7 @@
                 <figcaption>ZIP package and MiniApp package with an optional signing block</figcaption>
             </figure>
 
-            <p>The [=MiniApp ZIP container=] is parsed by first finding the start of the ZIP Central Directory (locating the ZIP End of Central Directory record at the end of the file, then reading the start offset of the Central Directory from the record). Every [=MiniApp signing block=] MAY include a [=signing block magic numbers=] block, as specified in <a href="#sec-miniapp-digital-signature-requirements">Digital Signature Requirements</a>, to identify the presence of digital signatures. Once the "magic numbers" block is recognized, the [=User Agent=] would be able to [=process the digital signatures=] stored in the signing block, in the immediately preceding section of the Central Directory, as shown in <a href="#figure-package-references"></a>.</p>
+            <p>The [=MiniApp ZIP container=] is parsed by first finding the start of the ZIP Central Directory (locating the ZIP End of Central Directory record at the end of the file, then reading the start offset of the Central Directory from the record). Every [=MiniApp signing block=] MAY include a [=signing block magic numbers=] block, as specified in <a href="#sec-miniapp-digital-signature-requirements">Digital Signature Requirements</a>, to identify the presence of digital signatures. Once the "magic numbers" block is recognized, the [=user agent=] would be able to [=process the digital signatures=] stored in the signing block, in the immediately preceding section of the Central Directory, as shown in <a href="#figure-package-references"></a>.</p>
 
 
             <figure id="figure-package-references">
@@ -386,9 +386,6 @@
                 <dd>A [=signing block=] MUST contains [=signing block magic numbers=], as the preceding block of the Central Directory to identify univocally the type of digital signature included.</dd>
             </dl>
         </section>
-        <div class="issue">
-            To open a discussion to confirm this approach. 
-        </div>             
     </section>
     <section id="sec-miniapp-i18n">
         <h2>Internationalization</h2>
@@ -410,46 +407,47 @@
     <section id="sec-miniapp-processing" data-cite="infra">
       <h2>MiniApp Package Processing</h2>
         <p>
-            [=User Agents=] MUST follow the following algorithm to dereference, parse and execute a [=MiniApp package=]. 
+            [=User agents=] MUST follow the following algorithm to dereference, parse and execute a [=MiniApp package=]. 
         </p>
-        <p>To <dfn>process a MiniApp package</dfn>, given an optional |miniapp_uri|, perform the following steps:</p>
+        <p>To <dfn>process a MiniApp package</dfn>, given an optional [=string=] |miniapp_uri:string|, perform the following steps:</p>
         <ol class="algorithm">
-            <li>Let |miniapp_zip_file| be the result of [=retrieving a MiniApp ZIP container=] with an optional |miniapp_uri|</li>
+            <li>Let |miniapp_zip_file:MiniApp ZIP container| be the result of [=retrieving a MiniApp ZIP container=] with an optional |miniapp_uri|</li>
             <li>[=Verify a MiniApp ZIP container=] file with |miniapp_zip_file|.</li>
             <li>Let |miniapp_package| be the result of unzipping the |miniapp_zip_file|.</li>
             <li>If |miniapp_package| is an unzip exception, then return failure.</li>
-            <li>[=Process the MiniApp Manifest=] with |miniapp_package|.</li>
+            <li>[=Process the MiniApp manifest=] with |miniapp_package|.</li>
             <li>Let |start_page| be the result of [=preparing the platform runtime=] with an optional |miniapp_uri|.</li>
             <li>Execute runtime with |start_page|.</li>
         </ol>
 
         <section id="sec-miniapp-processing-acquire">
             <h3>Retrieve a MiniApp ZIP container</h3>
-            <p>[=User Agents=] MAY obtain [=MiniApp ZIP containers=] through different channels, retrieving the file over the network (i.e., using HTTPs, WebSocket, FTP, or other specific TCP/UDP based protocols), also from the filesystem or using any other mechanism.</p>
-            <p>To <dfn data-lt="retrieving a MiniApp ZIP container" data-dfn-type="dfn">Retrieve a MiniApp ZIP container</dfn>, given an optional |miniapp_uri|, perform the following steps. They return a [=MiniApp ZIP container=].</p>
+            <p>[=User agents=] MAY obtain [=MiniApp ZIP containers=] through different channels, retrieving the file over the network (i.e., using HTTPs, WebSocket, FTP, or other specific TCP/UDP based protocols), also from the filesystem or using any other mechanism.</p>
+            <p>To <dfn data-lt="retrieving a MiniApp ZIP container" data-dfn-type="dfn">retrieve a MiniApp ZIP container</dfn>, given an optional [=string=] |miniapp_uri:string|, perform the following steps. They return a [=MiniApp ZIP container=].</p>
             <ol class="algorithm">
-                <li>Let |resource| be a [=MiniApp ZIP container=] as a result of resource retrieval.</li>
-                <li>Let |supplied_mime_type| be the result of applying the <a href="https://mimesniff.spec.whatwg.org/#supplied-mime-type-detection-algorithm">supplied MIME type detection algorithm</a> [[MIMESNIFF]] with |resource|.</li>
+                <li>Let |resource:MiniApp ZIP container| be a [=MiniApp ZIP container=] as a result of resource retrieval.</li>
+                <li>Let |supplied_mime_type:string| be the result of applying the <a href="https://mimesniff.spec.whatwg.org/#supplied-mime-type-detection-algorithm">supplied MIME type detection algorithm</a> [[MIMESNIFF]] with |resource|.</li>
                 <li>If |supplied_mime_type| is not equal to <code>application/miniapp-pkg+zip</code>, then return failure.</li>
                 <li>Return |resource|.</li>
             </ol>
         </section>
 
+        <div class="ednote">
+            Add more info about the resource retrieval process.
+        </div>
+
         <section id="sec-miniapp-processing-verify">
             <h3>Verify a MiniApp ZIP Container</h3>
-            <p>[=User Agents=] MAY guarantee the legitimacy and integrity of the [=MiniApp ZIP container=] and its content by verifying digital signatures and applying cryptographic mechanisms.</p>  
-            <p>To <dfn data-lt="verifying a MiniApp ZIP container|Verify a MiniApp ZIP container">verify a MiniApp ZIP container</dfn>, given |miniapp_zip_file|, perform the following steps:</p>
+            <p>[=User agents=] MAY guarantee the legitimacy and integrity of the [=MiniApp ZIP container=] and its content by verifying digital signatures and applying cryptographic mechanisms.</p>  
+            <p>To <dfn data-lt="verifying a MiniApp ZIP container|Verify a MiniApp ZIP container">verify a MiniApp ZIP container</dfn>, given [=MiniApp ZIP container=] |miniapp_zip_file:MiniApp ZIP container|, perform the following steps:</p>
             <ol class="algorithm">
-                <li>If the [=User Agent=] has the capability to perform verification of the digital signature(s) of the |miniapp_zip_file|, then: <br>
+                <li>If the [=user agent=] has the capability to perform verification of the digital signature(s) of the |miniapp_zip_file|, then: <br>
                     [=Process the Digital Signatures=] with |miniapp_zip_file|.
                 </li>
             </ol>
-            <div class="issue">
-                To add more information about optional encryption? If so, align with the ZIP container section.  
-            </div>
             <section id="sec-miniapp-processing-verify-magic">
                 <h4>Process Digital Signatures</h4>
-                <p>The [=MiniApp ZIP container=] MAY contain a [=signing block=] that includes one or more signatures. The signing schemes and cryptographic mechanisms depend on the concrete implementation by [=User Agents=].</p> 
+                <p>The [=MiniApp ZIP container=] MAY contain a [=signing block=] that includes one or more signatures. The signing schemes and cryptographic mechanisms depend on the concrete implementation by [=user agents=].</p> 
                 <p>Signing schemes are identified by the [=magic numbers=] section included in the [=MiniApp ZIP container=], a 16-byte sequence located inmediately before the Central Directory of the ZIP package.</p>
                 <p>To <dfn data-lt="processing the digital signatures|process the digital signatures">process the digital signatures</dfn>, given |miniapp_zip_file|, perform the following steps:</p>
                 <ol class="algorithm">
@@ -462,7 +460,7 @@
                     <li>Process the digital signatures with |magic_numbers| and |miniapp_zip_file|.</li>
                 </ol>
                 <div class="example">
-                    <p>The [=MiniApp signing block=] may be encoded using any digital signature scheme that is identified by the 16-byte [=magic numbers=] block located just immediately the Central Directory in the [=MiniApp ZIP container=]. As shown in the example in <a href="#figure-miniapp-location-magic-numbers"></a>, the End of Central Directory, identified by the values <code>0x06054b50</code>, contains the offset that enables [=User Agents=] to identify the start of the Central Directory block, and subsequently the magic numbers at the end of the [=signing block=].</p>
+                    <p>The [=MiniApp signing block=] may be encoded using any digital signature scheme that is identified by the 16-byte [=magic numbers=] block located just immediately the Central Directory in the [=MiniApp ZIP container=]. As shown in the example in <a href="#figure-miniapp-location-magic-numbers"></a>, the End of Central Directory, identified by the values <code>0x06054b50</code>, contains the offset that enables [=user agents=] to identify the start of the Central Directory block, and subsequently the magic numbers at the end of the [=signing block=].</p>
                     <figure id="figure-miniapp-location-magic-numbers">
                         <img src="images/signature_bytes_central_directory.svg" alt="Location of the magic numbers within the MiniApp package" />
                         <figcaption>Example of End of Central Directory signature, location of the Central Directory and signature magic numbers</figcaption>
@@ -473,8 +471,8 @@
 
         <section id="sec-miniapp-processing-manifest">
             <h3>Process the MiniApp Manifest File</h3>
-            <p>[=User Agents=] MUST parse the [=MiniApp Manifest=], located in the [=MiniApp package=], that contains global metadata about the MiniApp.</p>  
-            <p>To <dfn data-lt="processing the MiniApp manifest">process the MiniApp manifest</dfn>, given |miniapp_package|, perform the following steps. They return [=MiniApp Manifest=].</p>
+            <p>[=User agents=] MUST parse the [=MiniApp manifest=], located in the [=MiniApp package=], that contains global metadata about the MiniApp.</p>  
+            <p>To <dfn data-lt="processing the MiniApp manifest">process the MiniApp manifest</dfn>, given |miniapp_package|, perform the following steps. They return [=MiniApp manifest=].</p>
             <ol class="algorithm">
                 <li>If <code>manifest.json</code> does not exist in the [=root directory=], then return failure.</li>
                 <li>Let |manifest_json| be the result of [=parse JSON from bytes=] <code>manifest.json</code> file.</li>
@@ -486,8 +484,8 @@
 
         <section id="sec-miniapp-processing-platform">
             <h3>Prepare the platform runtime</h3>
-            <p>[=User Agents=] SHOULD prepare the runtime environment that contains both the logic and the view layers. The logic layer is responsible for logic and control of the application (i.e., <code>app.js</code>, and <code>page.js</code> files). The view layer is responsible for the visual environment and rendering, including the page resource files, such as component templates and stylesheets. In preparation for running a MiniApp, [=User Agents=] MUST set up the environment with the configuration specified by the [=MiniApp Manifest=] metadata.</p>
-            <p>[=User Agents=] MUST identify and load the first page as the MiniApp entry point, according to the following algorithm.</p>
+            <p>[=User agents=] SHOULD prepare the runtime environment that contains both the logic and the view layers. The logic layer is responsible for logic and control of the application (i.e., <code>app.js</code>, and <code>page.js</code> files). The view layer is responsible for the visual environment and rendering, including the page resource files, such as component templates and stylesheets. In preparation for running a MiniApp, [=user agents=] MUST set up the environment with the configuration specified by the [=MiniApp manifest=] metadata.</p>
+            <p>[=User agents=] MUST identify and load the first page as the MiniApp entry point, according to the following algorithm.</p>
             <p>To <dfn data-lt="preparing the platform runtime">prepare the platform runtime</dfn>, given optional |miniapp_uri| and |manifest_json|, perform the following steps. They return a [=MiniApp start page=].</p>
             <ol class="algorithm">
                 <li>If <code>app.js</code> does not exist in the [=root directory=], then return failure.</li>
@@ -532,7 +530,7 @@
             </section>
             <section id="sec-miniapp-processing-platform-reload-package">
                 <h4>Reload Package</h4>
-                <p>(The [=User Agent=] SHOULD cache the Max-Age of a specific version of the package archive).</p>
+                <p>(The [=user agent=] SHOULD cache the Max-Age of a specific version of the package archive).</p>
                 <p class="todo">To <dfn>reload package</dfn>, given |miniapp_uri|, perform the following steps...</p>
             </section>
         </section>
@@ -570,7 +568,7 @@
     <section class="appendix informative" id="sec-signature-schemes">
         <h2>Signature Schemes</h2>
 
-        <p>Every [=User Agent=] MAY support its own digital signature schemes depending on their needs. This section includes some examples of digital signature implementations as illustrated in <a href="#figure-miniapp-signatures-example"></a>. They can be used in specific scenarios, such as developer verification and integrity of a MiniApp during its distribution.</p>   
+        <p>Every [=user agent=] MAY support its own digital signature schemes depending on their needs. This section includes some examples of digital signature implementations as illustrated in <a href="#figure-miniapp-signatures-example"></a>. They can be used in specific scenarios, such as developer verification and integrity of a MiniApp during its distribution.</p>   
 
                   
             <figure id="figure-miniapp-signatures-example">
@@ -885,7 +883,7 @@
             <dt>Encoding considerations:</dt>
             <dd>MiniApp packages are binary files encoded in the <a href="https://www.iana.org/assignments/media-types/application/zip">application/zip</a> media type. See <a href="https://tools.ietf.org/html/rfc6839#section-3.6">RFC 6839, section 3.6</a> [[RFC6839]].</dd>
             <dt>Security considerations:</dt>
-            <dd>Security considerations that apply to application/zip also apply to MiniApp package files. User Agents that process MiniApp package files should rigorously check the size and validity of data retrieved. When digital signatures are available in a MiniApp package file, the User Agent SHOULD implement necessary mechanisms to check the integrity and trustworthiness of the file according to the digital signatures, so as to to protect the end user and the hosting platform from the damage of package tampering or corruption. See more at [[[#sec-security-privacy]]].</dd>
+            <dd>Security considerations that apply to application/zip also apply to MiniApp package files. User agents that process MiniApp package files should rigorously check the size and validity of data retrieved. When digital signatures are available in a MiniApp package file, the user agent SHOULD implement necessary mechanisms to check the integrity and trustworthiness of the file according to the digital signatures, so as to to protect the end user and the hosting platform from the damage of package tampering or corruption. See more at [[[#sec-security-privacy]]].</dd>
             <dt>Interoperability considerations:</dt>
             <dd>The file, after including the signature, is not a standard ZIP but the inclusion does not affect parsing and operation of the file as a ZIP file.</dd>
             <dt>Published specification:</dt>
