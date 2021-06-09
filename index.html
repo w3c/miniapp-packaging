@@ -440,7 +440,7 @@
         <section id="sec-miniapp-processing-verify">
             <h3>Verify a MiniApp ZIP Container</h3>
             <p>[=User Agents=] MAY guarantee the legitimacy and integrity of the [=MiniApp ZIP container=] and its content by verifying digital signatures and applying cryptographic mechanisms.</p>  
-            <p>To <dfn data-lt="verifying a MiniApp ZIP container">Verify a MiniApp ZIP container</dfn>, given |miniapp_zip_file|, perform the following steps:</p>
+            <p>To <dfn data-lt="verifying a MiniApp ZIP container|Verify a MiniApp ZIP container">verify a MiniApp ZIP container</dfn>, given |miniapp_zip_file|, perform the following steps:</p>
             <ol class="algorithm">
                 <li>If the [=User Agent=] has the capability to perform verification of the digital signature(s) of the |miniapp_zip_file|, then: <br>
                     [=Process the Digital Signatures=] with |miniapp_zip_file|.
@@ -453,7 +453,7 @@
                 <h4>Process Digital Signatures</h4>
                 <p>The [=MiniApp ZIP container=] MAY contain a [=signing block=] that includes one or more signatures. The signing schemes and cryptographic mechanisms depend on the concrete implementation by [=User Agents=].</p> 
                 <p>Signing schemes are identified by the [=magic numbers=] section included in the [=MiniApp ZIP container=], a 16-byte sequence located inmediately before the Central Directory of the ZIP package.</p>
-                <p>To <dfn data-lt="processing the digital signatures|process the digital signatures">Process the digital signatures</dfn>, given |miniapp_zip_file|, perform the following steps:</p>
+                <p>To <dfn data-lt="processing the digital signatures|process the digital signatures">process the digital signatures</dfn>, given |miniapp_zip_file|, perform the following steps:</p>
                 <ol class="algorithm">
                     <li>Let |magic_numbers| be a [=byte sequence=].</li>
                     <li>Let |eocd_pointer| be the result of locating the byte sequence <code>0x06054b50</code> (read as little-endian) in |miniapp_zip_file| that marks the End of the Central Directory.</li>
@@ -669,7 +669,7 @@
                 </section>
                 <section>
                     <h6>Distributor Signature</h6>
-                    <p>The signature of the distributor preserves the integrity of the application during the distribution process, guaranteeing that the package is verified by the trusted distributor and the permission control policy (in the form of a <dfn id="dfn-provisioning-profile" data-dfn-type="dfn">Provisioning Profile</dfn>) from the distributor is enforced upon the package.</p>
+                    <p>The signature of the distributor preserves the integrity of the application during the distribution process, guaranteeing that the package is verified by the trusted distributor and the permission control policy (in the form of a <dfn id="dfn-provisioning-profile" data-dfn-type="dfn">provisioning profile</dfn>) from the distributor is enforced upon the package.</p>
 
                     <p>During the process of distributor signing, either the distributor or the developer adds a [=Provisioning Profile=] and uses the private key of the distributor to sign the signature.</p>
                     <p>The [=Provisioning Profile=] is stored in the ID-value pair of the signing block under ID <code>0x02000201</code>.</p>
