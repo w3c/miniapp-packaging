@@ -421,7 +421,7 @@
         </ol>
 
         <section id="sec-miniapp-processing-retrieval">
-            <h3>Retrieve a MiniApp ZIP container</h3>
+            <h3>MiniApp ZIP Container Retrieval</h3>
             <p>[=User agents=] MAY obtain [=MiniApp ZIP containers=] through different channels, retrieving the file over the network (i.e., using HTTPs, WebSocket, FTP, or other specific TCP/UDP based protocols), also from the filesystem or using any other mechanism.</p>
             <p>To <dfn data-lt="retrieving a MiniApp ZIP container" data-dfn-type="dfn">retrieve a MiniApp ZIP container</dfn>, given [=string=] |miniapp_uri:string|, perform the following steps. They return a [=MiniApp ZIP container=].</p>
             <ol class="algorithm">
@@ -433,7 +433,7 @@
         </section>
 
         <section id="sec-miniapp-processing-verify">
-            <h3>Verify a MiniApp ZIP Container</h3>
+            <h3>MiniApp ZIP Container Verification</h3>
             <p>[=User agents=] MAY guarantee the legitimacy and integrity of the [=MiniApp ZIP container=] and its content by verifying digital signatures and applying cryptographic mechanisms.</p>  
             <p>To <dfn data-lt="verifying a MiniApp ZIP container|Verify a MiniApp ZIP container">verify a MiniApp ZIP container</dfn>, given [=MiniApp ZIP container=] |miniapp_zip_file:MiniApp ZIP container|, perform the following steps:</p>
             <ol class="algorithm">
@@ -456,20 +456,20 @@
                     <li>Process the digital signatures with |magic_numbers| and |miniapp_zip_file|.</li>
                 </ol>
                 <div class="note" title="Usage">
-                    MiniApp [=user agents=] implement specific digital signature processing algorithms, based on their needs and requirements.  
+                    [=MiniApp user agents=] implement specific digital signature processing algorithms, based on their needs and requirements.  
                 </div>
-                <div class="example">
+                <aside class="example" title="Location of a digital signature within a MiniApp package">
                     <p>The [=MiniApp signing block=] may be encoded using any digital signature scheme that is identified by the 16-byte [=magic numbers=] block located just immediately the Central Directory in the [=MiniApp ZIP container=]. As shown in the example in <a href="#figure-miniapp-location-magic-numbers"></a>, the End of Central Directory, identified by the values <code>0x06054b50</code>, contains the offset that enables [=user agents=] to identify the start of the Central Directory block, and subsequently the magic numbers at the end of the [=signing block=].</p>
                     <figure id="figure-miniapp-location-magic-numbers">
                         <img src="images/signature_bytes_central_directory.svg" alt="Location of the magic numbers within the MiniApp package" />
                         <figcaption>Example of End of Central Directory signature, location of the Central Directory and signature magic numbers</figcaption>
                     </figure>
-                </div>
+                </aside>
             </section>
         </section>
 
         <section id="sec-miniapp-processing-manifest">
-            <h3>Process the MiniApp Manifest File</h3>
+            <h3>MiniApp Manifest File Processing</h3>
             <p>[=User agents=] MUST parse the [=MiniApp manifest=], located in the [=MiniApp package=], that contains global metadata about the MiniApp.</p>  
             <p>To <dfn data-lt="processing the MiniApp manifest">process the MiniApp manifest</dfn>, given |miniapp_package|, perform the following steps. They return [=MiniApp manifest=].</p>
             <ol class="algorithm">
@@ -482,7 +482,7 @@
         </section>
 
         <section id="sec-miniapp-processing-platform">
-            <h3>Prepare the platform runtime</h3>
+            <h3>Platform Runtime Preparation</h3>
             <p>[=User agents=] SHOULD prepare the runtime environment that contains both the logic and the view layers. The logic layer is responsible for logic and control of the application (i.e., <code>app.js</code>, and <code>page.js</code> files). The view layer is responsible for the visual environment and rendering, including the page resource files, such as component templates and stylesheets. In preparation for running a MiniApp, [=user agents=] MUST set up the environment with the configuration specified by the [=MiniApp manifest=] metadata.</p>
             <p>[=User agents=] MUST identify and load the first page as the MiniApp entry point, according to the following algorithm.</p>
             <p>To <dfn data-lt="preparing the platform runtime">prepare the platform runtime</dfn>, given |miniapp_uri| and |manifest_json|, perform the following steps. They return a [=MiniApp start page=].</p>
