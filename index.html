@@ -96,7 +96,7 @@
     </style>
 </head>
 
-<body data-cite="MINIAPP-MANIFEST INFRA">
+<body data-cite="MINIAPP-MANIFEST INFRA URL HTML">
     <section id="abstract">
         <p>This specification defines semantics and conformance requirements for a [=MiniApp package=], and the structure of the single file container that holds the resources of a MiniApp, including a [=manifest=] file, static page templates, stylesheets, JavaScript documents, media files and other resources. Instances of the [=MiniApp package=] are used for MiniApp distribution and execution on runtime environments ([=MiniApp user agent=]).</p>
     </section>
@@ -491,7 +491,7 @@
                 <li>If <code>app.js</code> does not exist in the [=root directory=], then return failure.</li>
                 <li>If <code>app.css</code> does not exist in the [=root directory=], then return failure.</li>
                 <li>If <code>i18n/</code> sub-directory does not exist in the [=root directory=], then return failure.</li>
-                <li>[=Verify platform compatibility=], passing |manifest|.</li>
+                <li>[=Verify platform compatibility=], passing |miniapp_package| and |manifest|.</li>
                 <li>[=Determine the start page=], passing |miniapp_uri| and |manifest|.</li>
                 <li>[=Determine the MiniApp locale=], passing |manifest|.</li>
                 <li>[=Reload package=], passing |miniapp_uri|.</li>
@@ -502,20 +502,16 @@
                 <p>To <dfn data-lt="Verify platform compatibility">verify platform compatibility</dfn>, given [=MiniApp Package=] |miniapp_package:MiniApp Package| and [=ordered map=] |manifest:ordered map|, perform the following steps:</p>
                 <ol class="algorithm">
                     <li>Set |platform_required:ordered map| to |manifest|["platform_version"].</li>
-                    <li>If |platform_required| is not compatible with the [=user agent=] return failure.</li>
-                    <li>Set |pages:array| to |manifest|["pages"].</li>
-                    <li>[=list/For each=] |page:URL| of [=list=] |pages|:
+                    <li>If |platform_required| is not compatible with the [=user agent=] configuration return failure.</li>
+                    <li>[=list/For each=] |page:URL| of [=list=] |manifest|["pages"]:
                         <ol>
                             <li>If |page| does not exist in the |miniapp_package|, return failure.</li>
                         </ol>
                     </li>
-                    <li>If |manifest|["widgets"] [=map/exists=]:
+                    <li>If |manifest|["widgets"] [=map/exists=], then:<br>
+                        [=list/For each=] |widget_path:URL| of [=list=] |manifest|["widgets"]:
                         <ol>
-                            <li>[=list/For each=] |widget_path:URL| of [=list=] |manifest|["widgets"]:
-                                <ol>
-                                    <li>If |widget_path| does not exist in the |miniapp_package|, return failure.</li>
-                                </ol>
-                            </li>
+                            <li>If |widget_path| does not exist in the |miniapp_package|, return failure.</li>
                         </ol>
                     </li>
                 </ol>                
