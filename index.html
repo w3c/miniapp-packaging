@@ -137,7 +137,7 @@
                 <dd>The ZIP-based packaging and distribution format for MiniApps, as defined in <a href="#sec-miniapp-zip-container">MiniApp ZIP container</a> section.</dd>
                 <dt><dfn data-export="" id="dfn-widget" data-lt="widget|widgets|MiniApp widgets" data-dfn-type="dfn">MiniApp widget</dfn></dt>
                 <dd>A special type of [=MiniApp page=] that is displayed standalone in host environments such as assistants and device search pages to connect MiniApp services in specific scenarios.</dd>
-                <dt><dfn id="dfn-start-page" data-lt="MiniApp start pages|start pages" data-dfn-type="dfn">MiniApp start page</dfn></dt>
+                <dt><dfn id="dfn-start-page" data-lt="MiniApp start pages|start page|start pages" data-dfn-type="dfn">MiniApp start page</dfn></dt>
                 <dd>The entry point of a MiniApp. The resource that is loaded and rendered by the [=MiniApp user agent=] at the launch of the application.</dd>  
             </dl>
         </section>
@@ -409,21 +409,21 @@
         <p>
             [=User agents=] MUST follow the following algorithm to dereference, parse and execute a [=MiniApp package=]. 
         </p>
-        <p>To <dfn>process a MiniApp package</dfn>, given a [=string=] |miniapp_uri:string|, perform the following steps:</p>
+        <p>To <dfn>process a MiniApp package</dfn>, given [=string=] |miniapp_uri:string|, perform the following steps:</p>
         <ol class="algorithm">
-            <li>Let |miniapp_zip_file:MiniApp ZIP container| be the result of [=retrieving a MiniApp ZIP container=] with a |miniapp_uri|</li>
-            <li>[=Verify a MiniApp ZIP container=] file with |miniapp_zip_file|.</li>
-            <li>Let |miniapp_package| be the result of unzipping the |miniapp_zip_file|.</li>
+            <li>Let |miniapp_zip_file:MiniApp ZIP container| be the result of [=retrieving a MiniApp ZIP container=] with |miniapp_uri|.</li>
+            <li>[=Verify a MiniApp ZIP container=] with |miniapp_zip_file|.</li>
+            <li>Let |miniapp_package:Miniapp package| be the result of unzipping the |miniapp_zip_file|.</li>
             <li>If |miniapp_package| is an unzip exception, then return failure.</li>
             <li>[=Process the MiniApp manifest=] with |miniapp_package|.</li>
-            <li>Let |start_page| be the result of [=preparing the platform runtime=] with |miniapp_uri|.</li>
+            <li>Let |start_page:MiniApp start page| be the result of [=preparing the platform runtime=] with |miniapp_uri|.</li>
             <li>Execute runtime with |start_page|.</li>
         </ol>
 
         <section id="sec-miniapp-processing-retrieval">
             <h3>Retrieve a MiniApp ZIP container</h3>
             <p>[=User agents=] MAY obtain [=MiniApp ZIP containers=] through different channels, retrieving the file over the network (i.e., using HTTPs, WebSocket, FTP, or other specific TCP/UDP based protocols), also from the filesystem or using any other mechanism.</p>
-            <p>To <dfn data-lt="retrieving a MiniApp ZIP container" data-dfn-type="dfn">retrieve a MiniApp ZIP container</dfn>, given a [=string=] |miniapp_uri:string|, perform the following steps. They return a [=MiniApp ZIP container=].</p>
+            <p>To <dfn data-lt="retrieving a MiniApp ZIP container" data-dfn-type="dfn">retrieve a MiniApp ZIP container</dfn>, given [=string=] |miniapp_uri:string|, perform the following steps. They return a [=MiniApp ZIP container=].</p>
             <ol class="algorithm">
                 <li>Let |resource:MiniApp ZIP container| be a [=MiniApp ZIP container=] as a result of <a href="https://www.w3.org/html/wg/spec/fetching-resources.html#fetch">fetching a URL</a> [[HTML5]], passing |miniapp_uri|.</li>
                 <li>Let |supplied_mime_type:string| be the result of applying the <a href="https://mimesniff.spec.whatwg.org/#supplied-mime-type-detection-algorithm">supplied MIME type detection algorithm</a> [[MIMESNIFF]] with |resource|.</li>
@@ -437,24 +437,27 @@
             <p>[=User agents=] MAY guarantee the legitimacy and integrity of the [=MiniApp ZIP container=] and its content by verifying digital signatures and applying cryptographic mechanisms.</p>  
             <p>To <dfn data-lt="verifying a MiniApp ZIP container|Verify a MiniApp ZIP container">verify a MiniApp ZIP container</dfn>, given [=MiniApp ZIP container=] |miniapp_zip_file:MiniApp ZIP container|, perform the following steps:</p>
             <ol class="algorithm">
-                <li>If the [=user agent=] has the capability to perform verification of the digital signature(s) of the |miniapp_zip_file|, then: <br>
-                    [=Process the Digital Signatures=] with |miniapp_zip_file|.
+                <li>If the [=user agent=] has the capability to perform digital signature(s) verification of |miniapp_zip_file|, then: <br>
+                    [=Process the digital signatures=] with |miniapp_zip_file|.
                 </li>
             </ol>
-            <section id="sec-miniapp-processing-verify-magic">
-                <h4>Process Digital Signatures</h4>
+            <section id="sec-miniapp-digital-signatures-processing">
+                <h4>Digital Signatures Processing</h4>
                 <p>The [=MiniApp ZIP container=] MAY contain a [=signing block=] that includes one or more signatures. The signing schemes and cryptographic mechanisms depend on the concrete implementation by [=user agents=].</p> 
-                <p>Signing schemes are identified by the [=magic numbers=] section included in the [=MiniApp ZIP container=], a 16-byte sequence located inmediately before the Central Directory of the ZIP package.</p>
-                <p>To <dfn data-lt="processing the digital signatures|process the digital signatures">process the digital signatures</dfn>, given |miniapp_zip_file|, perform the following steps:</p>
+                <p>Signing schemes are identified by the [=magic numbers=] section included in the [=MiniApp ZIP container=], a 16-byte sequence located immediately before the Central Directory of the ZIP package.</p>
+                <p>To <dfn data-lt="processing the digital signatures|Process the digital signatures">process the digital signatures</dfn>, given |miniapp_zip_file:MiniApp ZIP container|, perform the following steps:</p>
                 <ol class="algorithm">
-                    <li>Let |magic_numbers| be a [=byte sequence=].</li>
-                    <li>Let |eocd_pointer| be the result of locating the byte sequence <code>0x06054b50</code> (read as little-endian) in |miniapp_zip_file| that marks the End of the Central Directory.</li>
+                    <li>Let |magic_numbers:byte sequence| be a [=byte sequence=].</li>
+                    <li>Let |eocd_pointer:byte sequence| be a [=byte sequence=] as the result of locating the byte sequence <code>0x06054b50</code> (read as little-endian) in |miniapp_zip_file| that marks the End of the Central Directory [[ZIP]].</li>
                     <li>Set |eocd_pointer| to |eocd_pointer| + 0x00000010.</li>
-                    <li>Let |cd_pointer| be the result of reading the 4-byte sequence at |eocd_pointer|.</li>
-                    <li>Let |magic_numbers_pointer| be |eocd_pointer| - 0x00000010.</li>
+                    <li>Let |cd_pointer:byte sequence| be the result of reading the 4-byte sequence at |eocd_pointer|.</li>
+                    <li>Let |magic_numbers_pointer:byte sequence| be |eocd_pointer| - 0x00000010.</li>
                     <li>Set |magic_numbers| to the 16-byte block at |magic_numbers_pointer|.</li>
                     <li>Process the digital signatures with |magic_numbers| and |miniapp_zip_file|.</li>
                 </ol>
+                <div class="note" title="Usage">
+                    MiniApp [=user agents=] implement specific digital signature processing algorithms, based on their needs and requirements.  
+                </div>
                 <div class="example">
                     <p>The [=MiniApp signing block=] may be encoded using any digital signature scheme that is identified by the 16-byte [=magic numbers=] block located just immediately the Central Directory in the [=MiniApp ZIP container=]. As shown in the example in <a href="#figure-miniapp-location-magic-numbers"></a>, the End of Central Directory, identified by the values <code>0x06054b50</code>, contains the offset that enables [=user agents=] to identify the start of the Central Directory block, and subsequently the magic numbers at the end of the [=signing block=].</p>
                     <figure id="figure-miniapp-location-magic-numbers">
