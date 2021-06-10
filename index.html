@@ -96,7 +96,7 @@
     </style>
 </head>
 
-<body data-cite="MINIAPP-MANIFEST">
+<body data-cite="MINIAPP-MANIFEST INFRA">
     <section id="abstract">
         <p>This specification defines semantics and conformance requirements for a [=MiniApp package=], and the structure of the single file container that holds the resources of a MiniApp, including a [=manifest=] file, static page templates, stylesheets, JavaScript documents, media files and other resources. Instances of the [=MiniApp package=] are used for MiniApp distribution and execution on runtime environments ([=MiniApp user agent=]).</p>
     </section>
@@ -445,7 +445,7 @@
                 <h4>Digital Signatures Processing</h4>
                 <p>The [=MiniApp ZIP container=] MAY contain a [=signing block=] that includes one or more signatures. The signing schemes and cryptographic mechanisms depend on the concrete implementation by [=user agents=].</p> 
                 <p>Signing schemes are identified by the [=magic numbers=] section included in the [=MiniApp ZIP container=], a 16-byte sequence located immediately before the Central Directory of the ZIP package.</p>
-                <p>To <dfn data-lt="processing the digital signatures|Process the digital signatures">process the digital signatures</dfn>, given |miniapp_zip_file:MiniApp ZIP container|, perform the following steps:</p>
+                <p>To <dfn data-lt="processing the digital signatures|Process the digital signatures">process the digital signatures</dfn>, given [=MiniApp ZIP container=] |miniapp_zip_file:MiniApp ZIP container|, perform the following steps:</p>
                 <ol class="algorithm">
                     <li>Let |magic_numbers:byte sequence| be a [=byte sequence=].</li>
                     <li>Let |eocd_pointer:byte sequence| be a [=byte sequence=] as the result of locating the byte sequence <code>0x06054b50</code> (read as little-endian) in |miniapp_zip_file| that marks the End of the Central Directory [[ZIP]].</li>
@@ -469,34 +469,56 @@
         </section>
 
         <section id="sec-miniapp-processing-manifest">
-            <h3>MiniApp Manifest File Processing</h3>
+            <h3>MiniApp Manifest Processing</h3>
             <p>[=User agents=] MUST parse the [=MiniApp manifest=], located in the [=MiniApp package=], that contains global metadata about the MiniApp.</p>  
-            <p>To <dfn data-lt="processing the MiniApp manifest">process the MiniApp manifest</dfn>, given |miniapp_package|, perform the following steps. They return [=MiniApp manifest=].</p>
+            <p>To <dfn data-lt="processing the MiniApp manifest">process the MiniApp manifest</dfn>, given [=MiniApp Package=] |miniapp_package:MiniApp Package|, perform the following steps. They return [=ordered map=].</p>
             <ol class="algorithm">
-                <li>If <code>manifest.json</code> does not exist in the [=root directory=], then return failure.</li>
-                <li>Let |manifest_json| be the result of [=parse JSON from bytes=] <code>manifest.json</code> file.</li>
-                <li>If |manifest_json| is a parsing exception, or the type of |manifest_json| is not object, then return failure.</li>
-                <li>Extract descriptive metadata from |manifest_json|.</li>
-                <li>Return |manifest_json|.</li>
+                <li>If <code>manifest.json</code> file does not exist in the package's [=root directory=], then return failure.</li>
+                <li>Let |manifest_json:object| be the result of [=parse JSON from bytes=], passing <code>manifest.json</code>.</li>
+                <li>If |manifest_json| is a parsing exception, or the type of |manifest_json| is not [=object=], then return failure.</li>
+                <li>Let |manifest:ordered map| be an [=ordered map=].</li>
+                <li>[=Process a MiniApp manifest=], passing |manifest_json| and |manifest|.</li>
+                <li>Return |manifest|.</li>
             </ol>
         </section>
 
-        <section id="sec-miniapp-processing-platform">
+        <section id="sec-miniapp-platform-runtime-preparation">
             <h3>Platform Runtime Preparation</h3>
             <p>[=User agents=] SHOULD prepare the runtime environment that contains both the logic and the view layers. The logic layer is responsible for logic and control of the application (i.e., <code>app.js</code>, and <code>page.js</code> files). The view layer is responsible for the visual environment and rendering, including the page resource files, such as component templates and stylesheets. In preparation for running a MiniApp, [=user agents=] MUST set up the environment with the configuration specified by the [=MiniApp manifest=] metadata.</p>
-            <p>[=User agents=] MUST identify and load the first page as the MiniApp entry point, according to the following algorithm.</p>
-            <p>To <dfn data-lt="preparing the platform runtime">prepare the platform runtime</dfn>, given |miniapp_uri| and |manifest_json|, perform the following steps. They return a [=MiniApp start page=].</p>
+            <p>[=User agents=] MUST identify and load the [=start page=] as the MiniApp entry point, according to the following algorithm.</p>
+            <p>To <dfn data-lt="preparing the platform runtime">prepare the platform runtime</dfn>, given [=string=] |miniapp_uri:string| and [=ordered map=] |manifest:ordered map|, perform the following steps. They return a [=MiniApp start page=].</p>
             <ol class="algorithm">
                 <li>If <code>app.js</code> does not exist in the [=root directory=], then return failure.</li>
                 <li>If <code>app.css</code> does not exist in the [=root directory=], then return failure.</li>
                 <li>If <code>i18n/</code> sub-directory does not exist in the [=root directory=], then return failure.</li>
-                <li>[=Check dependencies=] with |manifest_json|.</li>
-                <li>[=Determine the start page=] with |miniapp_uri| and |manifest_json|.</li>
-                <li>[=Reload package=] with |miniapp_uri|.</li>
+                <li>[=Verify platform compatibility=], passing |manifest|.</li>
+                <li>[=Determine the start page=], passing |miniapp_uri| and |manifest|.</li>
+                <li>[=Determine the MiniApp locale=], passing |manifest|.</li>
+                <li>[=Reload package=], passing |miniapp_uri|.</li>
             </ol>
-            <section id="sec-miniapp-processing-platform-dependencies">
-                <h4>Check Dependencies</h4>
-                <p class="todo">To <dfn>check dependencies</dfn>, given |manifest_json|, perform the following steps...</p>
+            <section id="sec-miniapp-platform-compatibility-verification">
+                <h4>Platform Compatibility Verification</h4>
+                <p>[=User agents=] MUST verify that a [=MiniApp=] is compatible with them and can run properly in their platform. This verification is performed using the metadata specified in the [=MiniApp manifest=], including the supported version of the platform and checking the pages and resources needed in the execution.</p>
+                <p>To <dfn data-lt="Verify platform compatibility">verify platform compatibility</dfn>, given [=MiniApp Package=] |miniapp_package:MiniApp Package| and [=ordered map=] |manifest:ordered map|, perform the following steps:</p>
+                <ol class="algorithm">
+                    <li>Set |platform_required:ordered map| to |manifest|["platform_version"].</li>
+                    <li>If |platform_required| is not compatible with the [=user agent=] return failure.</li>
+                    <li>Set |pages:array| to |manifest|["pages"].</li>
+                    <li>[=list/For each=] |page:URL| of [=list=] |pages|:
+                        <ol>
+                            <li>If |page| does not exist in the |miniapp_package|, return failure.</li>
+                        </ol>
+                    </li>
+                    <li>If |manifest|["widgets"] [=map/exists=]:
+                        <ol>
+                            <li>[=list/For each=] |widget_path:URL| of [=list=] |manifest|["widgets"]:
+                                <ol>
+                                    <li>If |widget_path| does not exist in the |miniapp_package|, return failure.</li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </li>
+                </ol>                
             </section>
             <section id="sec-miniapp-processing-platform-start-page">
                 <h4>Determine Start Page</h4>
