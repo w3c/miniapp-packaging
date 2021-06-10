@@ -409,32 +409,28 @@
         <p>
             [=User agents=] MUST follow the following algorithm to dereference, parse and execute a [=MiniApp package=]. 
         </p>
-        <p>To <dfn>process a MiniApp package</dfn>, given an optional [=string=] |miniapp_uri:string|, perform the following steps:</p>
+        <p>To <dfn>process a MiniApp package</dfn>, given a [=string=] |miniapp_uri:string|, perform the following steps:</p>
         <ol class="algorithm">
-            <li>Let |miniapp_zip_file:MiniApp ZIP container| be the result of [=retrieving a MiniApp ZIP container=] with an optional |miniapp_uri|</li>
+            <li>Let |miniapp_zip_file:MiniApp ZIP container| be the result of [=retrieving a MiniApp ZIP container=] with a |miniapp_uri|</li>
             <li>[=Verify a MiniApp ZIP container=] file with |miniapp_zip_file|.</li>
             <li>Let |miniapp_package| be the result of unzipping the |miniapp_zip_file|.</li>
             <li>If |miniapp_package| is an unzip exception, then return failure.</li>
             <li>[=Process the MiniApp manifest=] with |miniapp_package|.</li>
-            <li>Let |start_page| be the result of [=preparing the platform runtime=] with an optional |miniapp_uri|.</li>
+            <li>Let |start_page| be the result of [=preparing the platform runtime=] with |miniapp_uri|.</li>
             <li>Execute runtime with |start_page|.</li>
         </ol>
 
-        <section id="sec-miniapp-processing-acquire">
+        <section id="sec-miniapp-processing-retrieval">
             <h3>Retrieve a MiniApp ZIP container</h3>
             <p>[=User agents=] MAY obtain [=MiniApp ZIP containers=] through different channels, retrieving the file over the network (i.e., using HTTPs, WebSocket, FTP, or other specific TCP/UDP based protocols), also from the filesystem or using any other mechanism.</p>
-            <p>To <dfn data-lt="retrieving a MiniApp ZIP container" data-dfn-type="dfn">retrieve a MiniApp ZIP container</dfn>, given an optional [=string=] |miniapp_uri:string|, perform the following steps. They return a [=MiniApp ZIP container=].</p>
+            <p>To <dfn data-lt="retrieving a MiniApp ZIP container" data-dfn-type="dfn">retrieve a MiniApp ZIP container</dfn>, given a [=string=] |miniapp_uri:string|, perform the following steps. They return a [=MiniApp ZIP container=].</p>
             <ol class="algorithm">
-                <li>Let |resource:MiniApp ZIP container| be a [=MiniApp ZIP container=] as a result of resource retrieval.</li>
+                <li>Let |resource:MiniApp ZIP container| be a [=MiniApp ZIP container=] as a result of <a href="https://www.w3.org/html/wg/spec/fetching-resources.html#fetch">fetching a URL</a> [[HTML5]], passing |miniapp_uri|.</li>
                 <li>Let |supplied_mime_type:string| be the result of applying the <a href="https://mimesniff.spec.whatwg.org/#supplied-mime-type-detection-algorithm">supplied MIME type detection algorithm</a> [[MIMESNIFF]] with |resource|.</li>
                 <li>If |supplied_mime_type| is not equal to <code>application/miniapp-pkg+zip</code>, then return failure.</li>
                 <li>Return |resource|.</li>
             </ol>
         </section>
-
-        <div class="ednote">
-            Add more info about the resource retrieval process.
-        </div>
 
         <section id="sec-miniapp-processing-verify">
             <h3>Verify a MiniApp ZIP Container</h3>
@@ -486,13 +482,13 @@
             <h3>Prepare the platform runtime</h3>
             <p>[=User agents=] SHOULD prepare the runtime environment that contains both the logic and the view layers. The logic layer is responsible for logic and control of the application (i.e., <code>app.js</code>, and <code>page.js</code> files). The view layer is responsible for the visual environment and rendering, including the page resource files, such as component templates and stylesheets. In preparation for running a MiniApp, [=user agents=] MUST set up the environment with the configuration specified by the [=MiniApp manifest=] metadata.</p>
             <p>[=User agents=] MUST identify and load the first page as the MiniApp entry point, according to the following algorithm.</p>
-            <p>To <dfn data-lt="preparing the platform runtime">prepare the platform runtime</dfn>, given optional |miniapp_uri| and |manifest_json|, perform the following steps. They return a [=MiniApp start page=].</p>
+            <p>To <dfn data-lt="preparing the platform runtime">prepare the platform runtime</dfn>, given |miniapp_uri| and |manifest_json|, perform the following steps. They return a [=MiniApp start page=].</p>
             <ol class="algorithm">
                 <li>If <code>app.js</code> does not exist in the [=root directory=], then return failure.</li>
                 <li>If <code>app.css</code> does not exist in the [=root directory=], then return failure.</li>
                 <li>If <code>i18n/</code> sub-directory does not exist in the [=root directory=], then return failure.</li>
                 <li>[=Check dependencies=] with |manifest_json|.</li>
-                <li>[=Determine the start page=] with optional |miniapp_uri| and |manifest_json|.</li>
+                <li>[=Determine the start page=] with |miniapp_uri| and |manifest_json|.</li>
                 <li>[=Reload package=] with |miniapp_uri|.</li>
             </ol>
             <section id="sec-miniapp-processing-platform-dependencies">
@@ -501,7 +497,7 @@
             </section>
             <section id="sec-miniapp-processing-platform-start-page">
                 <h4>Determine Start Page</h4>
-                <p >To <dfn>determine the start page</dfn>, given optional |miniapp_uri| and |manifest_json|, perform the following steps. They return a [=string=].</p>
+                <p >To <dfn>determine the start page</dfn>, given |miniapp_uri| and |manifest_json|, perform the following steps. They return a [=string=].</p>
                 <ol class="algorithm">
                     <li>Let |start_page_id| be a [=string=].</li>
                     <li>If |miniapp_uri| is set, then <br/>
