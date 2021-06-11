@@ -98,7 +98,7 @@
 
 <body data-cite="MINIAPP-MANIFEST INFRA URL HTML">
     <section id="abstract">
-        <p>This specification defines semantics and conformance requirements for a [=MiniApp package=], and the structure of the single file container that holds the resources of a MiniApp, including a [=manifest=] file, static page templates, stylesheets, JavaScript documents, media files and other resources. Instances of the [=MiniApp package=] are used for MiniApp distribution and execution on runtime environments ([=MiniApp user agent=]).</p>
+        <p>This specification defines semantics and conformance requirements for a [=MiniApp package=], and the structure of the single file container that holds the resources of a MiniApp, including a manifest file, static page templates, stylesheets, JavaScript documents, media files and other resources. Instances of the [=MiniApp package=] are used for MiniApp distribution and execution on runtime environments ([=MiniApp user agent=]).</p>
     </section>
     <section id="sotd">
         <aside class="warning">
@@ -349,7 +349,6 @@
                 <li>MiniApp ZIP containers MAY include a special block, the [=MiniApp signing block=], to allow digital signatures affecting the whole package.</li>
                 <li>The minimum version of ZIP to extract a [=MiniApp ZIP container=] is <code>2.0</code> (supporting folders and Deflate compression), according to the [[ZIP]] specification.</li>
             </ul>
-            <div class="issue" data-number="4"></div>
             <p>The structure of a MiniApp ZIP container is as follows:</p>
             <pre>
     [ZIP File Entries]
@@ -393,7 +392,6 @@
         <p><dfn id="dfn-localization" data-lt="localization" >Localization</dfn> is the process of content adaptation to meet a target language or cultural requirements.</p>
         <p>MiniApps enable localization of contents using a mechanism based on localized documents placed in the reserved [=i18n Directory=]. This mechanism allows authors to place [=localization resources=], named according to a <code>language-range</code> [[BCP47]] and the <code>.json</code> extension. This is, documents with the localization resources will be identified with language tags [[BCP47]] that represent the locale of the content. [=MiniApp user agents=] match the language ranges held by their locales to the appropriate locale file name.</p>
         <p>The format of the [=localization resources=] is defined in the <a href="#sec-miniapp-resources-i18n">localization resources</a> section.</p>
-        <div class="issue">To link with Manifest i18n Section</div> 
         <pre class="example" title="Filenames based on language tags in the i18n directory">
                 /
                 |___i18n/
