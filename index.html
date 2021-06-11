@@ -409,7 +409,7 @@
         <p>
             [=User agents=] MUST follow the following algorithm to dereference, parse and execute a [=MiniApp package=]. 
         </p>
-        <p>To <dfn>process a MiniApp package</dfn>, given [=string=] |miniapp_uri:string|, perform the following steps:</p>
+        <p>To <dfn>process a MiniApp package</dfn>, given [=URL=] |miniapp_uri:URL|, perform the following steps:</p>
         <ol class="algorithm">
             <li>Let |miniapp_zip_file:MiniApp ZIP container| be the result of [=retrieving a MiniApp ZIP container=] with |miniapp_uri|.</li>
             <li>[=Verify a MiniApp ZIP container=] with |miniapp_zip_file|.</li>
@@ -423,7 +423,7 @@
         <section id="sec-miniapp-processing-retrieval">
             <h3>MiniApp ZIP Container Retrieval</h3>
             <p>[=User agents=] MAY obtain [=MiniApp ZIP containers=] through different channels, retrieving the file over the network (i.e., using HTTPs, WebSocket, FTP, or other specific TCP/UDP based protocols), also from the filesystem or using any other mechanism.</p>
-            <p>To <dfn data-lt="retrieving a MiniApp ZIP container" data-dfn-type="dfn">retrieve a MiniApp ZIP container</dfn>, given [=string=] |miniapp_uri:string|, perform the following steps. They return a [=MiniApp ZIP container=].</p>
+            <p>To <dfn data-lt="retrieving a MiniApp ZIP container" data-dfn-type="dfn">retrieve a MiniApp ZIP container</dfn>, given [=URL=] |miniapp_uri:URL|, perform the following steps. They return a [=MiniApp ZIP container=].</p>
             <ol class="algorithm">
                 <li>Let |resource:MiniApp ZIP container| be a [=MiniApp ZIP container=] as a result of <a href="https://www.w3.org/html/wg/spec/fetching-resources.html#fetch">fetching a URL</a> [[HTML5]], passing |miniapp_uri|.</li>
                 <li>Let |supplied_mime_type:string| be the result of applying the <a href="https://mimesniff.spec.whatwg.org/#supplied-mime-type-detection-algorithm">supplied MIME type detection algorithm</a> [[MIMESNIFF]] with |resource|.</li>
@@ -486,13 +486,13 @@
             <h3>Platform Runtime Preparation</h3>
             <p>[=User agents=] SHOULD prepare the runtime environment that contains both the logic and the view layers. The logic layer is responsible for logic and control of the application (i.e., <code>app.js</code>, and <code>page.js</code> files). The view layer is responsible for the visual environment and rendering, including the page resource files, such as component templates and stylesheets. In preparation for running a MiniApp, [=user agents=] MUST set up the environment with the configuration specified by the [=MiniApp manifest=] metadata.</p>
             <p>[=User agents=] MUST identify and load the [=start page=] as the MiniApp entry point, according to the following algorithm.</p>
-            <p>To <dfn data-lt="preparing the platform runtime">prepare the platform runtime</dfn>, given [=string=] |miniapp_uri:string| and [=ordered map=] |manifest:ordered map|, perform the following steps. They return a [=MiniApp start page=].</p>
+            <p>To <dfn data-lt="preparing the platform runtime">prepare the platform runtime</dfn>, given [=URL=] |miniapp_uri:URL| and [=ordered map=] |manifest:ordered map|, perform the following steps. They return a [=MiniApp start page=].</p>
             <ol class="algorithm">
                 <li>If <code>app.js</code> does not exist in the [=root directory=], then return failure.</li>
                 <li>If <code>app.css</code> does not exist in the [=root directory=], then return failure.</li>
                 <li>If <code>i18n/</code> sub-directory does not exist in the [=root directory=], then return failure.</li>
                 <li>[=Verify platform compatibility=], passing |miniapp_package| and |manifest|.</li>
-                <li>[=Determine the start page=], passing |miniapp_uri| and |manifest|.</li>
+                <li>[=Determine the start page=], passing |miniapp_package|, |miniapp_uri| and |manifest|.</li>
                 <li>[=Determine the MiniApp locale=], passing |manifest|.</li>
                 <li>[=Reload package=], passing |miniapp_uri|.</li>
             </ol>
@@ -516,25 +516,28 @@
                     </li>
                 </ol>                
             </section>
-            <section id="sec-miniapp-processing-platform-start-page">
-                <h4>Determine Start Page</h4>
-                <p >To <dfn>determine the start page</dfn>, given |miniapp_uri| and |manifest_json|, perform the following steps. They return a [=string=].</p>
+            <section id="sec-miniapp-platform-start-page-identification">
+                <h4>Start Page Identification</h4>
+                <p >To <dfn>determine the start page</dfn>, given [=MiniApp Package=] |miniapp_package:MiniApp Package|, [=URL=] |miniapp_uri:URL|, and [=ordered map=] |manifest:ordered map|, perform the following steps. They return a [=URL=].</p>
                 <ol class="algorithm">
-                    <li>Let |start_page_id| be a [=string=].</li>
-                    <li>If |miniapp_uri| is set, then <br/>
-                        Set |start_page_id| as a result of [=extracting the start page from the MiniApp URI=].</li>
-                    <li>If |start_page_id| is not set or |start_page_id| is equal to null, then:<br/> 
-                        Set |start_page_id| as a result of [=extracting the start page from the manifest=].</li>
-                    <li>If |start_page_id| does not exist in the |miniapp_package|, then return failure.</li>
-                    <li>Return |start_page_id|</li>
+                    <li>Let |start_page:URL| be the result of [=extracting the start page from URI=], passing |miniapp_uri|.</li>
+                    <li>If |start_page| is not set, or if |start_page| is equal to null, or if |start_page| does not exist in |miniapp_package|, then:<br>
+                        Set |start_page| to the result of [=extracting the start page from manifest=], passing |manifest|.
+                    </li>
+                    <li>Return |start_page|</li>
                 </ol>  
                 <section id="sec-miniapp-processing-platform-start-page-uri">
-                    <h5>Extract Start Page From MiniApp URI</h5>
-                    <p class="todo">To <dfn data-lt="extracting the start page from the MiniApp URI">extract the start page from the MiniApp URI</dfn>, given |miniapp_uri|, perform the following steps...</p>
+                    <h5>Extraction of Start Page From URI</h5>
+                    <p>To <dfn data-lt="extracting the start page from URI">extract the start page from URI</dfn>, given [=URL=] |miniapp_uri:URL|, perform the following steps. They return a [=URL=].</p>
+                    <ol class="algorithm">
+                        <li>Let |start_page:URL| be the [=URL-path-segment string=] resulting of [=URL Parser|parse=] |miniapp_uri:URL|.</li>
+                        <li>If |start_page| is failure, return null.</li> 
+                        <li>Return |start_page|.</li>
+                    </ol>                     
                 </section>
                 <section id="sec-miniapp-processing-platform-start-page-manifest">
-                    <h5>Extract Start Page From Manifest</h5>
-                    <p>To <dfn data-lt="extracting the start page from the manifest">extract the start page from the manifest</dfn>, given |manifest_json|, perform the following steps. They return a [=string=].</p>
+                    <h5>Extraction of Start Page From Manifest</h5>
+                    <p>To <dfn data-lt="extracting the start page from manifest">extract the start page from manifest</dfn>, given |manifest_json|, perform the following steps. They return a [=string=].</p>
                     <ol class="algorithm">
                         <li>Let |start_page_id| be the empty [=string=].</li>
                         <li>Let |pages_array| be null.</li>
