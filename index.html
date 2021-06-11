@@ -457,10 +457,10 @@
                     <li>Process the digital signatures with |magic_numbers| and |miniapp_zip_file|.</li>
                 </ol>
                 <div class="note" title="Usage">
-                    [=MiniApp user agents=] implement specific digital signature processing algorithms, based on their needs and requirements.  
+                    [=MiniApp user agents=] implement specific digital signature processing algorithms based on their needs and requirements.  
                 </div>
                 <aside class="example" title="Location of a digital signature within a MiniApp package">
-                    <p>The [=MiniApp signing block=] may be encoded using any digital signature scheme that is identified by the 16-byte [=magic numbers=] block located just immediately the Central Directory in the [=MiniApp ZIP container=]. As shown in the example in <a href="#figure-miniapp-location-magic-numbers"></a>, the End of Central Directory, identified by the values <code>0x06054b50</code>, contains the offset that enables [=user agents=] to identify the start of the Central Directory block, and subsequently the magic numbers at the end of the [=signing block=].</p>
+                    <p>The [=MiniApp signing block=] may be encoded using any digital signature scheme that is identified by the 16-byte [=magic numbers=] block located just immediately before the Central Directory in the [=MiniApp ZIP container=]. As shown in the example in <a href="#figure-miniapp-location-magic-numbers"></a>, the End of Central Directory, identified by the values <code>0x06054b50</code>, contains the offset that enables [=user agents=] to identify the start of the Central Directory block, and subsequently the magic numbers at the end of the [=signing block=].</p>
                     <figure id="figure-miniapp-location-magic-numbers">
                         <img src="images/signature_bytes_central_directory.svg" alt="Location of the magic numbers within the MiniApp package" />
                         <figcaption>Example of End of Central Directory signature, location of the Central Directory and signature magic numbers</figcaption>
@@ -502,7 +502,7 @@
                 <p>To <dfn data-lt="Verify platform compatibility">verify platform compatibility</dfn>, given [=MiniApp Package=] |miniapp_package:MiniApp Package| and [=ordered map=] |manifest:ordered map|, perform the following steps:</p>
                 <ol class="algorithm">
                     <li>Set |platform_required:ordered map| to |manifest|["platform_version"].</li>
-                    <li>If |platform_required| is not compatible with the [=user agent=] configuration return failure.</li>
+                    <li>If |platform_required| is not compatible with the [=user agent=] configuration, then return failure.</li>
                     <li>[=list/For each=] |page:URL| of [=list=] |manifest|["pages"]:
                         <ol>
                             <li>If |page| does not exist in the |miniapp_package|, return failure.</li>
