@@ -110,10 +110,10 @@
         <section>
             <h3>Overview</h3>
             <p>[=MiniApp=] is a concept of light software application, that can be distributed through any digital means, and accessed through the Web. MiniApps are defined by a concrete file structure and all their resources are packed within a single file that represents the whole [=MiniApp package=] that can be processed and executed by [=MiniApp user agents=].</p>
-            <p>A [=MiniApp package=] contains a directory structure that holds the specific resources of the MiniApp that defines the rendering, operation, and interaction with the end-users — including static page templates, stylesheets, JavaScript documents, media files, and other resources — and the manifest. The [=MiniApp manifest=], located in the central directory of the package, describes the MiniApp, including information about page routing, styles, and other operational and rendering details of the MiniApp, as well as descriptive information for humans.</p>
+            <p>A [=MiniApp package=] contains a directory structure that holds the specific resources of the MiniApp that defines the rendering, operation, and interaction with the end-users — including static page templates, stylesheets, JavaScript documents, media files, and other resources — and the manifest. The <a href="https://www.w3.org/TR/miniapp-manifest/#dfn-miniapp-manifest-s" data-link-type="dfn">MiniApp manifest</a>, located in the central directory of the package, describes the MiniApp, including information about page routing, styles, and other operational and rendering details of the MiniApp, as well as descriptive information for humans.</p>
             <p>As defined in <a href="#sec-security-privacy">Security and Privacy Considerations</a>, MiniApps MAY support [=digital signature=] verification to guarantee the integrity of the package and contents during the delivery of the package.</p>
             <p>The MiniApp runtime environment ([=MiniApp user agent=]) identifies MiniApp package files through the standard [=MiniApp package=] format and the specific MIME media type, defined in this document. After retrieving the [=MiniApp ZIP container=], the [=MiniApp user agent=] loads the static page templates, CSS, JavaScript files, and other resources into the cache, following a <a href="#sec-miniapp-processing">dereference and processing algorithm</a>. These [=MiniApp resources=] will remain available in the cache until the next update, avoiding unnecessary network fetches.</p>
-            <p>In terms of launch mode, a MiniApp can be launched normally when offline. The [=MiniApp user agent=] locates the specified [=start page=] from the package cache path and launches the MiniApp according to the description set out in the [=MiniApp manifest=] file.</p>
+            <p>In terms of launch mode, a MiniApp can be launched normally when offline. The [=MiniApp user agent=] locates the specified [=start page=] from the package cache path and launches the MiniApp according to the description set out in the <a href="https://www.w3.org/TR/miniapp-manifest/#dfn-miniapp-manifest-s" data-link-type="dfn">MiniApp manifest</a> file.</p>
         </section>
         <section id="sec-terminology">
             <h3>Terminology</h3>
@@ -152,7 +152,7 @@
         <ul class="conformance-list">
             <li>The file system of a package MUST have a file structure based on a common [=root directory=], and two specific subdirectories: <code>i18n</code>, and <code>pages</code>.</li>
             <li>The [=root directory=] MAY include a subdirectory <code>common</code> to store resources available at application level.</li>
-            <li>The [=root directory=] MUST contain one configuration file, named <code>manifest.json</code>, to describe and configure the runtime environment as defined in the [=MiniApp manifest=] specification [[MINIAPP-MANIFEST]].</li>
+            <li>The [=root directory=] MUST contain one configuration file, named <code>manifest.json</code>, to describe and configure the runtime environment as defined in the <a href="https://www.w3.org/TR/miniapp-manifest/#dfn-miniapp-manifest-s" data-link-type="dfn">MiniApp manifest</a> specification [[MINIAPP-MANIFEST]].</li>
             <li>The [=root directory=] MUST contain one script document, named <code>app.js</code>, with the basic control logic of the MiniApp. </li>
             <li>The [=root directory=] MUST contain one stylesheet, named <code>app.css</code>, following the CSS Syntax Module Level 3 [[CSS-SYNTAX-3]].</li>
             <li>The whole [=MiniApp package=] MUST be wrapped as a [[ZIP]] file, according to the requirements of [=MiniApp ZIP containers=].</li>
@@ -189,7 +189,7 @@
                 <p>The [=root directory=] of a [=MiniApp package=] holds several reserved files that include global data and information about the lifecycle management of the MiniApp, including:</p>
                 <dl>
                     <dt><code>manifest.json</code></dt>
-                    <dd>The [=MiniApp manifest=] is a JSON document responsible for the global configuration of the MiniApp. A manifest file contains a collection of mandatory and optional attributes that indicate the setup of the MiniApp, including routes and paths of the pages and the window configuration of the MiniApp (e.g., styles of the navigation bar, background image and color, page title, among other), according to the MiniApp Manifest specification [[MINIAPP-MANIFEST]].</dd>
+                    <dd>The <a href="https://www.w3.org/TR/miniapp-manifest/#dfn-miniapp-manifest-s" data-link-type="dfn">MiniApp manifest</a> is a JSON document responsible for the global configuration of the MiniApp. A manifest file contains a collection of mandatory and optional attributes that indicate the setup of the MiniApp, including routes and paths of the pages and the window configuration of the MiniApp (e.g., styles of the navigation bar, background image and color, page title, among other), according to the MiniApp Manifest specification [[MINIAPP-MANIFEST]].</dd>
                     <dt><code>app.css</code></dt>
                     <dd>This file is the default CSS stylesheet, responsible for the global appearance of the [=MiniApp pages=]. It MAY be empty.</dd>
                     <dt><code>app.js</code></dt>
@@ -469,7 +469,7 @@
 
         <section id="sec-miniapp-processing-manifest">
             <h3>MiniApp Manifest Processing</h3>
-            <p>[=User agents=] MUST parse the [=MiniApp manifest=], located in the [=MiniApp package=], that contains global metadata about the MiniApp.</p>  
+            <p>[=User agents=] MUST parse the <a href="https://www.w3.org/TR/miniapp-manifest/#dfn-miniapp-manifest-s" data-link-type="dfn">MiniApp manifest</a>, located in the [=MiniApp package=], that contains global metadata about the MiniApp.</p>  
             <p>To <dfn data-lt="processing the MiniApp manifest">process the MiniApp manifest</dfn>, given [=MiniApp Package=] |miniapp_package:MiniApp Package|, perform the following steps. They return [=ordered map=].</p>
             <ol class="algorithm">
                 <li>If <code>manifest.json</code> file does not exist in the package's [=root directory=], then return failure.</li>
@@ -483,7 +483,7 @@
 
         <section id="sec-miniapp-platform-runtime-preparation">
             <h3>Platform Runtime Preparation</h3>
-            <p>[=User agents=] SHOULD prepare the runtime environment that contains both the logic and the view layers. The logic layer is responsible for logic and control of the application (i.e., <code>app.js</code>, and <code>page.js</code> files). The view layer is responsible for the visual environment and rendering, including the page resource files, such as component templates and stylesheets. In preparation for running a MiniApp, [=user agents=] MUST set up the environment with the configuration specified by the [=MiniApp manifest=] metadata.</p>
+            <p>[=User agents=] SHOULD prepare the runtime environment that contains both the logic and the view layers. The logic layer is responsible for logic and control of the application (i.e., <code>app.js</code>, and <code>page.js</code> files). The view layer is responsible for the visual environment and rendering, including the page resource files, such as component templates and stylesheets. In preparation for running a MiniApp, [=user agents=] MUST set up the environment with the configuration specified by the <a href="https://www.w3.org/TR/miniapp-manifest/#dfn-miniapp-manifest-s" data-link-type="dfn">MiniApp manifest</a> metadata.</p>
             <p>[=User agents=] MUST identify and load the [=start page=] as the MiniApp entry point, according to the following algorithm.</p>
             <p>To <dfn data-lt="preparing the platform runtime">prepare the platform runtime</dfn>, given [=URL=] |miniapp_uri:URL| and [=ordered map=] |manifest:ordered map|, perform the following steps. They return a [=MiniApp start page=].</p>
             <ol class="algorithm">
@@ -496,7 +496,7 @@
             </ol>
             <section id="sec-miniapp-platform-compatibility-verification">
                 <h4>Platform Compatibility Verification</h4>
-                <p>[=User agents=] MUST verify that a [=MiniApp=] is compatible with them and can run properly in their platform. This verification is performed using the metadata specified in the [=MiniApp manifest=], including the supported version of the platform and checking the pages and resources needed in the execution.</p>
+                <p>[=User agents=] MUST verify that a [=MiniApp=] is compatible with them and can run properly in their platform. This verification is performed using the metadata specified in the <a href="https://www.w3.org/TR/miniapp-manifest/#dfn-miniapp-manifest-s" data-link-type="dfn">MiniApp manifest</a>, including the supported version of the platform and checking the pages and resources needed in the execution.</p>
                 <p>To <dfn data-lt="Verify platform compatibility">verify platform compatibility</dfn>, given [=MiniApp Package=] |miniapp_package:MiniApp Package| and [=ordered map=] |manifest:ordered map|, perform the following steps:</p>
                 <ol class="algorithm">
                     <li>Set |platform_required:ordered map| to |manifest|["platform_version"].</li>
@@ -516,7 +516,7 @@
             </section>
             <section id="sec-miniapp-platform-start-page-identification">
                 <h4>Start Page Identification</h4>
-                <p>By default, [=user agents=] MUST load the [=start page=] indicated in the [=MiniApp manifest=] as the entry point when the MiniApp <a href="sec-miniapp-processing-execute">is launched</a>. This [=start page=] by default MUST be overridden if a valid [=page=] is specified in the MiniApp URI, as specified in the following algorithm.</p>
+                <p>By default, [=user agents=] MUST load the [=start page=] indicated in the <a href="https://www.w3.org/TR/miniapp-manifest/#dfn-miniapp-manifest-s" data-link-type="dfn">MiniApp manifest</a> as the entry point when the MiniApp <a href="sec-miniapp-processing-execute">is launched</a>. This [=start page=] by default MUST be overridden if a valid [=page=] is specified in the MiniApp URI, as specified in the following algorithm.</p>
                 <p >To <dfn data-lt="determining the start page">determine the start page</dfn>, given [=MiniApp Package=] |miniapp_package:MiniApp Package|, [=URL=] |miniapp_uri:URL|, and [=ordered map=] |manifest:ordered map|, perform the following steps. They return a [=URL=].</p>
                 <ol class="algorithm">
                     <li>Let |start_page:URL| be the result of [=extracting the start page from URI=], passing |miniapp_uri|.</li>
