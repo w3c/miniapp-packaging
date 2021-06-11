@@ -415,9 +415,10 @@
             <li>[=Verify a MiniApp ZIP container=] with |miniapp_zip_file|.</li>
             <li>Let |miniapp_package:Miniapp package| be the result of unzipping the |miniapp_zip_file|.</li>
             <li>If |miniapp_package| is an unzip exception, then return failure.</li>
-            <li>[=Process the MiniApp manifest=] with |miniapp_package|.</li>
-            <li>Let |start_page:MiniApp start page| be the result of [=preparing the platform runtime=] with |miniapp_uri|.</li>
-            <li>Execute runtime with |start_page|.</li>
+            <li>Let [=ordered map=] |manifest:ordered map| be the result of [=processing the MiniApp manifest=] with |miniapp_package|.</li>
+            <li>Let |start_page:MiniApp start page| be the result of [=preparing the platform runtime=] with |miniapp_uri| and |manifest|.</li>
+            <li>Let [=string=] |locale:string| be the result of [=extracting the locale=], passing |manifest|.</li>
+            <li>Launch MiniApp passing |miniapp_package|, |manifest|, |start_page|, and |locale|.</li>
         </ol>
 
         <section id="sec-miniapp-processing-retrieval">
@@ -492,9 +493,8 @@
                 <li>If <code>app.css</code> does not exist in the [=root directory=], then return failure.</li>
                 <li>If <code>i18n/</code> sub-directory does not exist in the [=root directory=], then return failure.</li>
                 <li>[=Verify platform compatibility=], passing |miniapp_package| and |manifest|.</li>
-                <li>[=Determine the start page=], passing |miniapp_package|, |miniapp_uri| and |manifest|.</li>
-                <li>[=Determine the MiniApp locale=], passing |manifest|.</li>
-                <li>[=Reload package=], passing |miniapp_uri|.</li>
+                <li>Let |start_page:URL| be the result of [=determining the start page=], passing |miniapp_package|, |miniapp_uri| and |manifest|.</li>
+                <li>Return |miniapp_uri|.</li>
             </ol>
             <section id="sec-miniapp-platform-compatibility-verification">
                 <h4>Platform Compatibility Verification</h4>
@@ -518,7 +518,8 @@
             </section>
             <section id="sec-miniapp-platform-start-page-identification">
                 <h4>Start Page Identification</h4>
-                <p >To <dfn>determine the start page</dfn>, given [=MiniApp Package=] |miniapp_package:MiniApp Package|, [=URL=] |miniapp_uri:URL|, and [=ordered map=] |manifest:ordered map|, perform the following steps. They return a [=URL=].</p>
+                <p>By default, [=user agents=] MUST load the [=start page=] indicated in the [=MiniApp manifest=] as the entry point when the MiniApp <a href="sec-miniapp-processing-execute">is launched</a>. This [=start page=] by default MUST be overridden if a valid [=page=] is specified in the MiniApp URI, as specified in the following algorithm.</p>
+                <p >To <dfn data-lt="determining the start page">determine the start page</dfn>, given [=MiniApp Package=] |miniapp_package:MiniApp Package|, [=URL=] |miniapp_uri:URL|, and [=ordered map=] |manifest:ordered map|, perform the following steps. They return a [=URL=].</p>
                 <ol class="algorithm">
                     <li>Let |start_page:URL| be the result of [=extracting the start page from URI=], passing |miniapp_uri|.</li>
                     <li>If |start_page| is not set, or if |start_page| is equal to null, or if |start_page| does not exist in |miniapp_package|, then:<br>
@@ -528,6 +529,7 @@
                 </ol>  
                 <section id="sec-miniapp-processing-platform-start-page-uri">
                     <h5>Extraction of Start Page From URI</h5>
+                    <p>MiniApp URIs MAY contain information about the [=start page=], specified as the [=URL-path-segment string=] of the URI.</p>
                     <p>To <dfn data-lt="extracting the start page from URI">extract the start page from URI</dfn>, given [=URL=] |miniapp_uri:URL|, perform the following steps. They return a [=URL=].</p>
                     <ol class="algorithm">
                         <li>Let |start_page:URL| be the [=URL-path-segment string=] resulting of [=URL Parser|parse=] |miniapp_uri:URL|.</li>
@@ -537,22 +539,25 @@
                 </section>
                 <section id="sec-miniapp-processing-platform-start-page-manifest">
                     <h5>Extraction of Start Page From Manifest</h5>
-                    <p>To <dfn data-lt="extracting the start page from manifest">extract the start page from manifest</dfn>, given |manifest_json|, perform the following steps. They return a [=string=].</p>
+                    <p>As described in the <a href="https://w3c.github.io/miniapp-manifest/#pages-member">MiniApp Manifest's <code>pages</code> member</a> [[MINIAPP-MANIFEST]], the [=start page=] of a MiniApp is specified in the first item of the <code>pages</code> [=list=].</p>
+                    <p>To <dfn data-lt="extracting the start page from manifest">extract the start page from manifest</dfn>, given [=ordered map=] |manifest:ordered map|, perform the following steps. They return a [=string=].</p>
                     <ol class="algorithm">
                         <li>Let |start_page_id| be the empty [=string=].</li>
-                        <li>Let |pages_array| be null.</li>
-                        <li>Set |pages_array| |manifest_json|["pages"].</li>
-                        <li>If IsArray(|pages_array|) is true and |pages_array|.length is greater than 0, then:<br/>
-                            Set |start_page_id| to |pages_array|[0].</li>
-                        <li>Return the |start_page_id|.</li>
+                        <li>Let [=list=] |pages:list| be |manifest|["pages"].</li>
+                        <li>Return |pages|[0].</li>
                     </ol>
                 </section>
             </section>
-        </section>
-
-        <section id="sec-miniapp-processing-execute">
-            <h3>Execute MiniApp Runtime</h3>
-            <p class="todo">To <dfn>execute the MiniApp Runtime</dfn>, given |start_page|, perform the following steps...</p>
+            <section id="sec-miniapp-processing-locale">
+                <h4>Extraction of Locale</h4>
+                <p>To <dfn data-lt="extracting the locale">extract the locale</dfn>, given [=ordered map=] |manifest:ordered map|, perform the following steps. They return a [=string=].</p>
+                <ol class="algorithm">
+                    <li>Let [=string=] |locale:string| be the [=user agent=]'s default locale.</li>
+                    <li>If |manifest|["lang"] [=map/exists=], and if |manifest|["lang"] is supported by the [=user agent=], then: <br>
+                        Set |locale| to |manifest|["lang"].
+                    <li>Return |locale|.</li>
+                </ol>
+            </section>                
         </section>
     </section>         
     <section id="sec-security-privacy">
