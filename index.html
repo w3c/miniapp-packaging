@@ -214,10 +214,10 @@
                 <p>Any [=file name=] within a [=MiniApp package=] MUST comply with the following restrictions to accommodate the potential limitations of the operating systems and facilitate the compatibility with the majority of the platforms:</p>
 
                 <ul class="conformance-list">
-                    <li>File Names are case sensitive</li>
-                    <li>File Names MUST be UTF-8 [[Unicode]] encoded.</li>
-                    <li>File Names MUST NOT exceed 255 bytes.</li>
-                    <li>File Names MUST NOT use the following [[Unicode]] characters:
+                    <li>File names are case sensitive</li>
+                    <li>File names MUST be UTF-8 [[Unicode]] encoded.</li>
+                    <li>File names MUST NOT exceed 255 bytes.</li>
+                    <li>File names MUST NOT use the following [[Unicode]] characters:
                         <ul>
                             <li>LESS-THAN SIGN: <code>&lt;</code> (<code>U+003C</code>)</li>
                             <li>GREATER-THAN SIGN: <code>></code> (<code>U+003E</code>)</li>
@@ -235,6 +235,9 @@
                         </ul>
                     </li>
                 </ul>
+                <div class="note" title="Limiting the length of file names">
+                    If a MiniApp vendor imposes length limits on path and file names, it is important to avoid mid-character truncation due to the difference between bytes and characters in multibyte encodings such as UTF-8. See <a href="https://www.w3.org/TR/international-specs/#char_truncation">the text truncation best practice</a> for more information.     
+                </div>
                 <div class="issue">
                     To complete the list of restricted characters.
                 </div>
