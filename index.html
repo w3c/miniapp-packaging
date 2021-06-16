@@ -79,10 +79,6 @@
                 "CSS-SNAPSHOT": {
                     title: "CSS Snapshot",
                     href: "https://www.w3.org/TR/CSS/"
-                },                
-                "MINIAPP-LIFECYCLE": {
-                    title: "MiniApp Lifecycle",
-                    href: "https://w3c.github.io/miniapp-lifecycle/"
                 },
                 "MINIAPP-ADDRESSING": {
                     title: "MiniApp Addressing",
@@ -92,13 +88,6 @@
             a11y: true,            
         };
     </script>
-    <style>
-        .todo {
-            background-color: rgba(219, 79, 79, 0.22);
-            border: 3px rgb(247, 0, 0) dotted;
-            padding: 1rem;
-        }
-    </style>
 </head>
 
 <body data-cite="MINIAPP-MANIFEST INFRA URL HTML">
@@ -175,13 +164,11 @@
                 |___pages/
                 |       |___page1.js
                 |       |___page1.xml
-                |       |___page1.json
                 |       |___page1.css
                 |___common/
                 |       |___componentA.js
                 |       |___componentA.xml
                 |       |___componentA.css
-                |       |___componentA.json
                 |       |___example.png
                 |___i18n/
                 |       |___zh-Hans.json
@@ -204,13 +191,12 @@
             <section>
                 <h3><code>pages</code> Directory</h3>
                 <p>The <code>pages</code> directory contains a set of files for the display and user interaction of the [=MiniApp pages=].</p>
-                <p>A [=MiniApp page=] is defined by a set of [=resources=], whose files are identified by the file name (e.g., <code>intro</code>) and a specific extension that defines the type [=resource=], such as the service logic (e.g., <code>intro.js</code>), the configuration (e.g., <code>intro.json</code>), the structure (e.g., <code>intro.xml</code>) and the scoped stylesheet (e.g., <code>intro.css</code>).</p>
-                <p>Developers MAY choose to store all the files related to a page either under the <code>pages</code> directory or organized in specific sub-directories for each page.</p>
+                <p>A [=MiniApp page=] is defined by a set of [=resources=], whose files are identified by the file name (e.g., <code>intro</code>) and a specific extension that defines the type [=resource=], such as the service logic (e.g., <code>intro.js</code>), the structure (e.g., <code>intro.xml</code>) and the scoped stylesheet (e.g., <code>intro.css</code>).</p>
+                <p>Developers MAY include other types of resources, and MAY choose storing the files related to a page either under the <code>pages</code> directory or organized in specific sub-directories for each page.</p>
                 <ul>
-                    <li>A <code>.json</code> file is responsible for the configuration of a MiniApp page. The syntax and structure of these types of files are defined in the <a href="#sec-miniapp-resources-json">JSON Resources</a> section.</li>
                     <li>A <code>.xml</code> file is responsible for the structure of a MiniApp page, similar to HTML. The syntax and structure of these types of files are defined in the <a href="#sec-miniapp-resources-xml">XML Resources</a> section.</li>
                     <li>A <code>.css</code> file is responsible for the CSS style of a MiniApp page. The syntax and structure of these types of files are defined in the <a href="#sec-miniapp-resources-css">CSS Resources</a> section.</li>
-                    <li>A <code>.js</code> file is responsible for the service logic and lifecycle management (defined in MiniApp Lifecycle [[MINIAPP-LIFECYCLE]]) of a MiniApp page. The syntax and structure of these types of files are defined in the <a href="#sec-miniapp-resources-js">Scripting Resources</a> section.</li>
+                    <li>A <code>.js</code> file is responsible for the service logic, configuration and lifecycle management (defined in MiniApp Lifecycle [[MINIAPP-LIFECYCLE]]) of a MiniApp page. The syntax and structure of these types of files are defined in the <a href="#sec-miniapp-resources-js">Scripting Resources</a> section.</li>
                 </ul>
                 <div class="issue" data-number="3"></div> 
             </section>
@@ -252,15 +238,11 @@
                 </ul>
                 <div class="issue">
                     To complete the list of restricted characters.
-                </div>                
+                </div>
             </section>
         </section>
         <section id="sec-miniapp-resources">
             <h3>MiniApp Resources</h3>
-            <section id="sec-miniapp-resources-json">
-                <h3>JSON Resources</h3>
-                <div class="issue" data-number="3"></div>
-            </section>
             <section id="sec-miniapp-resources-xml">
                 <h3>XML Resources</h3>
                 <p>MiniApp user interfaces, including the visual components that defines the structure and the interaction elements of the pages, are described in XML resources.</p>
