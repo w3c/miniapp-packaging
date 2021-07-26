@@ -164,11 +164,11 @@
                 |___app.css
                 |___pages/
                 |       |___page1.js
-                |       |___page1.xml
+                |       |___page1.html
                 |       |___page1.css
                 |___common/
                 |       |___componentA.js
-                |       |___componentA.xml
+                |       |___componentA.html
                 |       |___componentA.css
                 |       |___example.png
                 |___i18n/
@@ -192,10 +192,10 @@
             <section id="sec-pages-directory">
                 <h3><code>pages</code> Directory</h3>
                 <p>The <code>pages</code> directory contains a set of files for the display and user interaction of the [=MiniApp pages=].</p>
-                <p>A [=MiniApp page=] is defined by a set of [=resources=], whose files are identified by the file name (e.g., <code>intro</code>) and a specific extension that defines the type [=resource=], such as the service logic (e.g., <code>intro.js</code>), the structure (e.g., <code>intro.xml</code>) and the scoped stylesheet (e.g., <code>intro.css</code>).</p>
+                <p>A [=MiniApp page=] is defined by a set of [=resources=], whose files are identified by the file name (e.g., <code>intro</code>) and a specific extension that defines the type [=resource=], such as the service logic (e.g., <code>intro.js</code>), the structure (e.g., <code>intro.html</code>) and the scoped stylesheet (e.g., <code>intro.css</code>).</p>
                 <p>Developers MAY include other types of resources, and MAY choose storing the files related to a page either under the <code>pages</code> directory or organized in specific sub-directories for each page.</p>
                 <ul>
-                    <li>A <code>.xml</code> file is responsible for the structure of a MiniApp page, similar to HTML. The syntax and structure of these types of files are defined in the <a href="#sec-miniapp-resources-xml">XML Resources</a> section.</li>
+                    <li>A <code>.html</code> file is responsible for the structure of a MiniApp page, similar to HTML. The syntax and structure of these types of files are defined in the <a href="#sec-miniapp-resources-html">HTML Resources</a> section.</li>
                     <li>A <code>.css</code> file is responsible for the CSS style of a MiniApp page. The syntax, structure and format of these files are defined in the <a href="#sec-miniapp-resources-css">CSS Resources</a> section.</li>
                     <li>A <code>.js</code> file is responsible for the service logic, configuration and lifecycle management (defined in MiniApp Lifecycle [[MINIAPP-LIFECYCLE]]) of a MiniApp page. The syntax and structure of these types of files are defined in the <a href="#sec-miniapp-resources-js">Scripting Resources</a> section.</li>
                 </ul>
@@ -246,13 +246,13 @@
         </section>
         <section id="sec-miniapp-resources">
             <h3>MiniApp Resources</h3>
-            <section id="sec-miniapp-resources-xml">
-                <h3>XML Resources</h3>
-                <p>MiniApp user interfaces, including the visual components that defines the structure and the interaction elements of the pages, are described in XML resources.</p>
-                <p>XML resources MUST meet all the following criteria:</p>
+            <section id="sec-miniapp-resources-html">
+                <h3>HTML Resources</h3>
+                <p>MiniApp user interfaces, including the visual components that defines the structure and the interaction elements of the pages, are described in HTML resources.</p>
+                <p>HTML resources MUST meet all the following criteria:</p>
                 <dl class="conformance-list">
                     <dt>File extension</dt>
-                    <dd>An XML document SHOULD use the file extension <code>.xml</code>.</dd>
+                    <dd>An HTML document SHOULD use the file extension <code>.HTML</code>.</dd>
                 </dl>
                 <div class="issue" data-number="2"></div>
             </section>
