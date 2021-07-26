@@ -144,8 +144,9 @@
         <h2>Package Conformance</h2>
         <p>A conformant [=MiniApp package=] MUST meet the following criteria:</p>
         <ul class="conformance-list">
-            <li>The file system of a package MUST have a file structure based on a common [=root directory=], and two specific subdirectories: <code>i18n</code>, and <code>pages</code>.</li>
+            <li>The file system of a package MUST have a file structure based on a [=root directory=] and the <a href="#sec-pages-directory"><code>pages</code> subdirectory</a>.</li>
             <li>The [=root directory=] MAY include a subdirectory <code>common</code> to store resources available at application level.</li>
+            <li>The [=root directory=] SHOULD include a subdirectory <code>i18n</code> to store [=localization resources=] for internationalization purposes.</li>
             <li>The [=root directory=] MUST contain one configuration file, named <code>manifest.json</code>, to describe and configure the runtime environment as defined in the <a href="https://www.w3.org/TR/miniapp-manifest/#dfn-miniapp-manifest-s" data-link-type="dfn">MiniApp manifest</a> specification [[MINIAPP-MANIFEST]].</li>
             <li>The [=root directory=] MUST contain one script document, named <code>app.js</code>, with the basic control logic of the MiniApp. </li>
             <li>The [=root directory=] MUST contain one stylesheet, named <code>app.css</code>, following a syntax, structure and format as defined in the <a href="#sec-miniapp-resources-css">CSS Resources</a> section.</li>
@@ -188,7 +189,7 @@
                     <dd>This script document has the basic service logic of the MiniApp and includes the basic control of the MiniApp lifecycle, including the management of events for launch, showing and hiding the  MiniApp.</dd>
                 </dl>
             </section>
-            <section>
+            <section id="sec-pages-directory">
                 <h3><code>pages</code> Directory</h3>
                 <p>The <code>pages</code> directory contains a set of files for the display and user interaction of the [=MiniApp pages=].</p>
                 <p>A [=MiniApp page=] is defined by a set of [=resources=], whose files are identified by the file name (e.g., <code>intro</code>) and a specific extension that defines the type [=resource=], such as the service logic (e.g., <code>intro.js</code>), the structure (e.g., <code>intro.xml</code>) and the scoped stylesheet (e.g., <code>intro.css</code>).</p>
@@ -205,7 +206,7 @@
             </section>
             <section>
                 <h3><code>i18n</code> Directory</h3>
-                <p>The <dfn id="dfn-i18n-directory" data-dfn-type="dfn">i18n directory</dfn> is a subdirectory in the [=root directory=] that includes the [=localization resources=] of a [=MiniApp package=].</p>
+                <p>The optional <dfn id="dfn-i18n-directory" data-dfn-type="dfn">i18n directory</dfn> is a subdirectory in the [=root directory=] that includes the [=localization resources=] of a [=MiniApp package=].</p>
                 <p>The [=i18n Directory=] contains multi-language [=localization resources=] to support the internationalization of the MiniApp contents. The file name of each <code>.json</code> document in this directory follows the <code>Language-Tag</code> notation as defined in [[BCP47]], and represents the specific configuration for that particular language.</p>
                 <p>The [=i18n Directory=] MAY contain as many [=localization resources=] as languages or locales a MiniApp supports. The format of these files is defined in the <a href="#sec-miniapp-resources-i18n">localization resources</a> section.</p> 
             </section>
@@ -274,7 +275,7 @@
                 </dl>
             </section>
             <section id="sec-miniapp-resources-i18n">
-                <h3>localization resources</h3>
+                <h3>Localization Resources</h3>
                 <p>A <dfn id="dfn-localization-resources" data-lt="MiniApp localization resources|Localization resources|localization resources" data-dfn-type="dfn">MiniApp localization resource</dfn> is a document of a [=MiniApp package=] that included localized content as part of the [=internationalization=] mechanism of MiniApps.</p>
                 <p>A multilingual MiniApp MAY has several [=localization resources=] that will be used during the [=localization=] process by the [=user agents=] to render content according to the system locale or the user's language preferences. These resources contain JSON objects with key-value pairs that contain the unique identifier (the key) of a localizable term or expression and the representation in the concrete language (the value).</p>
                 <pre class="example" title="Localization resource">
@@ -469,7 +470,6 @@
             <ol class="algorithm">
                 <li>If <code>app.js</code> does not exist in the [=root directory=], then return failure.</li>
                 <li>If <code>app.css</code> does not exist in the [=root directory=], then return failure.</li>
-                <li>If <code>i18n/</code> sub-directory does not exist in the [=root directory=], then return failure.</li>
                 <li>[=Verify platform compatibility=], passing |miniapp_package| and |manifest|.</li>
                 <li>Let |start_page:URL| be the result of [=determining the start page=], passing |miniapp_package|, |miniapp_uri| and |manifest|.</li>
                 <li>Return |miniapp_uri|.</li>
