@@ -144,8 +144,9 @@
         <h2>Package Conformance</h2>
         <p>A conformant [=MiniApp package=] MUST meet the following criteria:</p>
         <ul class="conformance-list">
-            <li>The file system of a package MUST have a file structure based on a common [=root directory=], and two specific subdirectories: <code>i18n</code>, and <code>pages</code>.</li>
+            <li>The file system of a package MUST have a file structure based on a [=root directory=] and the <a href="#sec-pages-directory"><code>pages</code> subdirectory</a>.</li>
             <li>The [=root directory=] MAY include a subdirectory <code>common</code> to store resources available at application level.</li>
+            <li>The [=root directory=] SHOULD include a subdirectory <code>i18n</code> to store [=localization resources=] for internationalization purposes.</li>
             <li>The [=root directory=] MUST contain one configuration file, named <code>manifest.json</code>, to describe and configure the runtime environment as defined in the <a href="https://www.w3.org/TR/miniapp-manifest/#dfn-miniapp-manifest-s" data-link-type="dfn">MiniApp manifest</a> specification [[MINIAPP-MANIFEST]].</li>
             <li>The [=root directory=] MUST contain one script document, named <code>app.js</code>, with the basic control logic of the MiniApp. </li>
             <li>The [=root directory=] MUST contain one stylesheet, named <code>app.css</code>, following a syntax, structure and format as defined in the <a href="#sec-miniapp-resources-css">CSS Resources</a> section.</li>
@@ -163,11 +164,11 @@
                 |___app.css
                 |___pages/
                 |       |___page1.js
-                |       |___page1.xml
+                |       |___page1.html
                 |       |___page1.css
                 |___common/
                 |       |___componentA.js
-                |       |___componentA.xml
+                |       |___componentA.html
                 |       |___componentA.css
                 |       |___example.png
                 |___i18n/
@@ -188,13 +189,13 @@
                     <dd>This script document has the basic service logic of the MiniApp and includes the basic control of the MiniApp lifecycle, including the management of events for launch, showing and hiding the  MiniApp.</dd>
                 </dl>
             </section>
-            <section>
+            <section id="sec-pages-directory">
                 <h3><code>pages</code> Directory</h3>
                 <p>The <code>pages</code> directory contains a set of files for the display and user interaction of the [=MiniApp pages=].</p>
-                <p>A [=MiniApp page=] is defined by a set of [=resources=], whose files are identified by the file name (e.g., <code>intro</code>) and a specific extension that defines the type [=resource=], such as the service logic (e.g., <code>intro.js</code>), the structure (e.g., <code>intro.xml</code>) and the scoped stylesheet (e.g., <code>intro.css</code>).</p>
+                <p>A [=MiniApp page=] is defined by a set of [=resources=], whose files are identified by the file name (e.g., <code>intro</code>) and a specific extension that defines the type [=resource=], such as the service logic (e.g., <code>intro.js</code>), the structure (e.g., <code>intro.html</code>) and the scoped stylesheet (e.g., <code>intro.css</code>).</p>
                 <p>Developers MAY include other types of resources, and MAY choose storing the files related to a page either under the <code>pages</code> directory or organized in specific sub-directories for each page.</p>
                 <ul>
-                    <li>A <code>.xml</code> file is responsible for the structure of a MiniApp page, similar to HTML. The syntax and structure of these types of files are defined in the <a href="#sec-miniapp-resources-xml">XML Resources</a> section.</li>
+                    <li>A <code>.html</code> file is responsible for the structure of a MiniApp page, similar to HTML. The syntax and structure of these types of files are defined in the <a href="#sec-miniapp-resources-html">HTML Resources</a> section.</li>
                     <li>A <code>.css</code> file is responsible for the CSS style of a MiniApp page. The syntax, structure and format of these files are defined in the <a href="#sec-miniapp-resources-css">CSS Resources</a> section.</li>
                     <li>A <code>.js</code> file is responsible for the service logic, configuration and lifecycle management (defined in MiniApp Lifecycle [[MINIAPP-LIFECYCLE]]) of a MiniApp page. The syntax and structure of these types of files are defined in the <a href="#sec-miniapp-resources-js">Scripting Resources</a> section.</li>
                 </ul>
@@ -205,7 +206,7 @@
             </section>
             <section>
                 <h3><code>i18n</code> Directory</h3>
-                <p>The <dfn id="dfn-i18n-directory" data-dfn-type="dfn">i18n directory</dfn> is a subdirectory in the [=root directory=] that includes the [=localization resources=] of a [=MiniApp package=].</p>
+                <p>The optional <dfn id="dfn-i18n-directory" data-dfn-type="dfn">i18n directory</dfn> is a subdirectory in the [=root directory=] that includes the [=localization resources=] of a [=MiniApp package=].</p>
                 <p>The [=i18n Directory=] contains multi-language [=localization resources=] to support the internationalization of the MiniApp contents. The file name of each <code>.json</code> document in this directory follows the <code>Language-Tag</code> notation as defined in [[BCP47]], and represents the specific configuration for that particular language.</p>
                 <p>The [=i18n Directory=] MAY contain as many [=localization resources=] as languages or locales a MiniApp supports. The format of these files is defined in the <a href="#sec-miniapp-resources-i18n">localization resources</a> section.</p> 
             </section>
@@ -217,41 +218,84 @@
                     <li>File names are case sensitive</li>
                     <li>File names MUST be UTF-8 [[Unicode]] encoded.</li>
                     <li>File names MUST NOT exceed 255 bytes.</li>
+                    <li>The path name for any directory or file within a [=MiniApp package=] MUST NOT exceed 65535 bytes.</li>
                     <li>File names MUST NOT use the following [[Unicode]] characters:
                         <ul>
-                            <li>LESS-THAN SIGN: <code>&lt;</code> (<code>U+003C</code>)</li>
-                            <li>GREATER-THAN SIGN: <code>></code> (<code>U+003E</code>)</li>
-                            <li>COLON: <code>:</code> (<code>U+003A</code>)</li>
-                            <li>QUESTION MARK: <code>?</code> (<code>U+003F</code>)</li>
-                            <li>SOLIDUS: <code>/</code> (<code>U+002F</code>)</li>
-                            <li>REVERSE SOLIDUS: <code>\</code> (<code>U+005C</code>)</li>
-                            <li>VERTICAL LINE: <code>|</code> (<code>U+007C</code>)</li>
-                            <li>ASTERISK: <code>*</code> (<code>U+002A</code>)</li>
-                            <li>QUOTATION MARK: <code>"</code> (<code>U+0022</code>)</li>
-                            <li>FULL STOP at the end: <code>.</code> (<code>U+002E</code>)</li>
-                            <li>DEL (<code>U+007F</code>)</li>
-                            <li>C0 range (<code>U+0000</code> … <code>U+001F</code>)</li>
-                            <li>C1 range (<code>U+0080</code> … <code>U+009F</code>)</li>
+							<li>
+								<p>SOLIDUS: <code>/</code> (<code>U+002F</code>)</p>
+							</li>
+							<li>
+								<p>QUOTATION MARK: <code>"</code> (<code>U+0022</code>)</p>
+							</li>
+							<li>
+								<p>ASTERISK: <code>*</code> (<code>U+002A</code>)</p>
+							</li>
+							<li>
+								<p>FULL STOP as the last character: <code>.</code> (<code>U+002E</code>)</p>
+							</li>
+							<li>
+								<p>COLON: <code>:</code> (<code>U+003A</code>)</p>
+							</li>
+							<li>
+								<p>LESS-THAN SIGN: <code>&lt;</code> (<code>U+003C</code>)</p>
+							</li>
+							<li>
+								<p>GREATER-THAN SIGN: <code>&gt;</code> (<code>U+003E</code>)</p>
+							</li>
+							<li>
+								<p>QUESTION MARK: <code>?</code> (<code>U+003F</code>)</p>
+							</li>
+							<li>
+								<p>REVERSE SOLIDUS: <code>\</code> (<code>U+005C</code>)</p>
+							</li>
+							<li>
+								<p>VERTICAL LINE: <code>\</code> (<code>U+007C</code>)</p>
+							</li>
+							<li>
+								<p>DEL (<code>U+007F</code>)</p>
+							</li>
+							<li>
+								<p>C0 range (<code>U+0000 … U+001F</code>)</p>
+							</li>
+							<li>
+								<p>C1 range (<code>U+0080 … U+009F</code>)</p>
+							</li>
+							<li>
+								<p>Private Use Area (<code>U+E000 … U+F8FF</code>)</p>
+							</li>
+							<li>
+								<p>Non characters in Arabic Presentation Forms-A (<code>U+FDDO … U+FDEF</code>)</p>
+							</li>
+							<li>
+								<p>Specials (<code>U+FFF0 … U+FFFF</code>)</p>
+							</li>
+							<li>
+								<p>Tags and Variation Selectors Supplement (<code>U+E0000 … U+E0FFF</code>)</p>
+							</li>
+							<li>
+								<p>Supplementary Private Use Area-A (<code>U+F0000 … U+FFFFF</code>)</p>
+							</li>
+							<li>
+								<p>Supplementary Private Use Area-B (<code>U+100000 … U+10FFFF</code>)</p>
+							</li>
                         </ul>
                     </li>
+                    <li>File Names within the same directory MUST be unique following case normalization as described in section 3.13 of [[Unicode]].</li>  
                 </ul>
                 <div class="note" title="Limiting the length of file names">
                     If a MiniApp vendor imposes length limits on path and file names, it is important to avoid mid-character truncation due to the difference between bytes and characters in multibyte encodings such as UTF-8. See <a href="https://www.w3.org/TR/international-specs/#char_truncation">the text truncation best practice</a> for more information.     
-                </div>
-                <div class="issue">
-                    To complete the list of restricted characters.
                 </div>
             </section>
         </section>
         <section id="sec-miniapp-resources">
             <h3>MiniApp Resources</h3>
-            <section id="sec-miniapp-resources-xml">
-                <h3>XML Resources</h3>
-                <p>MiniApp user interfaces, including the visual components that defines the structure and the interaction elements of the pages, are described in XML resources.</p>
-                <p>XML resources MUST meet all the following criteria:</p>
+            <section id="sec-miniapp-resources-html">
+                <h3>HTML Resources</h3>
+                <p>MiniApp user interfaces, including the visual components that defines the structure and the interaction elements of the pages, are described in HTML resources.</p>
+                <p>HTML resources MUST meet all the following criteria:</p>
                 <dl class="conformance-list">
                     <dt>File extension</dt>
-                    <dd>An XML document SHOULD use the file extension <code>.xml</code>.</dd>
+                    <dd>An HTML document SHOULD use the file extension <code>.HTML</code>.</dd>
                 </dl>
                 <div class="issue" data-number="2"></div>
             </section>
@@ -274,7 +318,7 @@
                 </dl>
             </section>
             <section id="sec-miniapp-resources-i18n">
-                <h3>localization resources</h3>
+                <h3>Localization Resources</h3>
                 <p>A <dfn id="dfn-localization-resources" data-lt="MiniApp localization resources|Localization resources|localization resources" data-dfn-type="dfn">MiniApp localization resource</dfn> is a document of a [=MiniApp package=] that included localized content as part of the [=internationalization=] mechanism of MiniApps.</p>
                 <p>A multilingual MiniApp MAY has several [=localization resources=] that will be used during the [=localization=] process by the [=user agents=] to render content according to the system locale or the user's language preferences. These resources contain JSON objects with key-value pairs that contain the unique identifier (the key) of a localizable term or expression and the representation in the concrete language (the value).</p>
                 <pre class="example" title="Localization resource">
@@ -469,7 +513,6 @@
             <ol class="algorithm">
                 <li>If <code>app.js</code> does not exist in the [=root directory=], then return failure.</li>
                 <li>If <code>app.css</code> does not exist in the [=root directory=], then return failure.</li>
-                <li>If <code>i18n/</code> sub-directory does not exist in the [=root directory=], then return failure.</li>
                 <li>[=Verify platform compatibility=], passing |miniapp_package| and |manifest|.</li>
                 <li>Let |start_page:URL| be the result of [=determining the start page=], passing |miniapp_package|, |miniapp_uri| and |manifest|.</li>
                 <li>Return |miniapp_uri|.</li>
