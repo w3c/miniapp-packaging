@@ -215,11 +215,11 @@
                 <p>Any [=file name=] within a [=MiniApp package=] MUST comply with the following restrictions to accommodate the potential limitations of the operating systems and facilitate the compatibility with the majority of the platforms:</p>
 
                 <ul class="conformance-list">
-                    <li>File names are case sensitive</li>
-                    <li>File names MUST be UTF-8 [[Unicode]] encoded.</li>
-                    <li>File names MUST NOT exceed 255 bytes.</li>
+                    <li>[=File names=] are case sensitive</li>
+                    <li>[=File names=] MUST be UTF-8 [[Unicode]] encoded.</li>
+                    <li>[=File names=] MUST NOT exceed 255 bytes.</li>
                     <li>The path name for any directory or file within a [=MiniApp package=] MUST NOT exceed 65535 bytes.</li>
-                    <li>File names MUST NOT use the following [[Unicode]] characters:
+                    <li>[=File names=] MUST NOT use the following [[Unicode]] characters:
                         <ul>
 							<li>
 								<p>SOLIDUS: <code>/</code> (<code>U+002F</code>)</p>
@@ -281,9 +281,9 @@
                         </ul>
                     </li>
                 </ul>
-                <p id="filename-normalization">All File Names within the same directory MUST be unique following Unicode canonical normalization [[UAX15]] and then full case folding [[Unicode]]. (Refer to <a href="https://www.w3.org/TR/charmod-norm/#CanonicalFoldNormalizationStep">Unicode Canonical Case Fold Normalization Step</a> [[?CHARMOD-NORM]] for more information.)</p>                
+                <p id="filename-normalization">All [=file names=] within the same directory MUST be unique following Unicode canonical normalization [[UAX15]] and then full case folding [[Unicode]]. (Refer to <a href="https://www.w3.org/TR/charmod-norm/#CanonicalFoldNormalizationStep">Unicode Canonical Case Fold Normalization Step</a> [[?CHARMOD-NORM]] for more information.)</p>                
                 <div class="note" title="Limiting the length of file names">
-                    If a MiniApp vendor imposes length limits on path and file names, it is important to avoid mid-character truncation due to the difference between bytes and characters in multibyte encodings such as UTF-8. See <a href="https://www.w3.org/TR/international-specs/#char_truncation">the text truncation best practice</a> for more information.     
+                    If a MiniApp vendor imposes length limits on path and [=file names=], it is important to avoid mid-character truncation due to the difference between bytes and characters in multibyte encodings such as UTF-8. See <a href="https://www.w3.org/TR/international-specs/#char_truncation">the text truncation best practice</a> for more information.     
                 </div>
             </section>
         </section>
