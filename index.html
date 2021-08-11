@@ -172,47 +172,75 @@
                 |       |___componentA.css
                 |       |___example.png
                 |___i18n/
-                |       |___zh-Hans.json
-                |       |___en-US.json
+                        |___zh-Hans.json
+                        |___en-US.json
             </pre>
             <section>
                 <h3>Root Directory</h3>
                 <p>The <dfn id="dfn-root-directory" data-lt="root directory|root directories|MiniApp root directories" data-dfn-type="dfn">MiniApp root directory</dfn> is the base directory of the [=MiniApp package=] file system.</p> 
 
                 <p>The [=root directory=] of a [=MiniApp package=] holds several reserved files that include global data and information about the lifecycle management of the MiniApp, including:</p>
-                <dl>
+                <dl data-cite="MINIAPP-MANIFEST">
                     <dt><code>manifest.json</code></dt>
-                    <dd>The <a href="https://www.w3.org/TR/miniapp-manifest/#dfn-miniapp-manifest-s" data-link-type="dfn">MiniApp manifest</a> is a JSON document responsible for the global configuration of the MiniApp. A manifest file contains a collection of mandatory and optional attributes that indicate the setup of the MiniApp, including routes and paths of the pages and the window configuration of the MiniApp (e.g., styles of the navigation bar, background image and color, page title, among other), according to the MiniApp Manifest specification [[MINIAPP-MANIFEST]].</dd>
+                    <dd>The <a href="https://www.w3.org/TR/miniapp-manifest/#dfn-miniapp-manifest-s" data-link-type="dfn">MiniApp manifest</a> is a JSON document responsible for the global configuration of the MiniApp. A manifest file contains a collection of mandatory and optional attributes that indicate the setup of the MiniApp, including routes and paths of the pages and the window configuration of the MiniApp (e.g., styles of the navigation bar, background image, background color, page title, among others), according to the MiniApp Manifest specification [[MINIAPP-MANIFEST]].</dd>
                     <dt><code>app.css</code></dt>
-                    <dd>This file is the default CSS stylesheet, responsible for the global appearance of the [=MiniApp pages=]. It MAY be empty.</dd>
+                    <dd>This file is the main stylesheet of the application, where developers define common styles and look and feel aspects of the [=pages=] within the MiniApp. It MAY be empty.</dd>
                     <dt><code>app.js</code></dt>
-                    <dd>This script document has the basic service logic of the MiniApp and includes the basic control of the MiniApp lifecycle, including the management of events for launch, showing and hiding the  MiniApp.</dd>
+                    <dd>This script document has the basic service logic of the MiniApp and includes the essential configuration and control of the MiniApp lifecycle [[MINIAPP-LIFECYCLE]], including the management of events for launching, showing, and hiding the MiniApp.</dd>
                 </dl>
             </section>
             <section id="sec-pages-directory">
                 <h3><code>pages</code> Directory</h3>
                 <p>The <code>pages</code> directory contains a set of files for the display and user interaction of the [=MiniApp pages=].</p>
-                <p>A [=MiniApp page=] is defined by a set of [=resources=], whose files are identified by the file name (e.g., <code>intro</code>) and a specific extension that defines the type [=resource=], such as the service logic (e.g., <code>intro.js</code>), the structure (e.g., <code>intro.html</code>) and the scoped stylesheet (e.g., <code>intro.css</code>).</p>
-                <p>Developers MAY include other types of resources, and MAY choose storing the files related to a page either under the <code>pages</code> directory or organized in specific sub-directories for each page.</p>
+                <p>A [=MiniApp page=] is defined by a set of [=resources=], whose files are identified by a unique file name (e.g., <code>intro</code>) and a specific extension that defines the [=resource=] type, such as the business logic of the application (e.g., <code>intro.js</code>), the structure and content (e.g., <code>intro.html</code>), and the scoped stylesheet (e.g., <code>intro.css</code>).</p>
+                <p>Developers MAY include other types of [=resources=] according to their needs. Also, the files related to a page (identified with the same file name) MAY be organized either in specific sub-directories for each page or stored under the <code>pages</code> directory directly.</p>
+                <pre class="example" title="Page resources directly in the pages directory">
+                    /
+                    |___manifest.json
+                    |___app.js
+                    |___app.css
+                    |___pages/
+                            |___detail.js
+                            |___detail.html
+                            |___detail.css
+                            |___list.js
+                            |___list.html
+                            |___list.css
+                </pre>                
+                <pre class="example" title="Page resources organized in sub-directories">
+                    /
+                    |___manifest.json
+                    |___app.js
+                    |___app.css
+                    |___pages/
+                            |___detail/
+                                    |___detail.js
+                                    |___detail.html
+                                    |___detail.css
+                            |___list
+                                    |___list.js
+                                    |___list.html
+                                    |___list.css
+                </pre>                
                 <ul>
-                    <li>A <code>.html</code> file is responsible for the structure of a MiniApp page, similar to HTML. The syntax and structure of these types of files are defined in the <a href="#sec-miniapp-resources-html">HTML Resources</a> section.</li>
-                    <li>A <code>.css</code> file is responsible for the CSS style of a MiniApp page. The syntax, structure and format of these files are defined in the <a href="#sec-miniapp-resources-css">CSS Resources</a> section.</li>
-                    <li>A <code>.js</code> file is responsible for the service logic, configuration and lifecycle management (defined in MiniApp Lifecycle [[MINIAPP-LIFECYCLE]]) of a MiniApp page. The syntax and structure of these types of files are defined in the <a href="#sec-miniapp-resources-js">Scripting Resources</a> section.</li>
+                    <li>A <code>.html</code> resource defines the structure and content of a [=MiniApp page=]. Based on HTML, the syntax, structure, and other requirements of this type of file are defined in the <a href="#sec-miniapp-resources-html">HTML Resources</a> section.</li>
+                    <li>A <code>.css</code> resource defines the stylesheet of a [=MiniApp page=]. The syntax, structure, and other requirements of this type of resource are defined in the <a href="#sec-miniapp-resources-css">CSS Resources</a> section.</li>
+                    <li>A <code>.js</code> resource contains the business logic of the [=MiniApp page=], including functions, data, and other configuration aspects needed for the operation of the application. This type of resource is responsible for the setup and lifecycle management of [=MiniApp pages=], as defined in the MiniApp Lifecycle specification [[MINIAPP-LIFECYCLE]]. The syntax and format of these types of files are defined in the <a href="#sec-miniapp-resources-js">Scripting Resources</a> section.</li>
                 </ul>
             </section>
             <section>
                 <h3><code>common</code> Directory</h3>
-                <p>The optional <code>common</code> directory contains resources such as components, multimedia resources, and libraries that are accessible from all [=MiniApp pages=] in a MiniApp. The internal structure of this directory is flexible, so these common resources MAY be organized in customized subdirectories, and using different name conventions, as needed.</p>
+                <p>The optional <code>common</code> directory contains [=resources=], such as components, multimedia resources, documents and libraries that are accessible from the [=pages=] in a MiniApp. The internal structure of this directory is flexible, so these common resources MAY be organized in customized subdirectories and using different name conventions, as needed.</p>
             </section>
             <section>
                 <h3><code>i18n</code> Directory</h3>
                 <p>The optional <dfn id="dfn-i18n-directory" data-dfn-type="dfn">i18n directory</dfn> is a subdirectory in the [=root directory=] that includes the [=localization resources=] of a [=MiniApp package=].</p>
-                <p>The [=i18n Directory=] contains multi-language [=localization resources=] to support the internationalization of the MiniApp contents. The file name of each <code>.json</code> document in this directory follows the <code>Language-Tag</code> notation as defined in [[BCP47]], and represents the specific configuration for that particular language.</p>
+                <p>The [=i18n Directory=] contains multi-language [=localization resources=] to support the internationalization of the MiniApp contents. The file name of each <code>.json</code> document in this directory follows the <code>Language-Tag</code> notation as defined in [[BCP47]] and represents the specific configuration for that particular language.</p>
                 <p>The [=i18n Directory=] MAY contain as many [=localization resources=] as languages or locales a MiniApp supports. The format of these files is defined in the <a href="#sec-miniapp-resources-i18n">localization resources</a> section.</p> 
             </section>
             <section>
                 <h3>File Names</h3>
-                <p>Any [=file name=] within a [=MiniApp package=] MUST comply with the following restrictions to accommodate the potential limitations of the operating systems and facilitate the compatibility with the majority of the platforms:</p>
+                <p>Any [=file name=] within a [=MiniApp package=] MUST comply with the following restrictions to accommodate the potential limitations of the operating systems and facilitate compatibility with the majority of the platforms:</p>
 
                 <ul class="conformance-list">
                     <li>[=File names=] are case sensitive</li>
@@ -295,7 +323,7 @@
                 <p>HTML resources MUST meet all the following criteria:</p>
                 <dl class="conformance-list">
                     <dt>File extension</dt>
-                    <dd>An HTML document SHOULD use the file extension <code>.HTML</code>.</dd>
+                    <dd>An HTML document SHOULD use the file extension <code>.html</code>.</dd>
                 </dl>
                 <div class="issue" data-number="2"></div>
             </section>
