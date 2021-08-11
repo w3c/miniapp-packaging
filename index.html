@@ -192,8 +192,8 @@
             <section id="sec-pages-directory">
                 <h3><code>pages</code> Directory</h3>
                 <p>The <code>pages</code> directory contains a set of files for the display and user interaction of the [=MiniApp pages=].</p>
-                <p>A [=MiniApp page=] is defined by a set of [=resources=], whose files are identified by a unique file name (e.g., <code>intro</code>) and a specific extension that defines the [=resource=] type, such as the business logic of the application (e.g., <code>intro.js</code>), the structure and content (e.g., <code>intro.html</code>), and the scoped stylesheet (e.g., <code>intro.css</code>).</p>
-                <p>Developers MAY include other types of [=resources=] according to their needs. Also, the files related to a page (identified with the same file name) MAY be organized either in specific sub-directories for each page or stored under the <code>pages</code> directory directly.</p>
+                <p>A [=MiniApp page=] is defined by a set of [=resources=], whose files are identified by a unique filename (e.g., <code>intro</code>) and a specific extension that defines the [=resource=] type, such as the business logic of the application (e.g., <code>intro.js</code>), the structure and content (e.g., <code>intro.html</code>), and the scoped stylesheet (e.g., <code>intro.css</code>).</p>
+                <p>Developers MAY include other types of [=resources=] according to their needs. Also, the files related to a page (identified with the same filename) MAY be organized either in specific sub-directories for each page or stored under the <code>pages</code> directory directly.</p>
                 <pre class="example" title="Page resources directly in the pages directory">
                     /
                     |___manifest.json
@@ -235,7 +235,7 @@
             <section>
                 <h3><code>i18n</code> Directory</h3>
                 <p>The optional <dfn id="dfn-i18n-directory" data-dfn-type="dfn">i18n directory</dfn> is a subdirectory in the [=root directory=] that includes the [=localization resources=] of a [=MiniApp package=].</p>
-                <p>The [=i18n Directory=] contains multi-language [=localization resources=] to support the internationalization of the MiniApp contents. The file name of each <code>.json</code> document in this directory follows the <code>Language-Tag</code> notation as defined in [[BCP47]] and represents the specific configuration for that particular language.</p>
+                <p>The [=i18n Directory=] contains multi-language [=localization resources=] to support the internationalization of the MiniApp contents. The filename of each <code>.json</code> document in this directory follows the <code>Language-Tag</code> notation as defined in [[BCP47]] and represents the specific configuration for that particular language.</p>
                 <p>The [=i18n Directory=] MAY contain as many [=localization resources=] as languages or locales a MiniApp supports. The format of these files is defined in the <a href="#sec-miniapp-resources-i18n">localization resources</a> section.</p> 
             </section>
             <section>
@@ -319,30 +319,42 @@
             <h3>MiniApp Resources</h3>
             <section id="sec-miniapp-resources-html">
                 <h3>HTML Resources</h3>
-                <p>MiniApp user interfaces, including the visual components that defines the structure and the interaction elements of the pages, are described in HTML resources.</p>
-                <p>HTML resources MUST meet all the following criteria:</p>
+                <p><dfn id="dfn-html-resource" data-lt="MiniApp HTML resource|MiniApp HTML resources|HTML resource" data-dfn-type="dfn">HTML resources</dfn> are documents that contain markup and information to define MiniApp user interfaces, including the structure, visual components, and user interaction elements.</p>
+                <p>[=HTML resources=] MUST meet all the following criteria:</p>
                 <dl class="conformance-list">
+                    <dt>File name</dt>
+                    <dd>An [=HTML resource=] SHOULD have a unique filename that identifies a single [=MiniApp page=] and matches with the corresponding [=CSS resource=] and [=scripting resource=] of the page if present.</dd>
                     <dt>File extension</dt>
-                    <dd>An HTML document SHOULD use the file extension <code>.html</code>.</dd>
+                    <dd>An [=HTML resource=] SHOULD use the file extension <code>.html</code>.</dd>
                 </dl>
                 <div class="issue" data-number="2"></div>
             </section>
             <section id="sec-miniapp-resources-css">
                 <h3>CSS Resources</h3>
-                <p>The content is rendered and presented to end-users according to CSS Style Sheets. [=MiniApp user agents=] support CSS modules as defined in the [[CSS-SNAPSHOT]].</p>
+                <p><dfn id="dfn-css-resource" data-lt="MiniApp CSS resource|MiniApp CSS resources" data-dfn-type="dfn">CSS resources</dfn> are stylesheets that describe the rendering and appearance of [=MiniApp pages=]. CSS resources can be global, affecting all the pages in a MiniApp (i.e., <code>app.css</code> in the [=root directory=]), or with local scope, just affecting a specific [=page=] in the MiniApp.</p>
+                <p>This specification supports the CSS modules as defined in the [[CSS-SNAPSHOT]].</p>
                 <p>CSS resources MUST meet all the following criteria:</p>
-                <dl class="conformance-list">
+                <dl class="conformance-list">                    
+                    <dt>CSS syntax and content</dt>
+                    <dd>A [=CSS resource=] MUST follow described using the syntax and definitions of CSS as described in the [[CSS-SNAPSHOT]].</dd>
+                    <dt>File name</dt>
+                    <dd>The global [=CSS resource=], affecting all [=pages=] in a MiniApp, MUST be named <code>app.css</code> and stored in the [=root directory=].</dd>
+                    <dd>A local [=CSS resource=] associated with a [=page=] SHOULD have a unique filename that identifies the [=MiniApp page=] and matches with the corresponding [=HTML resource=] and [=scripting resource=] if present.</dd>
                     <dt>File extension</dt>
-                    <dd>A MiniApp stylesheet filename SHOULD use the file extension <code>.css</code>.</dd>
+                    <dd>A [=CSS resource=] filename SHOULD use the file extension <code>.css</code>.</dd>
                 </dl>
             </section>
             <section id="sec-miniapp-resources-js">
                 <h3>Scripting Resources</h3>
-                <p>MiniApps contains scripting resources, documents written in JavaScript, that provide the MiniApp with functionality and logic.</p>
+                <p><dfn id="dfn-js-resource" data-lt="MiniApp scripting resource" data-dfn-type="dfn">Scripting resources</dfn> are documents that contain script elements and data to control the business logic and functionality of the application, adding interactivity and managing the lifecycle of the MiniApp. There is a global [=scripting resource=] (i.e., <code>app.js</code> in the [=root directory=]) that includes data and functions available for all the [=pages=] of the MiniApp, and with specific logic to control the application's lifecycle. Each [=MiniApp page=] MAY have associated specific [=scripting resources=], with the scope limited to the concrete [=page=].</p>
                 <p>Scripting resources MUST meet all the following criteria:</p>
                 <dl class="conformance-list">
+                    <dt>Syntax and content</dt>
+                    <dd>The [=scripting resources=] MUST conform with the requirements of the JavaScript specification [[JAVASCRIPT]].</dd>
+                    <dd>The global [=scripting resource=] MUST be named <code>app.js</code> and stored in the [=root directory=].</dd>
+                    <dd>A local [=scripting resource=] associated with a [=page=] SHOULD have a unique filename that identifies the [=MiniApp page=] and matches with the corresponding [=HTML resource=] and [=CSS resource=] if present.</dd>
                     <dt>File extension</dt>
-                    <dd>A MiniApp JavaScript filename SHOULD use the file extension <code>.js</code>.</dd>
+                    <dd>A [=scripting resource=] filename SHOULD use the file extension <code>.js</code>.</dd>
                 </dl>
             </section>
             <section id="sec-miniapp-resources-i18n">
@@ -396,7 +408,7 @@
                 <li>Data integrity MUST be provided for each file using CRC32 as specified in [[ZIP]].</li>
                 <li>MiniApp ZIP containers MUST NOT use the features in the ZIP application note [[ZIP]] that allow ZIP files to be spanned across multiple storage media, or split into multiple files.</li>
                 <li>MiniApp ZIP containers MUST include ZIP uncompressed (method <code>0</code>, file stored) and Deflate-compressed (method <code>0</code>, lossless data compression) contents within the ZIP archive, according to the [[ZIP]] specification.</li>
-                <li>MiniApp ZIP containers MUST use UTF-8 [[Unicode]] for encoding filenames.</li>
+                <li>MiniApp ZIP containers MUST use UTF-8 [[Unicode]] for encoding file names.</li>
                 <li>MiniApp ZIP containers MUST NOT use patented features.</li>
                 <li>MiniApp ZIP containers MAY include a special block, the [=MiniApp signing block=], to allow digital signatures affecting the whole package.</li>
                 <li>The minimum version of ZIP to extract a [=MiniApp ZIP container=] is <code>2.0</code> (supporting folders and Deflate compression), according to the [[ZIP]] specification.</li>
@@ -442,7 +454,7 @@
         <h2>Internationalization</h2>
         <p><dfn id="dfn-i18n" data-lt="internationalization|i18n" >Internationalization</dfn>, abbreviated to <abbr title="internationalization">i18n</abbr>, is the process of designing and developing a product in a way that ensures it can be easily adapted for users from any culture, region, or language.</p>
         <p><dfn id="dfn-localization" data-lt="localization" >Localization</dfn> is the process of content adaptation to meet a target language or cultural requirements.</p>
-        <p>MiniApps enable localization of contents using a mechanism based on localized documents placed in the reserved [=i18n Directory=]. This mechanism allows authors to place [=localization resources=], named according to a <code>language-range</code> [[BCP47]] and the <code>.json</code> extension. This is, documents with the localization resources will be identified with language tags [[BCP47]] that represent the locale of the content. [=MiniApp user agents=] match the language ranges held by their locales to the appropriate locale file name.</p>
+        <p>MiniApps enable localization of contents using a mechanism based on localized documents placed in the reserved [=i18n Directory=]. This mechanism allows authors to place [=localization resources=], named according to a <code>language-range</code> [[BCP47]] and the <code>.json</code> extension. This is, documents with the localization resources will be identified with language tags [[BCP47]] that represent the locale of the content. [=MiniApp user agents=] match the language ranges held by their locales to the appropriate locale filename.</p>
         <p>The format of the [=localization resources=] is defined in the <a href="#sec-miniapp-resources-i18n">localization resources</a> section.</p>
         <pre class="example" title="Filenames based on language tags in the i18n directory">
                 /
