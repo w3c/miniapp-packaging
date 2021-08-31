@@ -319,14 +319,13 @@
                 <p><dfn id="dfn-html-resource" data-lt="MiniApp HTML resource|MiniApp HTML resources|HTML resource" data-dfn-type="dfn">HTML resources</dfn> are documents that contain markup and information to define MiniApp user interfaces, including the structure, visual components, and user interaction elements.</p>
                 <p>[=HTML resources=] MUST meet all the following criteria:</p>
                 <dl class="conformance-list">
+                    <dt>Syntax and content</dt>
+                    <dd>An [=HTML resource=] MUST use the <a href="https://html.spec.whatwg.org/multipage/xhtml.html#the-xhtml-syntax">XML syntax</a> defined in [[HTML]], and the profile of MiniApp Content Documents.</dd>
                     <dt>File name</dt>
                     <dd>An [=HTML resource=] SHOULD have a unique filename that identifies a single [=MiniApp page=] and matches with the corresponding [=CSS resource=] and [=scripting resource=] of the page if present.</dd>
                     <dt>File extension</dt>
                     <dd>An [=HTML resource=] SHOULD use the file extension <code>.html</code>.</dd>
                 </dl>
-                <p class="issue" title="Still to define the syntax/content">
-                    Still in discussion if MiniApp user agents should support HTML/DOM or other solution.
-                </p>                
             </section>
             <section id="sec-miniapp-resources-css">
                 <h3>CSS Resources</h3>
@@ -334,7 +333,7 @@
                 <p>This specification supports the CSS modules as defined in the [[CSS-SNAPSHOT]].</p>
                 <p>CSS resources MUST meet all the following criteria:</p>
                 <dl class="conformance-list">                    
-                    <dt>CSS syntax and content</dt>
+                    <dt>Syntax and content</dt>
                     <dd>A [=CSS resource=] MUST follow described using the syntax and definitions of CSS as described in the [[CSS-SNAPSHOT]].</dd>
                     <dt>File name</dt>
                     <dd>The global [=CSS resource=], affecting all [=pages=] in a MiniApp, MUST be named <code>app.css</code> and stored in the [=root directory=].</dd>
