@@ -531,8 +531,8 @@
             <p>To <dfn data-lt="processing the MiniApp manifest">process the MiniApp manifest</dfn>, given [=MiniApp Package=] |miniapp_package:MiniApp Package|, perform the following steps. They return [=ordered map=].</p>
             <ol class="algorithm">
                 <li>If <code>manifest.json</code> file does not exist in the package's [=root directory=], then return failure.</li>
-                <li>Let |manifest_json:object| be the result of [=parse JSON from bytes=], passing <code>manifest.json</code>.</li>
-                <li>If |manifest_json| is a parsing exception, or the type of |manifest_json| is not [=object=], then return failure.</li>
+                <li>Let |manifest_json:ordered map| be the result of [=parse JSON from bytes=], passing <code>manifest.json</code>.</li>
+                <li>If |manifest_json| is a parsing exception, or |manifest_json| is not an [=ordered map=], then return failure.</li>
                 <li>Let |manifest:ordered map| be an [=ordered map=].</li>
                 <li><a href="https://w3c.github.io/miniapp-manifest/#dfn-processing-a-miniapp-manifest" data-link-type="dfn">Process a MiniApp manifest</a>, passing |manifest_json| and |manifest|.</li>
                 <li>Return |manifest|.</li>
@@ -638,7 +638,7 @@
 
     <section class="appendix informative" id="sec-acknowledgments">
         <h2>Acknowledgments</h2>
-		<div class="issue">List all the contributors and W3C Team contacts</div>
+		<div class="ednote">List all the contributors and W3C Team contacts</div>
     </section>
     <section class="appendix informative" id="sec-signature-schemes">
         <h2>Signature Schemes</h2>
