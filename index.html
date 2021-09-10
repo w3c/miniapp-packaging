@@ -314,9 +314,18 @@
         </section>
         <section id="sec-miniapp-resources">
             <h3>MiniApp Resources</h3>
+            <p>A [=MiniApp page=] is composed of, at least, an [=HTML resource=] and, optionally, a [=CSS resource=] and/or a [=scripting resource=]. These related resources MUST have the same path and filename (only changing the file extension) to identify the [=MiniApp page=] through a unique <a href="https://w3c.github.io/miniapp-manifest/#dfn-page-route" data-link-type="dfn">page route</a> that needs to be specified in the <a href="https://w3c.github.io/miniapp-manifest/#pages-member" data-link-type="dfn"><code>pages</code> member</a> of the <a href="https://www.w3.org/TR/miniapp-manifest/#dfn-miniapp-manifest-s" data-link-type="dfn">MiniApp manifest</a> [[MINIAPP-MANIFEST]]. </p>
+            <pre class="example" title="Organization of page resources corresponding to the page route 'pages/product/product'">
+                    /
+                    |___pages/
+                            |___product/
+                                    |___product.html
+                                    |___product.css
+                                    |___product.js
+            </pre>
             <section id="sec-miniapp-resources-html">
                 <h3>HTML Resources</h3>
-                <p><dfn id="dfn-html-resource" data-lt="MiniApp HTML resource|MiniApp HTML resources|HTML resource" data-dfn-type="dfn">HTML resources</dfn> are documents that contain markup and information to define MiniApp user interfaces, including the structure, visual components, and user interaction elements.</p>
+                <p><dfn id="dfn-html-resource" data-lt="MiniApp HTML resource|MiniApp HTML resources|HTML resource" data-dfn-type="dfn">HTML resources</dfn> are documents that contain markup and information to define [=MiniApp pages=], and their user interfaces, including the structure, visual components, and interaction elements.</p>
                 <p>[=HTML resources=] MUST meet all the following criteria:</p>
                 <dl class="conformance-list">
                     <dt>Syntax and content</dt>
