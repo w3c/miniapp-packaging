@@ -95,9 +95,6 @@
         <p>This specification defines semantics and conformance requirements for a [=MiniApp package=], and the structure of the single file container that holds the resources of a MiniApp, including a manifest file, static page templates, stylesheets, JavaScript documents, media files and other resources. Instances of the [=MiniApp package=] are used for MiniApp distribution and execution on runtime environments ([=MiniApp user agent=]).</p>
     </section>
     <section id="sotd">
-        <aside class="warning">
-             This Editor Draft is a working document and it does not necessarily imply consensus of the Working Group.
-        </aside>
     </section>
     <section id="sec-introduction">
         <h2>Introduction</h2>
@@ -172,47 +169,75 @@
                 |       |___componentA.css
                 |       |___example.png
                 |___i18n/
-                |       |___zh-Hans.json
-                |       |___en-US.json
+                        |___zh-Hans.json
+                        |___en-US.json
             </pre>
             <section>
                 <h3>Root Directory</h3>
                 <p>The <dfn id="dfn-root-directory" data-lt="root directory|root directories|MiniApp root directories" data-dfn-type="dfn">MiniApp root directory</dfn> is the base directory of the [=MiniApp package=] file system.</p> 
 
                 <p>The [=root directory=] of a [=MiniApp package=] holds several reserved files that include global data and information about the lifecycle management of the MiniApp, including:</p>
-                <dl>
+                <dl data-cite="MINIAPP-MANIFEST">
                     <dt><code>manifest.json</code></dt>
-                    <dd>The <a href="https://www.w3.org/TR/miniapp-manifest/#dfn-miniapp-manifest-s" data-link-type="dfn">MiniApp manifest</a> is a JSON document responsible for the global configuration of the MiniApp. A manifest file contains a collection of mandatory and optional attributes that indicate the setup of the MiniApp, including routes and paths of the pages and the window configuration of the MiniApp (e.g., styles of the navigation bar, background image and color, page title, among other), according to the MiniApp Manifest specification [[MINIAPP-MANIFEST]].</dd>
+                    <dd>The <a href="https://www.w3.org/TR/miniapp-manifest/#dfn-miniapp-manifest-s" data-link-type="dfn">MiniApp manifest</a> is a JSON document responsible for the global configuration of the MiniApp. A manifest file contains a collection of mandatory and optional attributes that indicate the setup of the MiniApp, including routes and paths of the pages and the window configuration of the MiniApp (e.g., styles of the navigation bar, background image, background color, page title, among others), according to the MiniApp Manifest specification [[MINIAPP-MANIFEST]].</dd>
                     <dt><code>app.css</code></dt>
-                    <dd>This file is the default CSS stylesheet, responsible for the global appearance of the [=MiniApp pages=]. It MAY be empty.</dd>
+                    <dd>This file is the main stylesheet of the application, where developers define common styles and look and feel aspects of the [=pages=] within the MiniApp. It MAY be empty.</dd>
                     <dt><code>app.js</code></dt>
-                    <dd>This script document has the basic service logic of the MiniApp and includes the basic control of the MiniApp lifecycle, including the management of events for launch, showing and hiding the  MiniApp.</dd>
+                    <dd>This script document has the basic service logic of the MiniApp and includes the essential configuration and control of the MiniApp lifecycle [[MINIAPP-LIFECYCLE]], including the management of events for launching, showing, and hiding the MiniApp.</dd>
                 </dl>
             </section>
             <section id="sec-pages-directory">
                 <h3><code>pages</code> Directory</h3>
                 <p>The <code>pages</code> directory contains a set of files for the display and user interaction of the [=MiniApp pages=].</p>
-                <p>A [=MiniApp page=] is defined by a set of [=resources=], whose files are identified by the file name (e.g., <code>intro</code>) and a specific extension that defines the type [=resource=], such as the service logic (e.g., <code>intro.js</code>), the structure (e.g., <code>intro.html</code>) and the scoped stylesheet (e.g., <code>intro.css</code>).</p>
-                <p>Developers MAY include other types of resources, and MAY choose storing the files related to a page either under the <code>pages</code> directory or organized in specific sub-directories for each page.</p>
+                <p>A [=MiniApp page=] is defined by a set of [=resources=], whose files are identified by a unique filename (e.g., <code>intro</code>) and a specific extension that defines the [=resource=] type, such as the business logic of the application (e.g., <code>intro.js</code>), the structure and content (e.g., <code>intro.html</code>), and the scoped stylesheet (e.g., <code>intro.css</code>).</p>
+                <p>Developers MAY include other types of [=resources=] according to their needs. Also, the files related to a page (identified with the same filename) MAY be organized either in specific subdirectories for each page or stored under the <code>pages</code> directory directly.</p>
+                <pre class="example" title="Page resources directly in the pages directory">
+                    /
+                    |___manifest.json
+                    |___app.js
+                    |___app.css
+                    |___pages/
+                            |___detail.js
+                            |___detail.html
+                            |___detail.css
+                            |___list.js
+                            |___list.html
+                            |___list.css
+                </pre>                
+                <pre class="example" title="Page resources organized in subdirectories">
+                    /
+                    |___manifest.json
+                    |___app.js
+                    |___app.css
+                    |___pages/
+                            |___detail/
+                                    |___detail.js
+                                    |___detail.html
+                                    |___detail.css
+                            |___list
+                                    |___list.js
+                                    |___list.html
+                                    |___list.css
+                </pre>                
                 <ul>
-                    <li>A <code>.html</code> file is responsible for the structure of a MiniApp page, similar to HTML. The syntax and structure of these types of files are defined in the <a href="#sec-miniapp-resources-html">HTML Resources</a> section.</li>
-                    <li>A <code>.css</code> file is responsible for the CSS style of a MiniApp page. The syntax, structure and format of these files are defined in the <a href="#sec-miniapp-resources-css">CSS Resources</a> section.</li>
-                    <li>A <code>.js</code> file is responsible for the service logic, configuration and lifecycle management (defined in MiniApp Lifecycle [[MINIAPP-LIFECYCLE]]) of a MiniApp page. The syntax and structure of these types of files are defined in the <a href="#sec-miniapp-resources-js">Scripting Resources</a> section.</li>
+                    <li>A <code>.html</code> resource defines the structure and content of a [=MiniApp page=]. Based on HTML, the syntax, structure, and other requirements of this type of file are defined in the <a href="#sec-miniapp-resources-html">HTML Resources</a> section.</li>
+                    <li>A <code>.css</code> resource defines the stylesheet of a [=MiniApp page=]. The syntax, structure, and other requirements of this type of resource are defined in the <a href="#sec-miniapp-resources-css">CSS Resources</a> section.</li>
+                    <li>A <code>.js</code> resource contains the business logic of the [=MiniApp page=], including functions, data, and other configuration aspects needed for the operation of the application. This type of resource is responsible for the setup and lifecycle management of [=MiniApp pages=], as defined in the MiniApp Lifecycle specification [[MINIAPP-LIFECYCLE]]. The syntax and format of these types of files are defined in the <a href="#sec-miniapp-resources-js">Scripting Resources</a> section.</li>
                 </ul>
             </section>
             <section>
                 <h3><code>common</code> Directory</h3>
-                <p>The optional <code>common</code> directory contains resources such as components, multimedia resources, and libraries that are accessible from all [=MiniApp pages=] in a MiniApp. The internal structure of this directory is flexible, so these common resources MAY be organized in customized subdirectories, and using different name conventions, as needed.</p>
+                <p>The optional <code>common</code> directory contains [=resources=], such as components, multimedia resources, documents and libraries that are accessible from the [=pages=] in a MiniApp. The internal structure of this directory is flexible, so these common resources MAY be organized in customized subdirectories and using different name conventions, as needed.</p>
             </section>
             <section>
                 <h3><code>i18n</code> Directory</h3>
                 <p>The optional <dfn id="dfn-i18n-directory" data-dfn-type="dfn">i18n directory</dfn> is a subdirectory in the [=root directory=] that includes the [=localization resources=] of a [=MiniApp package=].</p>
-                <p>The [=i18n Directory=] contains multi-language [=localization resources=] to support the internationalization of the MiniApp contents. The file name of each <code>.json</code> document in this directory follows the <code>Language-Tag</code> notation as defined in [[BCP47]], and represents the specific configuration for that particular language.</p>
+                <p>The [=i18n Directory=] contains multi-language [=localization resources=] to support the internationalization of the MiniApp contents. The filename of each <code>.json</code> document in this directory follows the <code>Language-Tag</code> notation as defined in [[BCP47]] and represents the specific configuration for that particular language.</p>
                 <p>The [=i18n Directory=] MAY contain as many [=localization resources=] as languages or locales a MiniApp supports. The format of these files is defined in the <a href="#sec-miniapp-resources-i18n">localization resources</a> section.</p> 
             </section>
             <section>
                 <h3>File Names</h3>
-                <p>Any [=file name=] within a [=MiniApp package=] MUST comply with the following restrictions to accommodate the potential limitations of the operating systems and facilitate the compatibility with the majority of the platforms:</p>
+                <p>Any [=file name=] within a [=MiniApp package=] MUST comply with the following restrictions to accommodate the potential limitations of the operating systems and facilitate compatibility with the majority of the platforms:</p>
 
                 <ul class="conformance-list">
                     <li>[=File names=] are case sensitive.</li>
@@ -289,32 +314,57 @@
         </section>
         <section id="sec-miniapp-resources">
             <h3>MiniApp Resources</h3>
+            <p>A [=MiniApp page=] is composed of, at least, an [=HTML resource=] and, optionally, a [=CSS resource=] and/or a [=scripting resource=]. These related resources MUST have the same path and filename (only changing the file extension) to identify the [=MiniApp page=] through a unique <a href="https://w3c.github.io/miniapp-manifest/#dfn-page-route" data-link-type="dfn">page route</a> that needs to be specified in the <a href="https://w3c.github.io/miniapp-manifest/#pages-member" data-link-type="dfn"><code>pages</code> member</a> of the <a href="https://www.w3.org/TR/miniapp-manifest/#dfn-miniapp-manifest-s" data-link-type="dfn">MiniApp manifest</a> [[MINIAPP-MANIFEST]]. </p>
+            <pre class="example" title="Organization of page resources corresponding to the page route 'pages/product/product'">
+                    /
+                    |___pages/
+                            |___product/
+                                    |___product.html
+                                    |___product.css
+                                    |___product.js
+            </pre>
             <section id="sec-miniapp-resources-html">
                 <h3>HTML Resources</h3>
-                <p>MiniApp user interfaces, including the visual components that defines the structure and the interaction elements of the pages, are described in HTML resources.</p>
-                <p>HTML resources MUST meet all the following criteria:</p>
+                <p><dfn id="dfn-html-resource" data-lt="MiniApp HTML resource|MiniApp HTML resources|HTML resource" data-dfn-type="dfn">HTML resources</dfn> are documents that contain markup and information to define [=MiniApp pages=], and their user interfaces, including the structure, visual components, and interaction elements.</p>
+                <p>[=HTML resources=] MUST meet all the following criteria:</p>
                 <dl class="conformance-list">
+                    <dt>Syntax and content</dt>
+                    <dd>An [=HTML resource=] MUST use the <a href="https://html.spec.whatwg.org/multipage/syntax.html#syntax">HTML syntax</a> defined in [[HTML]].</dd>
+                    <dt>File name</dt>
+                    <dd>An [=HTML resource=] SHOULD have a unique filename that identifies a single [=MiniApp page=] and matches with the corresponding [=CSS resource=] and [=scripting resource=] of the page if present.</dd>
                     <dt>File extension</dt>
-                    <dd>An HTML document SHOULD use the file extension <code>.HTML</code>.</dd>
+                    <dd>An [=HTML resource=] SHOULD use the file extension <code>.html</code>.</dd>
                 </dl>
-                <div class="issue" data-number="2"></div>
+                <div class="ednote">
+                    To define the HTML profile of MiniApp Content Documents.
+                </div> 
             </section>
             <section id="sec-miniapp-resources-css">
                 <h3>CSS Resources</h3>
-                <p>The content is rendered and presented to end-users according to CSS Style Sheets. [=MiniApp user agents=] support CSS modules as defined in the [[CSS-SNAPSHOT]].</p>
+                <p><dfn id="dfn-css-resource" data-lt="MiniApp CSS resource|MiniApp CSS resources" data-dfn-type="dfn">CSS resources</dfn> are stylesheets that describe the rendering and appearance of [=MiniApp pages=]. CSS resources can be global, affecting all the pages in a MiniApp (i.e., <code>app.css</code> in the [=root directory=]), or with local scope, just affecting a specific [=page=] in the MiniApp.</p>
+                <p>This specification supports the CSS modules as defined in the [[CSS-SNAPSHOT]].</p>
                 <p>CSS resources MUST meet all the following criteria:</p>
-                <dl class="conformance-list">
+                <dl class="conformance-list">                    
+                    <dt>Syntax and content</dt>
+                    <dd>A [=CSS resource=] MUST follow described using the syntax and definitions of CSS as described in the [[CSS-SNAPSHOT]].</dd>
+                    <dt>File name</dt>
+                    <dd>The global [=CSS resource=], affecting all [=pages=] in a MiniApp, MUST be named <code>app.css</code> and stored in the [=root directory=].</dd>
+                    <dd>A local [=CSS resource=] associated with a [=page=] SHOULD have a unique filename that identifies the [=MiniApp page=] and matches with the corresponding [=HTML resource=] and [=scripting resource=] if present.</dd>
                     <dt>File extension</dt>
-                    <dd>A MiniApp stylesheet filename SHOULD use the file extension <code>.css</code>.</dd>
+                    <dd>A [=CSS resource=] filename SHOULD use the file extension <code>.css</code>.</dd>
                 </dl>
             </section>
             <section id="sec-miniapp-resources-js">
                 <h3>Scripting Resources</h3>
-                <p>MiniApps contains scripting resources, documents written in JavaScript, that provide the MiniApp with functionality and logic.</p>
+                <p><dfn id="dfn-js-resource" data-lt="MiniApp scripting resource" data-dfn-type="dfn">Scripting resources</dfn> are documents that contain script elements and data to control the business logic and functionality of the application, adding interactivity and managing the lifecycle of the MiniApp. There is a global [=scripting resource=] (i.e., <code>app.js</code> in the [=root directory=]) that includes data and functions available for all the [=pages=] of the MiniApp, and with specific logic to control the application's lifecycle. Each [=MiniApp page=] MAY have associated specific [=scripting resources=], with the scope limited to the concrete [=page=].</p>
                 <p>Scripting resources MUST meet all the following criteria:</p>
                 <dl class="conformance-list">
+                    <dt>Syntax and content</dt>
+                    <dd>The [=scripting resources=] MUST conform with the requirements of the ECMAScript specification [[ECMA-262]].</dd>
+                    <dd>The global [=scripting resource=] MUST be named <code>app.js</code> and stored in the [=root directory=].</dd>
+                    <dd>A local [=scripting resource=] associated with a [=page=] SHOULD have a unique filename that identifies the [=MiniApp page=] and matches with the corresponding [=HTML resource=] and [=CSS resource=] if present.</dd>
                     <dt>File extension</dt>
-                    <dd>A MiniApp JavaScript filename SHOULD use the file extension <code>.js</code>.</dd>
+                    <dd>A [=scripting resource=] filename SHOULD use the file extension <code>.js</code>.</dd>
                 </dl>
             </section>
             <section id="sec-miniapp-resources-i18n">
@@ -336,14 +386,10 @@
                     <dt>File extension</dt>
                     <dd>A [=localization resource=] filename SHOULD use the file extension <code>.json</code>.</dd>
                     <dt>Format</dt>
-                    <dd>A [=localization resource=] MUST be a valid JSON document.</dd>
+                    <dd>A [=localization resource=] MUST be a valid JSON document [[JSON]].</dd>
                     <dt>Structure</dt>
                     <dd>A [=localization resource=] MUST be composed of key-value pairs. Each key represents a unique identifier for each localizable string (the values).</dd>
                 </dl>
-                <p class="issue" title="Still to define the format">
-                        The detailed format of the <code>.json </code> file is to be further developed.
-                </p>
-                <div class="issue" data-number="1"></div>   
             </section>
         </section> 
     </section>
@@ -368,7 +414,7 @@
                 <li>Data integrity MUST be provided for each file using CRC32 as specified in [[ZIP]].</li>
                 <li>MiniApp ZIP containers MUST NOT use the features in the ZIP application note [[ZIP]] that allow ZIP files to be spanned across multiple storage media, or split into multiple files.</li>
                 <li>MiniApp ZIP containers MUST include ZIP uncompressed (method <code>0</code>, file stored) and Deflate-compressed (method <code>0</code>, lossless data compression) contents within the ZIP archive, according to the [[ZIP]] specification.</li>
-                <li>MiniApp ZIP containers MUST use UTF-8 [[Unicode]] for encoding filenames.</li>
+                <li>MiniApp ZIP containers MUST use UTF-8 [[Unicode]] for encoding file names.</li>
                 <li>MiniApp ZIP containers MUST NOT use patented features.</li>
                 <li>MiniApp ZIP containers MAY include a special block, the [=MiniApp signing block=], to allow digital signatures affecting the whole package.</li>
                 <li>The minimum version of ZIP to extract a [=MiniApp ZIP container=] is <code>2.0</code> (supporting folders and Deflate compression), according to the [[ZIP]] specification.</li>
@@ -414,7 +460,7 @@
         <h2>Internationalization</h2>
         <p><dfn id="dfn-i18n" data-lt="internationalization|i18n" >Internationalization</dfn>, abbreviated to <abbr title="internationalization">i18n</abbr>, is the process of designing and developing a product in a way that ensures it can be easily adapted for users from any culture, region, or language.</p>
         <p><dfn id="dfn-localization" data-lt="localization" >Localization</dfn> is the process of content adaptation to meet a target language or cultural requirements.</p>
-        <p>MiniApps enable localization of contents using a mechanism based on localized documents placed in the reserved [=i18n Directory=]. This mechanism allows authors to place [=localization resources=], named according to a <code>language-range</code> [[BCP47]] and the <code>.json</code> extension. This is, documents with the localization resources will be identified with language tags [[BCP47]] that represent the locale of the content. [=MiniApp user agents=] match the language ranges held by their locales to the appropriate locale file name.</p>
+        <p>MiniApps enable localization of contents using a mechanism based on localized documents placed in the reserved [=i18n Directory=]. This mechanism allows authors to place [=localization resources=], named according to a <code>language-range</code> [[BCP47]] and the <code>.json</code> extension. This is, documents with the localization resources will be identified with language tags [[BCP47]] that represent the locale of the content. [=MiniApp user agents=] match the language ranges held by their locales to the appropriate locale filename.</p>
         <p>The format of the [=localization resources=] is defined in the <a href="#sec-miniapp-resources-i18n">localization resources</a> section.</p>
         <pre class="example" title="Filenames based on language tags in the i18n directory">
                 /
@@ -497,8 +543,8 @@
             <p>To <dfn data-lt="processing the MiniApp manifest">process the MiniApp manifest</dfn>, given [=MiniApp Package=] |miniapp_package:MiniApp Package|, perform the following steps. They return [=ordered map=].</p>
             <ol class="algorithm">
                 <li>If <code>manifest.json</code> file does not exist in the package's [=root directory=], then return failure.</li>
-                <li>Let |manifest_json:object| be the result of [=parse JSON from bytes=], passing <code>manifest.json</code>.</li>
-                <li>If |manifest_json| is a parsing exception, or the type of |manifest_json| is not [=object=], then return failure.</li>
+                <li>Let |manifest_json:ordered map| be the result of [=parse JSON from bytes=], passing <code>manifest.json</code>.</li>
+                <li>If |manifest_json| is a parsing exception, or |manifest_json| is not an [=ordered map=], then return failure.</li>
                 <li>Let |manifest:ordered map| be an [=ordered map=].</li>
                 <li><a href="https://w3c.github.io/miniapp-manifest/#dfn-processing-a-miniapp-manifest" data-link-type="dfn">Process a MiniApp manifest</a>, passing |manifest_json| and |manifest|.</li>
                 <li>Return |manifest|.</li>
@@ -604,7 +650,7 @@
 
     <section class="appendix informative" id="sec-acknowledgments">
         <h2>Acknowledgments</h2>
-		<div class="issue">List all the contributors and W3C Team contacts</div>
+		<div class="ednote">List all the contributors and W3C Team contacts</div>
     </section>
     <section class="appendix informative" id="sec-signature-schemes">
         <h2>Signature Schemes</h2>
