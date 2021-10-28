@@ -494,7 +494,7 @@
             <p>[=User agents=] MAY obtain [=MiniApp ZIP containers=] through different channels, retrieving the file over the network (i.e., using HTTPs, WebSocket, FTP, or other specific TCP/UDP based protocols), also from the filesystem or using any other mechanism.</p>
             <p>To <dfn data-lt="retrieving a MiniApp ZIP container" data-dfn-type="dfn">retrieve a MiniApp ZIP container</dfn>, given [=URL=] |miniapp_uri:URL|, perform the following steps. They return a [=MiniApp ZIP container=].</p>
             <ol class="algorithm">
-                <li>Let |resource:MiniApp ZIP container| be a [=MiniApp ZIP container=] as a result of <a href="https://www.w3.org/html/wg/spec/fetching-resources.html#fetch">fetching a URL</a> [[HTML5]], passing |miniapp_uri|.</li>
+                <li>Let |resource:MiniApp ZIP container| be a [=MiniApp ZIP container=] as a result of <a href="https://fetch.spec.whatwg.org/#concept-fetch">fetching a URL</a> [[FETCH]], passing |miniapp_uri|.</li>
                 <li>Let |supplied_mime_type:string| be the result of applying the <a href="https://mimesniff.spec.whatwg.org/#supplied-mime-type-detection-algorithm">supplied MIME type detection algorithm</a> [[MIMESNIFF]] with |resource|.</li>
                 <li>If |supplied_mime_type| is not equal to <code>application/miniapp-pkg+zip</code>, then return failure.</li>
                 <li>Return |resource|.</li>
