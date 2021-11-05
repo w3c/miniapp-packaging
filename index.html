@@ -314,7 +314,7 @@
         </section>
         <section id="sec-miniapp-resources">
             <h3>MiniApp Resources</h3>
-            <p>A [=MiniApp page=] is composed of, at least, an [=HTML resource=] and, optionally, a [=CSS resource=] and/or a [=scripting resource=]. These related resources MUST have the same path and filename (only changing the file extension) to identify the [=MiniApp page=] through a unique <a href="https://w3c.github.io/miniapp-manifest/#dfn-page-route" data-link-type="dfn">page route</a> that needs to be specified in the <a href="https://w3c.github.io/miniapp-manifest/#pages-member" data-link-type="dfn"><code>pages</code> member</a> of the <a href="https://www.w3.org/TR/miniapp-manifest/#dfn-miniapp-manifest-s" data-link-type="dfn">MiniApp manifest</a> [[MINIAPP-MANIFEST]]. </p>
+            <p>A [=MiniApp page=] is composed of, at least, an [=HTML resource=] and, optionally, a [=CSS resource=] and/or a [=scripting resource=]. These related resources MUST have the same path and filename (only changing the file extension) to identify the [=MiniApp page=] through a unique <a href="https://www.w3.org/TR/miniapp-manifest/#dfn-page-route" data-link-type="dfn">page route</a> that needs to be specified in the <a href="https://www.w3.org/TR/miniapp-manifest/#pages-member" data-link-type="dfn"><code>pages</code> member</a> of the <a href="https://www.w3.org/TR/miniapp-manifest/#dfn-miniapp-manifest-s" data-link-type="dfn">MiniApp manifest</a> [[MINIAPP-MANIFEST]]. </p>
             <pre class="example" title="Organization of page resources corresponding to the page route 'pages/product/product'">
                     /
                     |___pages/
@@ -546,7 +546,7 @@
                 <li>Let |manifest_json:ordered map| be the result of [=parse JSON from bytes=], passing <code>manifest.json</code>.</li>
                 <li>If |manifest_json| is a parsing exception, or |manifest_json| is not an [=ordered map=], then return failure.</li>
                 <li>Let |manifest:ordered map| be an [=ordered map=].</li>
-                <li><a href="https://w3c.github.io/miniapp-manifest/#dfn-processing-a-miniapp-manifest" data-link-type="dfn">Process a MiniApp manifest</a>, passing |manifest_json| and |manifest|.</li>
+                <li><a href="https://www.w3.org/TR/miniapp-manifest/#dfn-processing-a-miniapp-manifest" data-link-type="dfn">Process a MiniApp manifest</a>, passing |manifest_json| and |manifest|.</li>
                 <li>Return |manifest|.</li>
             </ol>
         </section>
@@ -606,7 +606,7 @@
                 </section>
                 <section id="sec-miniapp-processing-platform-start-page-manifest">
                     <h5>Extraction of Start Page From Manifest</h5>
-                    <p>As described in the <a href="https://w3c.github.io/miniapp-manifest/#pages-member">MiniApp Manifest's <code>pages</code> member</a> [[MINIAPP-MANIFEST]], the [=start page=] of a MiniApp is specified in the first item of the <code>pages</code> [=list=].</p>
+                    <p>As described in the <a href="https://www.w3.org/TR/miniapp-manifest/#pages-member">MiniApp Manifest's <code>pages</code> member</a> [[MINIAPP-MANIFEST]], the [=start page=] of a MiniApp is specified in the first item of the <code>pages</code> [=list=].</p>
                     <p>To <dfn data-lt="extracting the start page from manifest">extract the start page from manifest</dfn>, given [=ordered map=] |manifest:ordered map|, perform the following steps. They return a [=string=].</p>
                     <ol class="algorithm">
                         <li>Let |start_page_id| be the empty [=string=].</li>
@@ -665,7 +665,7 @@
 
         <section  id="sec-signature-rpk">
             <h3>RPK Signature Scheme</h3>
-            <p>As one implementation of MiniApp, <a href="https://www.quickapp.cn/" hreflang="zh">Quick Apps</a> use a so-called RPK (Runnable Package) Signature Scheme, which is similar to the APK Signature Scheme v2 [[?APK-SIGNATURE-V2]], to verify the authorship of the [=MiniApp package=]. This signature scheme takes every byte in a MiniApp package into the signature generation. The resulting [=signing block=] is created and inserted into the package file, according to the <a href="sec-miniapp-digital-signature-requirements">Digital Signature Requirements</a>.</p>
+            <p>As one implementation of MiniApp, <a href="https://www.quickapp.cn/" hreflang="zh">Quick Apps</a> use a so-called RPK (Runnable Package) Signature Scheme, which is similar to the APK Signature Scheme v2 [[?APK-SIGNATURE-V2]], to verify the authorship of the [=MiniApp package=]. This signature scheme takes every byte in a MiniApp package into the signature generation. The resulting [=signing block=] is created and inserted into the package file, according to the <a href="#sec-miniapp-digital-signature-requirements">Digital Signature Requirements</a>.</p>
             <p>The [=signing block=] contains ID-value pairs with information about the signature and the signer identity.</p> 
           
              <p class="note">All data values in the RPK [=signing block=] are represented in little-endian format, and all length-prefixed fields use <code>uint32</code> for length.</p>
@@ -921,12 +921,12 @@
             </ul>
 
             <h5 id="types-signing-blocks">Types of Signing Blocks</h5>
-            <p>The type of the <a href="pkcs7-profile-block-head">Block Head</a> is identified by its attribute <code>type</code>. This attribute MUST take two different values:</p>
+            <p>The type of the <a href="#pkcs7-profile-block-head">Block Head</a> is identified by its attribute <code>type</code>. This attribute MUST take two different values:</p>
             <ul>
                 <li><code>0</code> for File Signature blocks</li>
                 <li><code>1</code> for [=Provisioning Profile=] blocks</li>
             </ul>
-            <p>If the value of type is set to <code>0</code> (File Signature block), the header MUST specify a narrower subtype, using the attribute <code>tag</code> in its <a href="pkcs7-profile-block-head">Block Head</a>. The values for this subtype are:</p>
+            <p>If the value of type is set to <code>0</code> (File Signature block), the header MUST specify a narrower subtype, using the attribute <code>tag</code> in its <a href="#pkcs7-profile-block-head">Block Head</a>. The values for this subtype are:</p>
             <ul>
                 <li><code>0</code>: Default</li>
                 <li><code>1</code>: HASH (Whole file hash)</li> 
