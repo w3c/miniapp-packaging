@@ -100,7 +100,7 @@
         <h2>Introduction</h2>
         <section>
             <h3>Overview</h3>
-            <p>[=MiniApp=] is a concept of light software application, that can be distributed through any digital means, and accessed through the Web. MiniApps are defined by a concrete file structure and all their resources are packed within a single file that represents the whole [=MiniApp package=] that can be processed and executed by [=MiniApp user agents=].</p>
+            <p>[=MiniApp=] is a concept of light software application, that can be distributed through any digital means, and accessed through the Web. MiniApps are defined by a concrete file structure and all their resources are packed within a single file that represents the whole [=MiniApp package=] that can <a href="#dfn-process-a-miniapp-package" data-link-type="dfn">be processed</a> and executed by [=MiniApp user agents=].</p>
             <p>A [=MiniApp package=] contains a directory structure that holds the specific resources of the MiniApp that defines the rendering, operation, and interaction with the end-users — including static page templates, stylesheets, JavaScript documents, media files, and other resources — and the manifest. The <a href="https://www.w3.org/TR/miniapp-manifest/#dfn-miniapp-manifest-s" data-link-type="dfn">MiniApp manifest</a>, located in the central directory of the package, describes the MiniApp, including information about page routing, styles, and other operational and rendering details of the MiniApp, as well as descriptive information for humans.</p>
             <p>As defined in <a href="#sec-security-privacy">Security and Privacy Considerations</a>, MiniApps MAY support [=digital signature=] verification to guarantee the integrity of the package and contents during the delivery of the package.</p>
             <p>The MiniApp runtime environment ([=MiniApp user agent=]) identifies MiniApp package files through the standard [=MiniApp package=] format and the specific MIME media type, defined in this document. After retrieving the [=MiniApp ZIP container=], the [=MiniApp user agent=] loads the static page templates, stylesheets, JavaScript files, and other resources into the cache, following a <a href="#sec-miniapp-processing">dereference and processing algorithm</a>. These [=MiniApp resources=] will remain available in the cache until the next update, avoiding unnecessary network fetches.</p>
@@ -477,7 +477,7 @@
         <p>
             [=User agents=] MUST follow the following algorithm to dereference, parse and execute a [=MiniApp package=]. 
         </p>
-        <p>To <dfn>process a MiniApp package</dfn>, given [=URL=] |miniapp_uri:URL|, perform the following steps:</p>
+        <p>To <dfn data-export="">process a MiniApp package</dfn>, given [=URL=] |miniapp_uri:URL|, perform the following steps:</p>
         <ol class="algorithm">
             <li>Let |miniapp_zip_file:MiniApp ZIP container| be the result of [=retrieving a MiniApp ZIP container=] with |miniapp_uri|.</li>
             <li>[=Verify a MiniApp ZIP container=] with |miniapp_zip_file|.</li>
