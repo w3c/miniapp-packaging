@@ -641,8 +641,8 @@
         </p>
     </section>   
 
-    <section id="sec-security-privacy">
-        <h2>Security and Privacy Considerations</h2>
+    <section id="sec-security">
+        <h2>Security Considerations</h2>
         <section>
             <h3>Package Integrity and Trustworthiness</h3>
             <p>To ensure the integrity and trustworthiness within the distribution stage of MiniApps, a [=MiniApp package=] SHOULD be protected by one or more [=digital signatures=]. These signatures, along with certificates issued by trusted authorities, could help third parties to validate the authorship of the MiniApp (e.g. the MiniApp developer), and other entities involved in the development or distribution of the software (e.g., an application store as MiniApp distributor).</p>
@@ -656,11 +656,15 @@
             <p>Some examples of technologies and encryption methods are introduced in the <a href="#sec-signature-schemes"></a>.</p>
 
         </section>
+    </section>
+
+    <section id="sec-privacy">
+        <h2>Privacy Considerations</h2>
         <section>
             <h3>Content Confidentiality</h3>
             <p>This specification does not recommend any encryption mechanism for the [=MiniApp package=] to protect its confidentiality. However, it doesn't preclude an implementation from deploying some encryption mechanism for special purposes.</p>
         </section>
-    </section> 
+    </section>     
 
     <section class="appendix informative" id="sec-acknowledgments">
         <h2>Acknowledgments</h2>
