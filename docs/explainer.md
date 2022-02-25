@@ -54,7 +54,7 @@ The detailed solution is under development.
 
 ## 3. Sample
 
-One typical illustrative example of a MiniApp package is given in the [spec](https://w3c.github.io/miniapp/specs/packaging/#example-1).
+One typical illustrative example of a MiniApp package is given in the [spec](https://w3c.github.io/miniapp-packaging/#sec-filestructure).
 
 ## 4. Comparison with Other Packaging Technologies
 
