@@ -641,10 +641,10 @@
         </p>
     </section>   
 
-    <section id="sec-security">
+    <section id="sec-security"  data-cite="PERMISSIONS">
         <h2>Security Considerations</h2>
         <p>
-            This specification defines a mechanism to pack, distribute and load MiniApps through a concrete configuration that specifies the app's entry point and different routes (i.e., the manifest's <a href="https://www.w3.org/TR/miniapp-manifest/#pages-member"  data-link-type="dfn">`pages`</a> member). [=User agents=] SHOULD mitigate the potential vulnerability during the initialization and loading phase by limiting the type of resources to be loaded and implementing a sandboxed environment that blocks access to sensitive features by default.  
+            This specification defines a mechanism to pack, distribute and load MiniApps through a concrete configuration that specifies the app's entry point and different routes (i.e., the manifest's <a href="https://www.w3.org/TR/miniapp-manifest/#pages-member"  data-link-type="dfn">`pages`</a> member). [=User agents=] SHOULD mitigate the potential vulnerability during the initialization and loading phase by limiting the type of resources to be loaded and implementing a sandboxed environment that blocks access to [=powerful features=] by default.  
         </p>
         <section>
             <h3>Resources and Services</h3>
@@ -658,7 +658,7 @@
                 The document does not require a specific exposition of information publicly. However, a [=MiniApp package=] includes features that could describe the target user agent and some characteristics of the necessary running environment, including the version of the operating system and the underlying hardware capabilities (e.g., sensors available, type of device, and kind of display). These platform requirements, specified in the MiniApp manifest, may halt the execution of a MiniApp initialization during the manifest processing phase, revealing some inconsistencies with the app requirements. Still, [=user agents=] SHOULD avoid the public exposition of this information to reduce the attack surface.
             </p> 
             <p>
-                The MiniApp Packaging does not specify any specific mechanism to access and expose information about the underlying platform. However, [=MiniApp user agents=] may implement services to access this information (e.g., platform version, operating system, and sensors available) and APIs to communicate with the hardware and the operating system. Therefore, [=user agents=] SHOULD consider the potential risks when supporting these susceptible services and implement adequate mitigation mechanisms by default to guarantee that the sensitive services are not activated without meaningful <a href="https://www.w3.org/TR/design-principles/#consent">user consent</a>.
+                The MiniApp Packaging does not specify any specific mechanism to access and expose information about the underlying platform. However, [=MiniApp user agents=] may implement services to access this information (e.g., platform version, operating system, and sensors available) and APIs to communicate with the hardware and the operating system. Therefore, [=user agents=] SHOULD consider the potential risks when supporting these susceptible services and implement adequate mitigation mechanisms by default to guarantee that the [=powerful features=] are not activated without meaningful <a href="https://www.w3.org/TR/design-principles/#consent">user consent</a>.
             </p>
         </section>
         <section id="sec-package-integrity-trustworthiness">
