@@ -528,7 +528,7 @@
                     [=MiniApp user agents=] implement specific digital signature processing algorithms based on their needs and requirements.  
                 </div>
                 <aside class="example" title="Location of a digital signature within a MiniApp package">
-                    <p>The [=MiniApp signing block=] may be encoded using any digital signature scheme that is identified by the 16-byte [=magic numbers=] block located just immediately before the Central Directory in the [=MiniApp ZIP container=]. As shown in the example in <a href="#figure-miniapp-location-magic-numbers"></a>, the End of Central Directory, identified by the values <code>0x06054b50</code>, contains the offset that enables [=user agents=] to identify the start of the Central Directory block, and subsequently the magic numbers at the end of the [=signing block=].</p>
+                    <p>The [=MiniApp signing block=] MAY be encoded using any digital signature scheme that is identified by the 16-byte [=magic numbers=] block located just immediately before the Central Directory in the [=MiniApp ZIP container=]. As shown in the example in <a href="#figure-miniapp-location-magic-numbers"></a>, the End of Central Directory, identified by the values <code>0x06054b50</code>, contains the offset that enables [=user agents=] to identify the start of the Central Directory block, and subsequently the magic numbers at the end of the [=signing block=].</p>
                     <figure id="figure-miniapp-location-magic-numbers">
                         <img src="images/signature_bytes_central_directory.svg" alt="Location of the magic numbers within the MiniApp package" />
                         <figcaption>Example of End of Central Directory signature, location of the Central Directory and signature magic numbers</figcaption>
@@ -689,16 +689,16 @@
     <section id="sec-privacy">
         <h2>Privacy Considerations</h2>
         <p>
-            MiniApps MAY deal with personally-identifiable information that can be persisted and preserved in the user agent's sandboxed environment for subsequent app executions. [=User agents=] must secure that information, allowing only instances of the same application to access the data and avoiding the public exposition. Thus, [=MiniApp user agents=] SHOULD transparently inform end-users about the type of data being collected and the purposes of the collection. 
+            MiniApps MAY deal with personally-identifiable information that can be persisted and preserved in the user agent's sandboxed environment for subsequent app executions. [=User agents=] MUST secure that information, allowing only instances of the same application to access the data and avoiding the public exposition. Thus, [=MiniApp user agents=] SHOULD transparently inform end-users about the type of data being collected and the purposes of the collection. 
         </p>
         <p>
-            End-users must decide whether to remove the information stored by the user agent, corresponding to any MiniApp instance. [=User agents=] SHOULD treat the stored data as potentially sensitive, ensuring that it is adequately removed from the underlying storage when deleting data. Furthermore, users agents SHOULD implement mechanisms to minimize risks in the leakage of sensitive information, like automatically removing the stored data after some time.
+            End-users MUST decide whether to remove the information stored by the user agent, corresponding to any MiniApp instance. [=User agents=] SHOULD treat the stored data as potentially sensitive, ensuring that it is adequately removed from the underlying storage when deleting data. Furthermore, users agents SHOULD implement mechanisms to minimize risks in the leakage of sensitive information, like automatically removing the stored data after some time.
         </p>
         <p>
             Although this specification does not describe any mechanism for data persistence across sessions, MiniApps MAY store data on a user's device that could be retrieved in subsequent sessions. This scenario introduces the risk of user tracking without their knowledge or control. Thus, [=MiniApp user agents=] MUST implement protections to ensure that client-side storage mechanisms cannot be misused to track users without their control, like isolating the MiniApps running environments. This isolation will allow exclusive storage space for each MiniApp, univocally identified by the manifest's <a href="https://www.w3.org/TR/miniapp-manifest/#app_id-member"  data-link-type="dfn">`app_id`</a> member, restricting access to the data from other MiniApps.
         </p>
         <p>
-            [=User agents=] MAY offer the possibility of installing an app on the system (e.g., through home-screen shortcuts, icons on the desktop, and similar). This process should be transparent and reversible. If an end-user wants to uninstall the app, the user agent MUST ensure that all the related data is adequately removed from the underlying storage.
+            [=User agents=] MAY offer the possibility of installing an app on the system (e.g., through home-screen shortcuts, icons on the desktop, and similar). This process SHOULD be transparent and reversible. If an end-user wants to uninstall the app, the user agent MUST ensure that all the related data is adequately removed from the underlying storage.
         </p>
         <p>
             This specification does not recommend any encryption mechanism for the [=MiniApp package=] to protect its confidentiality. However, it doesn't preclude implementing some encryption mechanism for particular purposes.
@@ -750,7 +750,7 @@
                 <li><strong>magic numbers</strong> “<code>RPK Sig Block 42</code>” (16 bytes)</li>
             </ul>
 
-            <p>ID-value pairs with unknown IDs should be ignored when interpreting the block.</p>
+            <p>ID-value pairs with unknown IDs are ignored when interpreting the block.</p>
             <p>The "block size" value enables locating the start of the signing block in the whole ZIP file.</p>
                 
             <section id="sec-signing-block-signature">
@@ -1041,7 +1041,7 @@
                 <li><a href="https://www.quickapp.cn/" hreflang="zh">Quick Apps</a></li>
             </ul>
             <span class="ednote" title="To update the supporting applications">
-                The listed applications above are the base technologies to develop this spec. They are not using the proposed media type yet, but will potentially support it when the spec is ready. The list shall be confirmed/updated later.
+                The listed applications above are the base technologies to develop this spec. They are not using the proposed media type yet, but will potentially support it when the spec is ready. The list will be confirmed/updated later.
             </span>
             </dd>
             <dt>Fragment identifier considerations:</dt>
