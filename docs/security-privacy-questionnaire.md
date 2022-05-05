@@ -70,7 +70,7 @@ This specification considers only the resources contained in a MiniApp package. 
 
 ## 14. How do the features in this specification work in the context of a browser's  Private Browsing or Incognito mode?
 
-So far, the specification only considers a `normal` state.
+So far, the specification only considers a normal state.
 
 ## 15. Does this specification have both "Security Considerations" and "Privacy Considerations" sections?
 
