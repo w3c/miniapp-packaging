@@ -50,7 +50,7 @@ A MiniApp package may include resources of any type, including malicious scripts
 
 ### XSS (Cross-Site Scripting) vulnerabilities 
 
-MiniApp user agents are vulnerable to XSS attacks, concretely getting and processing external resources like images, data sources, and scripts. Therefore, user agents should limit the attack vectors and mitigate the risks by implementing a Content Security Policy (CSP) to control the resources that a MiniApp can fetch or execute. (Under discussion in #42.)
+MiniApp user agents are vulnerable to XSS attacks, concretely getting and processing external resources like images, data sources, and scripts. Therefore, user agents should limit the attack vectors and mitigate the risks by implementing a Content Security Policy (CSP) to control the resources that a MiniApp can fetch or execute. (Under discussion in [#42](https://github.com/w3c/miniapp-packaging/issues/42).)
 
 ## 10. Do features in this specification allow an origin to access other devices?
 
