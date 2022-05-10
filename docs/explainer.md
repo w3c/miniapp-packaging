@@ -5,7 +5,6 @@
 ## Authors
 
 - Yongjing Zhang (Huawei)
-- Martin Alvarez (Huawei)
 
 ## 1. Introduction
 
