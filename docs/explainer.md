@@ -46,7 +46,6 @@ A MiniApp package requires a homogeneous file system organization:
 * **pages**: A reserved directory that contains all page-related resources. It may have sub-directories to organize different pages. Each page may have the following associated files:
   * ***.js**:  The page scripts (i.e., app logic of the page)
   * ***.html**: The page layout (the concrete format is [under discussion](https://github.com/w3c/miniapp-packaging/issues/2))
-  * ***.json**: An optional page-specific configuration.
   * ***.css**: The page-specific style
 * **common**: A reserved directory that contains common resources (i.e., images, scripts, UI components, templates) that can be (re)used by one or multiple MiniApp pages/widgets. It may have sub-directories for an efficient organization. (Details are for further study.)
 
