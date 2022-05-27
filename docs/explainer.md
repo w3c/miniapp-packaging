@@ -33,7 +33,7 @@ The spec shall define the following aspects to ensure interoperability:
 
 Following the common practice of mobile app packaging (such as Android APK), the MiniApp package is designed as a specialized ZIP file, which has its file extension name (`.ma`) and a dedicated MIME type (`application/miniapp-pkg+zip` - to be registered with IANA).
 
-The package can be treated as a regular `.zip` file in some cases (i.e., a ZIP parser may open and read the MiniApp package without following the MiniApp Packaging spec). However, having the dedicated file extension name and MINE Type gives a way for a hosting platform or a package loader to do pre-checking or content-type negotiation before loading/downloading the package.
+The package can be treated as a regular `.zip` file in some cases (i.e., a ZIP parser may open and read the MiniApp package without following the MiniApp Packaging spec). However, having the dedicated file extension name and MIME Type gives a way for a hosting platform or a package loader to do pre-checking or content negotiation before loading/downloading the package.
 
 ### The Package Content
 
