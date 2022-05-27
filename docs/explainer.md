@@ -54,7 +54,7 @@ A MiniApp package requires a homogeneous file system organization:
 
 A MiniApp package should guarantee integrity and trustworthiness in the app distribution. So, a MiniApp package may include one or more digital signatures with integrity mechanisms and certificates that enable verifying authors (e.g., the MiniApp developer) and distributors (e.g., an application marketplace). (See more details in the [spec](https://www.w3.org/TR/miniapp-packaging/#sec-miniapp-digital-signature-requirements))
 
-User agents may require specific digital signature mechanisms, depending on the use case and MiniApp environment, so the specification does not recommends concrete encryption methods or technologies. The specification will include informative examples of various technologies to be used, such as [RFC5652](https://tools.ietf.org/html/rfc5652) (PKCS#7) and the [APK Signature Scheme v2 (https://source.android.com/security/apksigning/v2)).
+User agents may require specific digital signature mechanisms, depending on the use case and MiniApp environment, so the specification does not recommends concrete encryption methods or technologies. The specification will include informative examples of various technologies to be used, such as [RFC5652](https://tools.ietf.org/html/rfc5652) (PKCS#7) and the [APK Signature Scheme v2](https://source.android.com/security/apksigning/v2)).
 
 
 ## 3. Sample
