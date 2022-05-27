@@ -74,7 +74,7 @@ The following analysis summarizes the main reasons why **existing packaging tech
 3. **[Widgets (obsolete)](https://www.w3.org/TR/widgets):** It is an old implementation of Packaged Web Apps called Widgets. It is ZIP-based but has specific file/folder structure and naming constraints, and it uses XML-based configuration documents. These constraints are not compatible with MiniApp. In addition, it uses [XMLDSIG](http://www.w3.org/TR/xmldsig-core1/) for the digital signature, which can only protect the signed files but not the entire package file itself. One can add/remove signature files, add other files or blocks into the ZIP package, or alter the ZIP metadata without being noticed. Such vulnerability is not acceptable by MiniApp.
 4. **[LPF](https://www.w3.org/TR/lpf/):** It is a lightweight ZIP-based packaging format that contains digital publication materials. It mandates publication-specific files (i.e., `publication.json`, `index.html`) that are not needed by a MiniApp, while misses MiniApp specific files like `manifest.json` and `app.js`. Also, it does not cover the security concerns, such as the integrity protection of the whole package that a MiniApp addresses.
 
-The following table shows a detailed comparison between a MiniApp package and other packaging technologies
+The following table shows a detailed comparison between a MiniApp package and other packaging technologies:
 
 
 Technology | Client Platform | Content | Web Dependency | Format | Digital Signature 
