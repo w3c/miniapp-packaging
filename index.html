@@ -236,76 +236,49 @@
                 <p>The [=i18n Directory=] MAY contain as many [=localization resources=] as languages or locales a MiniApp supports. The format of these files is defined in the <a href="#sec-miniapp-resources-i18n">localization resources</a> section.</p> 
             </section>
             <section>
-                <h3>File Names</h3>
-                <p>Any [=file name=] within a [=MiniApp package=] MUST comply with the following restrictions to accommodate the potential limitations of the operating systems and facilitate compatibility with the majority of the platforms:</p>
+                <h3>File and Path Names</h3>
+                <p>Any [=file name=] and path name within a [=MiniApp package=] MUST comply with the following restrictions to accommodate the potential limitations of the operating systems and facilitate interoperability with the majority of the platforms and file systems, as specified by [[[international-specs]]].</p>
 
                 <ul class="conformance-list">
-                    <li>[=File names=] are case sensitive.</li>
-                    <li>[=File names=] MUST be UTF-8 [[Unicode]] encoded.</li>
-                    <li>[=File names=] MUST NOT exceed 255 bytes.</li>
-                    <li>The path name for any directory or file within a [=MiniApp package=] MUST NOT exceed 65535 bytes.</li>
-                    <li>[=File names=] MUST NOT use the following [[Unicode]] characters:
+                    <li>[=File names=] and file paths are case sensitive.</li>
+                    <li>[=File names=] and file paths MUST be UTF-8 [[Unicode]] encoded.</li>
+                    <li>[=File names=] SHOULD NOT exceed 255 bytes in length.</li>
+                    <li>Path names SHOULD NOT exceed 65535 bytes in length.</li>
+                    <li>[=File names=] and path names MUST NOT use the following [[Unicode]] points:
                         <ul>
-							<li>
-								<p>SOLIDUS: <code>/</code> (<code>U+002F</code>)</p>
-							</li>
-							<li>
-								<p>QUOTATION MARK: <code>"</code> (<code>U+0022</code>)</p>
-							</li>
-							<li>
-								<p>ASTERISK: <code>*</code> (<code>U+002A</code>)</p>
-							</li>
-							<li>
-								<p>FULL STOP as the last character: <code>.</code> (<code>U+002E</code>)</p>
-							</li>
-							<li>
-								<p>COLON: <code>:</code> (<code>U+003A</code>)</p>
-							</li>
-							<li>
-								<p>LESS-THAN SIGN: <code>&lt;</code> (<code>U+003C</code>)</p>
-							</li>
-							<li>
-								<p>GREATER-THAN SIGN: <code>&gt;</code> (<code>U+003E</code>)</p>
-							</li>
-							<li>
-								<p>QUESTION MARK: <code>?</code> (<code>U+003F</code>)</p>
-							</li>
-							<li>
-								<p>REVERSE SOLIDUS: <code>\</code> (<code>U+005C</code>)</p>
-							</li>
-							<li>
-								<p>VERTICAL LINE: <code>\</code> (<code>U+007C</code>)</p>
-							</li>
-							<li>
-								<p>DEL (<code>U+007F</code>)</p>
-							</li>
-							<li>
-								<p>C0 range (<code>U+0000 … U+001F</code>)</p>
-							</li>
-							<li>
-								<p>C1 range (<code>U+0080 … U+009F</code>)</p>
-							</li>
-							<li>
-								<p>Private Use Area (<code>U+E000 … U+F8FF</code>)</p>
-							</li>
-							<li>
-								<p>Non characters in Arabic Presentation Forms-A (<code>U+FDD0 … U+FDEF</code>)</p>
-							</li>
-							<li>
-								<p>Specials (<code>U+FFF0 … U+FFFF</code>)</p>
-							</li>
-							<li>
-								<p>Tags and Variation Selectors Supplement (<code>U+E0000 … U+E0FFF</code>)</p>
-							</li>
-							<li>
-								<p>Supplementary Private Use Area-A (<code>U+F0000 … U+FFFFF</code>)</p>
-							</li>
-							<li>
-								<p>Supplementary Private Use Area-B (<code>U+100000 … U+10FFFF</code>)</p>
-							</li>
+                            <li><span class="codepoint"><span>"</span> [<span class="uname">U+0022 QUOTATION MARK</span>]</span></li>
+                            <li><span class="codepoint"><span>*</span> [<span class="uname">U+002A ASTERISK</span>]</span></li>
+                            <li><span class="codepoint"><span>/</span> [<span class="uname">U+002F SOLIDUS</span>]</span></li>
+                            <li><span class="codepoint"><span>:</span> [<span class="uname">U+003A COLON</span>]</span></li>
+                            <li><span class="codepoint"><span>&lt;</span> [<span class="uname">U+003C LESS-THAN SIGN</span>]</span></li>
+                            <li><span class="codepoint"><span>&gt;</span> [<span class="uname">U+003E GREATER-THAN SIGN</span>]</span></li>
+                            <li><span class="codepoint"><span>\</span> [<span class="uname">U+005C REVERSE SOLIDUS</span>]</span></li>
+                            <li><span class="codepoint"><span>|</span> [<span class="uname">U+007C VERTICAL LINE</span>]</span></li>
+                            <li><span class="codepoint"><span class="uname">U+007F DEL</span></span></li>
+                            <li><span class="codepoint"><span class="uname">U+E0001 LANGUAGE TAG</span></span></li>
+                            <li><span class="codepoint"><span class="uname">U+E007F CANCEL TAG</span></span></li>
+                            <li>Codepoints in the following ranges:
+                                 <ul>
+                                    <li>C0 Controls [<span class="uname">U+0000</span>...<span class="uname">U+001F</span>]</li>
+                                    <li>C1 Controls [<span class="uname">U+0080</span>...<span class="uname">U+009F</span>]</li>
+                                    <li>Private Use [<span class="uname">U+E000</span>...<span class="uname">U+F8FF</span>]</li>
+                                    <li>Specials [<span class="uname">U+FFF0</span>...<span class="uname">U+FFFF</span>]</li>
+                                    <li>Supplementary Private Use [<span class="uname">U+F0000</span>...<span class="uname">U+FFFFF</span>]</li>
+                                    <li>Supplementary Private Use [<span class="uname">U+100000</span>...<span class="uname">U+10FFFF</span>]</li>
+                                </ul>
+                            </li>
+                            <li><span class="codepoint"><span>.</span> [<span class="uname">U+002E FULL STOP</span>]</span></li>
+                            <li>All Unicode non-character code points, specifically:
+                                <ul>
+                                    <li>The 32 contiguous characters in the Basic Multilingual Plane (U+FDD0 … U+FDEF)</li>
+                                    <li>The last two code points of the Basic Multilingual Plane (U+FFFE and U+FFFF)</li>
+                                    <li>The last two code points at the end of the Supplementary Planes (U+1FFFE, U+1FFFF … U+EFFFE, U+EFFFF)</li>
+                                </ul>
+                            </li>
                         </ul>
                     </li>
                 </ul>
+
                 <p id="filename-normalization">All [=file names=] within the same directory MUST be unique following Unicode canonical normalization [[UAX15]] and then full case folding [[Unicode]]. (Refer to <a href="https://www.w3.org/TR/charmod-norm/#CanonicalFoldNormalizationStep">Unicode Canonical Case Fold Normalization Step</a> [[?CHARMOD-NORM]] for more information.)</p>                
                 <div class="note" title="Limiting the length of file names">
                     If a MiniApp vendor imposes length limits on path and [=file names=], it is important to avoid mid-character truncation due to the difference between bytes and characters in multibyte encodings such as UTF-8. See <a href="https://www.w3.org/TR/international-specs/#char_truncation">the text truncation best practice</a> for more information.     
