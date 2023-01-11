@@ -285,6 +285,14 @@
                     If a MiniApp vendor imposes length limits on path and [=file names=], it is important to avoid mid-character truncation due to the difference between bytes and characters in multibyte encodings such as UTF-8. See <a href="https://www.w3.org/TR/international-specs/#char_truncation">the text truncation best practice</a> for more information.     
                 </div>
             </section>
+            <section id="sec-iris">
+                <h3>IRIs for Referencing Internal Resources</h3>
+                <p>MiniApp resources refer to other files within the same MiniApp package using relative IRI references [[RFC3987]] [[RFC3986]]. The base URI [[RFC3986]] for the relative IRI is established by the parser, depending on the resource type (i.e., HTML, CSS, SVG, etc.) and its specification. The file location is specified by the path component of the IRI, composed of hierarchical path segments separated by a slash (`/`) character.</p>
+                <p>By default, the base URI for the resources included in the MiniApp container refers to the [=Root Directory=].</p>
+                <pre class="example" title="Video elements in HTML resource referring to internal resources"><code>&lt;video src="/common/video1.mp4" ... /&gt;
+                    
+&lt;video src="../common/video2.mp4" ... /&gt;</code></pre>
+                <p>All the relative IRI references in the MiniApp package MUST resolve to resources within the same MiniApp container (i.e., resources located in the [=Root Directory=] or below).</p>
         </section>
         <section id="sec-miniapp-resources">
             <h3>MiniApp Resources</h3>
