@@ -113,8 +113,6 @@
             <dl class="termlist">
                 <dt><dfn id="dfn-signature" data-lt="signatures|signature|digital signature|digital signatures" data-dfn-type="dfn">Digital signature</dfn></dt>
                 <dd>A cryptographic mechanism and hashing techniques to prove the authenticity of [=resources=]. Digital signatures can demonstrate the origin, time, identity, and status of [=resources=] and of the [=MiniApp package=].</dd>
-                <dt><dfn id="dfn-filename" data-lt="file name|file names" data-dfn-type="dfn">File name</dfn></dt>
-                <dd>The name of any file within a [=MiniApp package=], either a directory or a file within a directory.</dd>
                 <dt><dfn data-export="" id="dfn-miniapp" data-lt="MiniApps" data-dfn-type="dfn">MiniApp</dfn></dt>
                 <dd>A light software application, that can be distributed through any digital means, and accessed through the Web. MiniApps are defined by a concrete file structure, distributed within a single file [=MiniApp ZIP container=] that represents the whole [=MiniApp package=] that can be processed and executed by [=MiniApp user agents=].</dd>
                 <dt><dfn id="dfn-package" data-lt="MiniApp package|MiniApp packages|package" data-dfn-type="dfn">MiniApp package</dfn></dt>
@@ -238,14 +236,14 @@
             </section>
             <section>
                 <h3>File and Path Names</h3>
-                <p>Any [=file name=] and path name within a [=MiniApp package=] MUST comply with the following restrictions to accommodate the potential limitations of the operating systems and facilitate interoperability with the majority of the platforms and file systems, as specified by [[[international-specs]]].</p>
+                <p>Any file name and path name within a [=MiniApp package=] MUST comply with the following restrictions to accommodate the potential limitations of the operating systems and facilitate interoperability with the majority of the platforms and file systems, as specified by [[[international-specs]]].</p>
 
                 <ul class="conformance-list">
-                    <li>[=File names=] and file paths are case sensitive.</li>
-                    <li>[=File names=] and file paths MUST be UTF-8 [[Unicode]] encoded.</li>
-                    <li>[=File names=] SHOULD NOT exceed 255 bytes in length.</li>
+                    <li>File names and file paths are case sensitive.</li>
+                    <li>File names and file paths MUST be UTF-8 [[Unicode]] encoded.</li>
+                    <li>File names SHOULD NOT exceed 255 bytes in length.</li>
                     <li>Path names SHOULD NOT exceed 65535 bytes in length.</li>
-                    <li>[=File names=] and path names MUST NOT use the following [[Unicode]] points:
+                    <li>File names and path names MUST NOT use the following [[Unicode]] points:
                         <ul>
                             <li><span class="codepoint"><span>"</span> [<span class="uname">U+0022 QUOTATION MARK</span>]</span></li>
                             <li><span class="codepoint"><span>*</span> [<span class="uname">U+002A ASTERISK</span>]</span></li>
@@ -280,9 +278,9 @@
                     </li>
                 </ul>
 
-                <p id="filename-normalization">All [=file names=] within the same directory MUST be unique following Unicode canonical normalization [[UAX15]] and then full case folding [[Unicode]]. (Refer to <a href="https://www.w3.org/TR/charmod-norm/#CanonicalFoldNormalizationStep">Unicode Canonical Case Fold Normalization Step</a> [[?CHARMOD-NORM]] for more information.)</p>                
+                <p id="filename-normalization">All file names within the same directory MUST be unique following Unicode canonical normalization [[UAX15]] and then full case folding [[Unicode]]. (Refer to <a href="https://www.w3.org/TR/charmod-norm/#CanonicalFoldNormalizationStep">Unicode Canonical Case Fold Normalization Step</a> [[?CHARMOD-NORM]] for more information.)</p>                
                 <div class="note" title="Limiting the length of file names">
-                    If a MiniApp vendor imposes length limits on path and [=file names=], it is important to avoid mid-character truncation due to the difference between bytes and characters in multibyte encodings such as UTF-8. See <a href="https://www.w3.org/TR/international-specs/#char_truncation">the text truncation best practice</a> for more information.     
+                    If a MiniApp vendor imposes length limits on path and file names, it is important to avoid mid-character truncation due to the difference between bytes and characters in multibyte encodings such as UTF-8. See <a href="https://www.w3.org/TR/international-specs/#char_truncation">the text truncation best practice</a> for more information.     
                 </div>
             </section>
         </section>
